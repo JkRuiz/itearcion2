@@ -1,0 +1,31 @@
+
+/*
+Probar las foreign key en la tabla MENU, donde RESTAURANTE es la primary key de la tabla RESTAURANTES 
+*/
+
+INSERT INTO ZONA (NOMBRE, CAPACIDAD, ABIERTO, APTODISCAPACIDAD, DESCRIPCIONTECNICA)
+VALUES ('ZONA COLOMBIA', 250, 1, 1, 'Zona tematica de Colombia, comida y ambiente tipicos');
+
+INSERT INTO RESTAURANTES (NOMBRE,REPRESENTANTE,TIPOCOMIDA,ZONA, VALOR_COSTOS,VALOR_VENTAS)
+VALUES ('LA BANDEJA PAISA', 'JORGE', 'COMIDA COLOMBIANA', 'ZONA COLOMBIA', 3000,8000);
+
+/*
+Caso en que ambas foreign key existen
+*/
+INSERT INTO MENU VALUES ('Combo 1', 1000,3000, 20, 30,'LA BANDEJA PAISA', 1);
+
+/*
+Caso en que la foreign key de RESTAURANTES no existe
+*/
+INSERT INTO MENU VALUES ('Combo 2', 1000,3000, 20, 30,'El toro', 2);
+
+/*
+Para borrar, primero se boora MENU luego RESTAURANTE y finalmente ZONA
+*/
+DELETE FROM MENU WHERE ID_MENU = 1;
+DELETE FROM RESTAURANTES WHERE NOMBRE = 'LA BANDEJA PAISA';
+DELETE FROM ZONA WHERE NOMBRE = 'ZONA COLOMBIA';
+
+
+
+

@@ -7,43 +7,43 @@ public class Restaurante {
 	/**
 	 * Nombre del restaurante
 	 */
-	@JsonProperty(value="NOMBRE")
+	@JsonProperty(value="nombre")
 	private String nombre;
 	
 	/**
 	 * Representante del restaurante
 	 */
-	@JsonProperty(value="REPRESENTANTE")
+	@JsonProperty(value="representante")
 	private String representante;
 	
 	/**
 	 * Tipo de comida del restaurante
 	 */
-	@JsonProperty(value="TIPOCOMIDA")
+	@JsonProperty(value="tipoComida")
 	private String tipoComida;
 	
 	/**
 	 * Pagina web del restaurante
 	 */
-	@JsonProperty(value="PAGINAWEB")
+	@JsonProperty(value="paginaWeb")
 	private String paginaWeb;
 	
 	/**
 	 * Zona del restaurante
 	 */
-	@JsonProperty(value="ZONA")
+	@JsonProperty(value="zona")
 	private String zona;
 	
 	/**
 	 * Valor de costos del restaurante
 	 */
-	@JsonProperty(value="VALOR_COSTOS")
+	@JsonProperty(value="valorCostos")
 	private float valorCostos;
 	
 	/**
 	 * Valor de ventas del restaurante
 	 */
-	@JsonProperty(value="VALOR_VENTAS")
+	@JsonProperty(value="valorVentas")
 	private float valorVentas;
 	
 	/**
@@ -56,13 +56,14 @@ public class Restaurante {
 	 * @param valorCostos valor de costos del restaurante 
 	 * @param valorVentas valor de ventas del restaurante 
 	 */
-	public Restaurante(@JsonProperty(value="NOMBRE")String nombre, @JsonProperty(value="REPREENTANTE")String representante,@JsonProperty(value="TIPOCOMIDA")String tipoComida,
-			@JsonProperty(value="PAGINAWEB")String paginaWeb, @JsonProperty(value="ZONA")String zona, @JsonProperty(value="VALOR_COSTOS")float valorCostos,
-			@JsonProperty(value="VALOR_VENTAS")float valorVentas) {
+	public Restaurante(@JsonProperty(value="nombre")String nombre, @JsonProperty(value="representante")String representante,@JsonProperty(value="tipoComida")String tipoComida,
+			@JsonProperty(value="paginaWeb")String paginaWeb, @JsonProperty(value="zona")String zona, @JsonProperty(value="valorCostos")float valorCostos,
+			@JsonProperty(value="valorVentas")float valorVentas) {
 		super();
 		this.nombre = nombre;
 		this.representante = representante;
 		this.tipoComida = tipoComida;
+		this.paginaWeb = paginaWeb;
 		this.zona = zona;
 		this.valorCostos = valorCostos;
 		this.valorVentas = valorVentas;

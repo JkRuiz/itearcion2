@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import vos.Menu;
+import vos.Pedido;
 
 
 public class DAOTablaMenu {
@@ -63,7 +64,8 @@ public class DAOTablaMenu {
 	 */
 	public ArrayList<Menu> darMenus() throws SQLException, Exception {
 		ArrayList<Menu> menus = new ArrayList<Menu>();
-
+		ArrayList<Integer> productos = new ArrayList<Integer>();
+		
 		String sql = "SELECT * FROM MENU";
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
@@ -71,6 +73,7 @@ public class DAOTablaMenu {
 		ResultSet rs = prepStmt.executeQuery();
 
 		while (rs.next()) {
+			productos = new ArrayList<>();
 			String nombre = rs.getString("NOMBRE");
 			float costoProd = rs.getFloat("COSTOPROD");
 			float precioVent = rs.getFloat("PRECIOVENT");
@@ -78,8 +81,17 @@ public class DAOTablaMenu {
 			int disponibles = rs.getInt("DISPONIBLES");
 			String restaurante = rs.getString("NOMRESTAURANTE");
 			int idMenu = rs.getInt("ID_MENU");
-
-			menus.add(new Menu(nombre, costoProd, precioVent, vendidos, disponibles, restaurante, idMenu));
+			
+			String sqlAux = "SELECT * FROM MENU_PLATO WHERE ID_MENU ="+idMenu;
+			PreparedStatement prepStmtAux = conn.prepareStatement(sqlAux);
+			recursos.add(prepStmtAux);
+			ResultSet rsAux = prepStmtAux.executeQuery();
+			while (rsAux.next())
+			{
+				int idPlato = rsAux.getInt("ID_PLATO");
+				productos.add(idPlato);
+			}
+			menus.add(new Menu(nombre, costoProd, precioVent, vendidos, disponibles, restaurante, idMenu, productos));
 		}
 		return menus;
 	}
@@ -94,6 +106,7 @@ public class DAOTablaMenu {
 	 */
 	public ArrayList<Menu> buscarMenusPorNombre(String nombre) throws SQLException, Exception {
 		ArrayList<Menu> menus = new ArrayList<Menu>();
+		ArrayList<Integer> productos = new ArrayList<Integer>();
 
 		String sql = "SELECT * FROM MENU WHERE NOMBRE ='" + nombre + "'";
 
@@ -109,8 +122,17 @@ public class DAOTablaMenu {
 			int disponibles = rs.getInt("DISPONIBLES");
 			String restaurante = rs.getString("NOMRESTAURANTE");
 			int idMenu = rs.getInt("ID_MENU");
-
-			menus.add(new Menu(nombre2, costoProd, precioVent, vendidos, disponibles, restaurante, idMenu));
+			
+			String sqlAux = "SELECT * FROM MENU_PLATO WHERE ID_MENU ="+idMenu;
+			PreparedStatement prepStmtAux = conn.prepareStatement(sqlAux);
+			recursos.add(prepStmtAux);
+			ResultSet rsAux = prepStmtAux.executeQuery();
+			while (rsAux.next())
+			{
+				int idPlato = rsAux.getInt("ID_PLATO");
+				productos.add(idPlato);
+			}
+			menus.add(new Menu(nombre2, costoProd, precioVent, vendidos, disponibles, restaurante, idMenu, productos));
 		}
 
 		return menus;
@@ -118,16 +140,17 @@ public class DAOTablaMenu {
 
 	/**
 	 * Metodo que busca el menus con el id que entra como parametro.
-	 * @param id - Id de el menus a buscar
+	 * @param idMenu2 - Id de el menus a buscar
 	 * @return Video encontrado
 	 * @throws SQLException - Cualquier error que la base de datos arroje.
 	 * @throws Exception - Cualquier error que no corresponda a la base de datos
 	 */
-	public Menu buscarMenuPorId(Long id) throws SQLException, Exception 
+	public Menu buscarMenuPorId(int idMenu2) throws SQLException, Exception 
 	{
+		ArrayList<Integer> productos = new ArrayList<Integer>();
 		Menu menu = null;
 
-		String sql = "SELECT * FROM VIDEO WHERE ID_MENU =" + id;
+		String sql = "SELECT * FROM MENU WHERE ID_MENU =" + idMenu2;
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
@@ -141,9 +164,18 @@ public class DAOTablaMenu {
 			int disponibles = rs.getInt("DISPONIBLES");
 			String restaurante = rs.getString("NOMRESTAURANTE");
 			int idMenu = rs.getInt("ID_MENU");
-			menu = new Menu(nombre, costoProd, precioVent, vendidos, disponibles, restaurante, idMenu);
+			
+			String sqlAux = "SELECT * FROM MENU_PLATO WHERE ID_MENU ="+idMenu;
+			PreparedStatement prepStmtAux = conn.prepareStatement(sqlAux);
+			recursos.add(prepStmtAux);
+			ResultSet rsAux = prepStmtAux.executeQuery();
+			while (rsAux.next())
+			{
+				int idPlato = rsAux.getInt("ID_PLATO");
+				productos.add(idPlato);
+			}
+			menu = new Menu(nombre, costoProd, precioVent, vendidos, disponibles, restaurante, idMenu, productos);
 		}
-
 		return menu;
 	}
 

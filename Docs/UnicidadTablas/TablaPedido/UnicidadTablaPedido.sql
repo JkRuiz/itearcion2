@@ -1,0 +1,5 @@
+
+INSERT INTO PEDIDO VALUES (1, 2000, TO_DATE('28/08/2004','DD/MM/YYYY'), 'jc.ruiz@uniandes.com', 1, 0, '10:40:04 PM');
+INSERT INTO PEDIDO VALUES (1, 30, TO_DATE('31/01/1990','DD/MM/YYYY'), 'jc.ruiz@uniandes.com', 0, 0, '11:00:59 AM');
+
+SELECT * FROM PEDIDO;

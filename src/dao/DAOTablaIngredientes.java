@@ -72,7 +72,8 @@ public class DAOTablaIngredientes {
 		while (rs.next()) {
 			String nombre = rs.getString("NOMBRE");
 			String descripcion = rs.getString("DESCRIPCION");
-			ingredientes.add(new Ingredientes(nombre, descripcion));
+			String traduccion = rs.getString("TRADUCCION");
+			ingredientes.add(new Ingredientes(nombre, descripcion, traduccion));
 		}
 		return ingredientes;
 	}
@@ -97,7 +98,8 @@ public class DAOTablaIngredientes {
 		if (rs.next()) {
 			String nombre2 = rs.getString("NOMBRE");
 			String descripcion = rs.getString("DESCRIPCION");
-			ingrediente = new Ingredientes(nombre2, descripcion);
+			String traduccion = rs.getString("TRADUCCION");
+			ingrediente = new Ingredientes(nombre2, descripcion, traduccion);
 		}
 
 		return ingrediente;
@@ -116,7 +118,8 @@ public class DAOTablaIngredientes {
 
 		String sql = "INSERT INTO INGREDIENTES VALUES ('";
 		sql += ingrediente.getNombre() + "','";
-		sql += ingrediente.getDescripcion()+ "')";
+		sql += ingrediente.getDescripcion()+ "','";
+		sql += ingrediente.getTraduccion() + "')";
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
@@ -136,6 +139,7 @@ public class DAOTablaIngredientes {
 
 		String sql = "UPDATE INGREDIENTES SET ";
 		sql += "DESCRIPCION = '" + ingrediente.getDescripcion() + "'";
+		sql += "TRADUCCION = '" + ingrediente.getTraduccion() + "'";
 		sql += "WHERE NOMBRE = '" + ingrediente.getNombre() + "'";
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);

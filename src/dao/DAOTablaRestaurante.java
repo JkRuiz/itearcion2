@@ -102,7 +102,10 @@ public class DAOTablaRestaurante {
 			String nombre2 = rs.getString("NOMBRE");
 			String representante = rs.getString("REPRESENTANTE");
 			String tipoComida = rs.getString("TIPOCOMIDA");
-			String paginaWeb = rs.getString("PAGINAWEB");
+			String paginaWeb = "";
+			if(rs.getString("PAGINAWEB") != null)
+			paginaWeb = rs.getString("PAGINAWEB");
+			
 			String zona = rs.getString("ZONA");
 			float valorCostos = rs.getFloat("VALOR_COSTOS");
 			float valorVentas = rs.getFloat("VALOR_VENTAS");
@@ -125,8 +128,10 @@ public class DAOTablaRestaurante {
 		String sql = "INSERT INTO RESTAURANTES VALUES ('";
 		sql += restaurante.getNombre() + "','";
 		sql+= restaurante.getRepresentante() + "','";
-		sql += restaurante.getTipoComida() + "','";
-		sql += restaurante.getPaginaWeb() + "','";
+		sql += restaurante.getTipoComida() + "',";
+		if (restaurante.getPaginaWeb() != "" && restaurante.getPaginaWeb() != null)
+		sql += "'" + restaurante.getPaginaWeb() + "','";
+		else sql += "null,'";
 		sql += restaurante.getZona() + "',";
 		sql += restaurante.getValorCostos() + ",";
 		sql += restaurante.getValorVentas() + ")";

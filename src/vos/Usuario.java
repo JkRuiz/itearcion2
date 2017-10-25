@@ -4,16 +4,16 @@ import org.codehaus.jackson.annotate.JsonProperty;
 
 public class Usuario {
 
-	@JsonProperty(value="EMAIL")
+	@JsonProperty(value="email")
 	private String email;
 	
-	@JsonProperty(value="NOMBRE")
+	@JsonProperty(value="nombre")
 	private String nombre;
 	
-	@JsonProperty(value="IDENTIFICACION")
+	@JsonProperty(value="identificacion")
 	private long identificacion;
 
-	public Usuario(@JsonProperty(value="EMAIL")String email, @JsonProperty(value="NOMBRE") String nombre,@JsonProperty(value="IDENTIFICACION") long identificacion ) {
+	public Usuario(@JsonProperty(value="email")String email, @JsonProperty(value="nombre") String nombre,@JsonProperty(value="identificacion") long identificacion ) {
 		super();
 		this.email = email;
 		this.nombre = nombre;

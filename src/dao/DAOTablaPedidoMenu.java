@@ -141,7 +141,7 @@ public class DAOTablaPedidoMenu {
 	 */
 	public void addPedidoMenu(PedidoMenu pedidoMenu) throws SQLException, Exception {
 
-		String sql = "INSERT INTO PEDIDO_MENU VALUES (";
+		String sql = "INSERT INTO PEDIDO_MENUS VALUES (";
 		sql += pedidoMenu.getNumPedido() + ",";
 		sql += pedidoMenu.getIdMenu() + ")";
 		

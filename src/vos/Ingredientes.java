@@ -4,16 +4,21 @@ import org.codehaus.jackson.annotate.JsonProperty;
 
 public class Ingredientes {
 
-	@JsonProperty(value="NOMBRE")
+	@JsonProperty(value="nombre")
 	private String nombre;
 	
-	@JsonProperty(value="DESCRIPCION")
+	@JsonProperty(value="descripcion")
 	private String descripcion;
+	
+	@JsonProperty(value="traduccion")
+	private String traduccion;
 
-	public Ingredientes(@JsonProperty(value="NOMBRE")String nombre, @JsonProperty(value="DESCRIPCION")String descripcion) {
+	public Ingredientes(@JsonProperty(value="nombre")String nombre, @JsonProperty(value="descripcion")String descripcion
+			, @JsonProperty(value="traduccion") String traduccion) {
 		super();
 		this.nombre = nombre;
 		this.descripcion = descripcion;
+		this.traduccion = traduccion;
 	}
 
 	public String getNombre() {
@@ -30,6 +35,14 @@ public class Ingredientes {
 
 	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
+	}
+
+	public String getTraduccion() {
+		return traduccion;
+	}
+
+	public void setTraduccion(String traduccion) {
+		this.traduccion = traduccion;
 	}
 	
 	

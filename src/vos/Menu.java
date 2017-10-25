@@ -1,34 +1,39 @@
 package vos;
 
+import java.util.List;
+
 import org.codehaus.jackson.annotate.JsonProperty;
 
 public class Menu {
 
 	
-	@JsonProperty(value="NOMBRE")
+	@JsonProperty(value="nombre")
 	private String nombre;
 	
-	@JsonProperty(value="COSTOPROD")
+	@JsonProperty(value="costoProd")
 	private float costoProd;
 	
-	@JsonProperty(value="PRECIOVENT")
+	@JsonProperty(value="precioVent")
 	private float precioVent;
 	
-	@JsonProperty(value="VENDIDOS")
+	@JsonProperty(value="vendidos")
 	private int vendidos;
 	
-	@JsonProperty(value="DISPONIBLES")
+	@JsonProperty(value="disponibles")
 	private int disponibles;
 	
-	@JsonProperty(value="NOMBRERESTAURANTE")
+	@JsonProperty(value="restaurante")
 	private String restaurante;
 	
-	@JsonProperty(value="ID_MENU")
-	private int id;
-
-	public Menu(@JsonProperty(value="NOMBRE")String nombre, @JsonProperty(value="COSTOPROD")float costoProd, @JsonProperty(value="PRECIOVENT")float precioVent,
-			@JsonProperty(value="VENDIDOS")int vendidos, @JsonProperty(value="DISPONIBLES")int disponibles,@JsonProperty(value="NOMBRERESTAURANTE")String restaurante,
-			@JsonProperty(value="ID_MENU")int id) {
+	@JsonProperty(value="idMenu")
+	private int idMenu;
+	
+	@JsonProperty(value="productos")
+	private List productos;
+	
+	public Menu(@JsonProperty(value="nombre")String nombre, @JsonProperty(value="costoProd")float costoProd, @JsonProperty(value="precioVent")float precioVent,
+			@JsonProperty(value="vendidos")int vendidos, @JsonProperty(value="disponibles")int disponibles,@JsonProperty(value="restaurante")String restaurante,
+			@JsonProperty(value="idMenu")int idMenu, @JsonProperty(value="productos") List productos) {
 		super();
 		this.nombre = nombre;
 		this.costoProd = costoProd;
@@ -36,8 +41,29 @@ public class Menu {
 		this.vendidos = vendidos;
 		this.disponibles = disponibles;
 		this.restaurante = restaurante;
-		this.id = id;
+		this.idMenu = idMenu;
+		this.productos = productos;
 	}
+
+	public List getProductos() {
+		return productos;
+	}
+
+	public void setProductos(List productos) {
+		this.productos = productos;
+	}
+
+	public int getIdMenu() {
+		return idMenu;
+	}
+
+
+
+	public void setIdMenu(int idMenu) {
+		this.idMenu = idMenu;
+	}
+
+
 
 	public String getNombre() {
 		return nombre;
@@ -88,11 +114,11 @@ public class Menu {
 	}
 
 	public int getId() {
-		return id;
+		return idMenu;
 	}
 
-	public void setId(int id) {
-		this.id = id;
+	public void setId(int idMenu) {
+		this.idMenu = idMenu;
 	}
 	
 	

@@ -1,5 +1,7 @@
 package vos;
 
+import java.util.ArrayList;
+
 import org.codehaus.jackson.annotate.JsonProperty;
 
 public class Plato {
@@ -7,76 +9,79 @@ public class Plato {
 	/**
 	 * Nombre del plato
 	 */
-	@JsonProperty(value="NOMBRE")
+	@JsonProperty(value="nombre")
 	private String nombre;
 		
 	/**
 	 * Nombre del plato
 	 */
-	@JsonProperty(value="DESCRIPCION")
+	@JsonProperty(value="descripcion")
 	private String descripcion;
 	
 	/**
 	 * Nombre del plato
 	 */
 	
-	@JsonProperty(value="TRADUCCION")
+	@JsonProperty(value="traduccion")
 	private String traduccion;
 	
 	/**
 	 * tiempo de preparacion del plato
 	 */
 	
-	@JsonProperty(value="TIEMPOPREPARACION")
+	@JsonProperty(value="tiempoPreparacion")
 	private float tiempoPreparacion;
 	
 	/**
 	 * costo de produccion del plato
 	 */
-	@JsonProperty(value="COSTOPRODUCCION")
+	@JsonProperty(value="costoProduccion")
 	private float costoProduccion;
 	
 	/**
 	 * precio de venta del plato
 	 */
-	@JsonProperty(value="PRECIOVENTA")
+	@JsonProperty(value="precioVenta")
 	private float precioVenta;
 	
 	/**
 	 * Nomrbe del restaurante del plato
 	 */
-	@JsonProperty(value="RESTAURANTE")
+	@JsonProperty(value="restaurante")
 	private String restaurante;
 	
 	/**
 	 * id del plato
 	 */
-	@JsonProperty(value="ID_PLATO")
+	@JsonProperty(value="idPlato")
 	private int idPlato;
 	
 	/**
 	 * cantidad de platos vendidos
 	 */
-	@JsonProperty(value="VENDIDOS")
+	@JsonProperty(value="vendidos")
 	private int vendidos;
 	
 	/**
 	 * cantidad de platos disponibles
 	 */
-	@JsonProperty(value="DISPONIBLES")
+	@JsonProperty(value="disponibles")
 	private int disponibles;
 	
 	/**
 	 * tipo del plato
 	 */
-	@JsonProperty(value="TIPO")
+	@JsonProperty(value="tipo")
 	private String tipo;
 	
 	/**
 	 * categoria del plato
 	 */
-	@JsonProperty(value="CATEGORIA")
+	@JsonProperty(value="categoria")
 	private String categoria;
+	
+	@JsonProperty(value="equivalentes")
+	private ArrayList equivalentes;
 
 	/**
 	 * Metodo constructor 
@@ -93,11 +98,11 @@ public class Plato {
 	 * @param tipo tipo del plato
 	 * @param categoria categoria del plato
 	 */
-	public Plato(@JsonProperty(value="NOMBRE")String nombre,@JsonProperty(value="DESCRIPCION")String descripcion, @JsonProperty(value="TRADUCCION")String traduccion, 
-			@JsonProperty(value="TIEMPOPREPARACION")float tiempoPreparacion, @JsonProperty(value="COSTOPRODUCCION")float costoProduccion,
-			@JsonProperty(value="PRECIOVENTA")float precioVenta, @JsonProperty(value="RESTAURANTE")String restaurante, 
-			@JsonProperty(value="ID_PLATO")int idPlato,@JsonProperty(value="VENDIDOS") int vendidos, @JsonProperty(value="DISPONIBLES")int disponibles, 
-			@JsonProperty(value="TIPO")String tipo,@JsonProperty(value="CATEGORIA")String categoria) {
+	public Plato(@JsonProperty(value="nombre")String nombre,@JsonProperty(value="descripcion")String descripcion, @JsonProperty(value="traduccion")String traduccion, 
+			@JsonProperty(value="tiempoPreparacion")float tiempoPreparacion, @JsonProperty(value="costoProduccion")float costoProduccion,
+			@JsonProperty(value="precioVenta")float precioVenta, @JsonProperty(value="restaurante")String restaurante, 
+			@JsonProperty(value="idPlato")int idPlato,@JsonProperty(value="vendidos") int vendidos, @JsonProperty(value="disponibles")int disponibles, 
+			@JsonProperty(value="tipo")String tipo,@JsonProperty(value="categoria")String categoria,@JsonProperty(value="equivalentes") ArrayList equivalentes) {
 		super();
 		this.nombre = nombre;
 		this.descripcion = descripcion;
@@ -111,6 +116,15 @@ public class Plato {
 		this.disponibles = disponibles;
 		this.tipo = tipo;
 		this.categoria = categoria;
+		this.equivalentes = equivalentes;
+	}
+
+	public ArrayList getEquivalentes() {
+		return equivalentes;
+	}
+
+	public void setEquivalentes(ArrayList equivalentes) {
+		this.equivalentes = equivalentes;
 	}
 
 	/**

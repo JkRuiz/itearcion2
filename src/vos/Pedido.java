@@ -6,26 +6,33 @@ import org.codehaus.jackson.annotate.JsonProperty;
 
 public class Pedido {
 
-	@JsonProperty(value="NUM_PEDIDO")
+	@JsonProperty(value="numPedido")
 	private int numPedido;
 	
-	@JsonProperty(value="PRECIO")
+	@JsonProperty(value="precio")
 	private float precio;
 	
-	@JsonProperty(value="FECHA")
+	@JsonProperty(value="fecha")
 	private String fecha;
 	
-	@JsonProperty(value="EMAIL_USER")
+	@JsonProperty(value="emailUser")
 	private String emailUser;
 	
-	@JsonProperty(value="PAGADO")
+	@JsonProperty(value="pagado")
 	private int pagado;
 	
-	@JsonProperty(value="ENTREGADO")
+	@JsonProperty(value="entregado")
 	private int entregado;
+	
+	@JsonProperty(value="hora")
+	private String hora;
 
-	public Pedido(@JsonProperty(value="NUM_PEDIDO")int numPedido, @JsonProperty(value="PRECIO")float precio, @JsonProperty(value="FECHA")String fecha, 
-			@JsonProperty(value="EMAIL_USER")String emailUser, @JsonProperty(value="PAGADO")int pagado, @JsonProperty(value="ENTREGADO")int entregado) {
+	@JsonProperty(value="cambios")
+	private String cambios;
+
+	public Pedido(@JsonProperty(value="numPedido")int numPedido, @JsonProperty(value="precio")float precio, @JsonProperty(value="fecha")String fecha, 
+			@JsonProperty(value="emailUser")String emailUser, @JsonProperty(value="pagado")int pagado, @JsonProperty(value="entregado")int entregado
+			, @JsonProperty(value="hora")String hora, @JsonProperty(value="cambios") String cambios) {
 		super();
 		this.numPedido = numPedido;
 		this.precio = precio;
@@ -33,6 +40,17 @@ public class Pedido {
 		this.emailUser = emailUser;
 		this.pagado = pagado;
 		this.entregado = entregado;
+		this.hora = hora;
+		if (cambios != null && cambios != "") this.cambios = cambios;
+		else cambios = "Sin cambios";
+	}
+
+	public String getCambios() {
+		return cambios;
+	}
+
+	public void setCambios(String cambios) {
+		this.cambios = cambios;
 	}
 
 	public int getNumPedido() {
@@ -81,6 +99,14 @@ public class Pedido {
 
 	public void setEntregado(int entregado) {
 		this.entregado = entregado;
+	}
+
+	public String getHora() {
+		return hora;
+	}
+
+	public void setHora(String hora) {
+		this.hora = hora;
 	}
 	
 	

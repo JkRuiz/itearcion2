@@ -1,0 +1,405 @@
+{
+	"variables": [],
+	"info": {
+		"name": "PruebasRF",
+		"_postman_id": "17704cca-31b4-b507-d702-80f339098703",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "RF7 - POST zona",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"status code is 200\"] = responseCode.code===200"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:8080/RotondAndes/rest/zonas",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n        \"nombre\": \"ZONA BRASIL\",\n        \"capacidad\": 300,\n        \"abierto\": 1,\n        \"aptoDiscapacidad\": 1,\n        \"descripcionTecnica\": \"Zona tematica de Brasil, comida y ambiente tipicos\"\n}"
+				},
+				"description": "Prueba POST de una zona"
+			},
+			"response": []
+		},
+		{
+			"name": "RF1 - POST usuario",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"status code is 200\"] = responseCode.code===200"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:8080/RotondAndes/rest/usuarios",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"nombre\" : \"Fulano\" , \"identificacion\" : 102030030, \"email\" : \"elfulano@gmail.com\"}"
+				},
+				"description": "Prueba POST de un usuario"
+			},
+			"response": []
+		},
+		{
+			"name": "RF2 - POST Cliente",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"status code is 200\"] = responseCode.code===200"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:8080/RotondAndes/rest/clientes",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \"email\" : \"elfulano@gmail.com\", \"nombre\" : \"Fulano\" , \"identificacion\" : 102030030,\n\t\"username\" : \"elFulano96\" , \"password\" : \"nolaadivinas\" , \"preferenciaPrecio\" : 2000, \n\t\"preferenciaCategoria\" : \"FUERTE\" \n}"
+				},
+				"description": "Prueba de POST para un cliente "
+			},
+			"response": []
+		},
+		{
+			"name": "RF3 - POST restaurante",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"status code is 200\"] = responseCode.code===200"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:8080/RotondAndes/rest/restaurantes",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n        \"nombre\": \"EL TORO\",\n        \"representante\": \"Juan Camilo\",\n        \"tipoComida\": \"Comida de rodicio\",\n        \"paginaWeb\": \"elToro.com\",\n        \"zona\": \"ZONA BRASIL\",\n        \"valorCostos\": 2000,\n        \"valorVentas\": 4000\n    }"
+				},
+				"description": "Prueba el POST de un restaurante"
+			},
+			"response": []
+		},
+		{
+			"name": "RF5 - POST ingrediente",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"status code is 200\"] = responseCode.code===200"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:8080/RotondAndes/rest/ingredientes",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"nombre\" : \"Pollo\", \"descripcion\" : \"Pollo fresco\" , \"traduccion\" : \"fresh chicken\"\n}"
+				},
+				"description": "Prueba POST de un ingrediente"
+			},
+			"response": []
+		},
+		{
+			"name": "RF4.1 - POST producto",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"status code is 200\"] = responseCode.code===200"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:8080/RotondAndes/rest/productos",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\t\t\"nombre\": \"Pollo a la plancha\",\n        \"descripcion\": \"Delicioso pollo a la plancha\",\n        \"traduccion\": \"Deliciousss chicken\",\n        \"tiempoPreparacion\": 2,\n        \"costoProduccion\": 600,\n        \"precioVenta\": 4000,\n        \"restaurante\": \"EL TORO\",\n        \"idPlato\": 1,\n        \"vendidos\": 2,\n        \"disponibles\": 50,\n        \"tipo\": \"Pollo\",\n        \"categoria\": \"FUERTE\"\n\t\n}"
+				},
+				"description": "Prueba POST de un plato/producto"
+			},
+			"response": []
+		},
+		{
+			"name": "RF4.2 - PUT producto ingrediente",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"status code is 200\"] = responseCode.code===200"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": {
+					"raw": "http://localhost:8080/RotondAndes/rest/productos/ingrediente?ingrediente=Pollo",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"RotondAndes",
+						"rest",
+						"productos",
+						"ingrediente"
+					],
+					"query": [
+						{
+							"key": "ingrediente",
+							"value": "Pollo",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\t\t\"nombre\": \"Pollo a la plancha\",\n        \"descripcion\": \"Delicioso pollo a la plancha\",\n        \"traduccion\": \"Deliciousss chicken\",\n        \"tiempoPreparacion\": 2,\n        \"costoProduccion\": 600,\n        \"precioVenta\": 4000,\n        \"restaurante\": \"EL TORO\",\n        \"idPlato\": 1,\n        \"vendidos\": 2,\n        \"disponibles\": 50,\n        \"tipo\": \"Pollo\",\n        \"categoria\": \"FUERTE\"\n}"
+				},
+				"description": "Prueba de PUT producto para adicionarle un ingrediente"
+			},
+			"response": []
+		},
+		{
+			"name": "RF6.1 - POST menu",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"status code is 200\"] = responseCode.code===200"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:8080/RotondAndes/rest/menus/1",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": " {\n        \"nombre\": \"Combo pechuga\",\n        \"costoProd\": 3000,\n        \"precioVent\": 5000,\n        \"vendidos\": 4,\n        \"disponibles\": 20,\n        \"restaurante\": \"EL TORO\",\n        \"idMenu\": 4\n    }"
+				},
+				"description": "Prueba POST de un menu,mandandole un JSON del menu, y en la URL el id del plato perteneciente al menu"
+			},
+			"response": []
+		},
+		{
+			"name": "RF6.2 - POST plato menu",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"status code is 200\"] = responseCode.code===200"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:8080/RotondAndes/rest/menus/2",
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": " {\n        \"nombre\": \"Combo pechuga\",\n        \"costoProd\": 3000,\n        \"precioVent\": 5000,\n        \"vendidos\": 4,\n        \"disponibles\": 20,\n        \"restaurante\": \"EL TORO\",\n        \"idMenu\": 4\n    }"
+				},
+				"description": "Prueba el POST plato menu, donde se le agrega a un menu (pasado por JSON) un plato existente por medio de su id (pasado por la URL)"
+			},
+			"response": []
+		},
+		{
+			"name": "RF8 - PUT Cliente ",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"status code is 200\"] = responseCode.code===200"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:8080/RotondAndes/rest/clientes",
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": " {\n        \"email\": \"elfulano@gmail.com\",\n        \"password\": \"nolaadivinas\",\n        \"username\": \"elFulano96\",\n        \"preferenciaPrecio\": 4000,\n        \"preferenciaCategoria\": \"ACOMPAÑAMIENTO\",\n        \"nombre\": \"Fulano\",\n        \"identificacion\": 102030030\n }"
+				},
+				"description": "Prueba el PUT de un cliente, modificando sus preferencias"
+			},
+			"response": []
+		},
+		{
+			"name": "RF9 - POST pedido",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"status code is 200\"] = responseCode.code===200"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:8080/RotondAndes/rest/pedidos/1",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"numPedido\" : 1, \"precio\" : 2000, \"fecha\" : \"27/09/2017\" , \"emailUser\" : \"elfulano@gmail.com\",\n\t\"pagado\" : 1, \"entregado\" : 0, \"hora\" : \"10:00:02 AM\"\n}"
+				},
+				"description": "Prueba POST pedido, se manda el json del pedido y en la URL se coloca el id del producto perteneciente al pedido"
+			},
+			"response": []
+		},
+		{
+			"name": "RF10 - PUT pedido",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"status code is 200\"] = responseCode.code===200"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:8080/RotondAndes/rest/pedidos",
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"numPedido\" : 1, \"precio\" : 2000, \"fecha\" : \"27/09/2017\" , \"emailUser\" : \"elfulano@gmail.com\",\n\t\"pagado\" : 1, \"entregado\" : 1, \"hora\" : \"10:00:02 AM\"\n}"
+				},
+				"description": "Prueba PUT pedido, se le pasa un json con el atributo entregado modificado (de 0 [false] a 1 [true])"
+			},
+			"response": []
+		}
+	]
+}

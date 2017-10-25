@@ -5,8 +5,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 import vos.ClienteFrecuente;
+import vos.Pedido;
 
 
 public class DAOTablaClienteFrecuente {
@@ -62,7 +64,7 @@ public class DAOTablaClienteFrecuente {
 	 */
 	public ArrayList<ClienteFrecuente> darClientes() throws SQLException, Exception {
 		ArrayList<ClienteFrecuente> clientes = new ArrayList<ClienteFrecuente>();
-
+		ArrayList<Pedido> pedidos;
 		String sql = "SELECT * FROM CLIENTEFR";
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
@@ -77,7 +79,24 @@ public class DAOTablaClienteFrecuente {
 			String preferenciaCategoria = rs.getString("PREFERENCIACATEGORIA");
 			String nombre = rs.getString("NOMBRE");
 			long identificacion = rs.getLong("IDENTIFICACION");
-			clientes.add(new ClienteFrecuente(email, password, username, preferenciaPrecio, preferenciaCategoria, nombre, identificacion));
+			String sqlAux = "SELECT * FROM PEDIDO WHERE EMAIL_USER='"+email+"'";
+			PreparedStatement prepStmtAux = conn.prepareStatement(sqlAux);
+			recursos.add(prepStmtAux);
+			ResultSet rsAux = prepStmtAux.executeQuery();
+			pedidos = new ArrayList<Pedido>();
+			while (rsAux.next())
+			{
+				int numPedido = rsAux.getInt("NUM_PEDIDO");
+				float precio = rsAux.getFloat("PRECIO");
+				String fecha = rsAux.getString("FECHA");
+				String emailUser = rsAux.getString("EMAIL_USER");
+				int pagado = rsAux.getInt("PAGADO");
+				int entregado = rsAux.getInt("ENTREGADO");
+				String hora = rsAux.getString("HORA");
+				String cambio = rsAux.getString("CAMBIO");
+				pedidos.add(new Pedido(numPedido, precio, fecha, emailUser, pagado, entregado, hora, cambio));
+			}
+			clientes.add(new ClienteFrecuente(email, password, username, preferenciaPrecio, preferenciaCategoria, nombre, identificacion, pedidos));			
 		}
 		return clientes;
 	}
@@ -107,7 +126,7 @@ public class DAOTablaClienteFrecuente {
 			String preferenciaCategoria = rs.getString("PREFERENCIACATEGORIA");
 			String nombre = rs.getString("NOMBRE");
 			long identificacion = rs.getLong("IDENTIFICACION");
-			cliente = new ClienteFrecuente(email2, password, username, preferenciaPrecio, preferenciaCategoria, nombre, identificacion);
+			cliente = new ClienteFrecuente(email2, password, username, preferenciaPrecio, preferenciaCategoria, nombre, identificacion, null);
 		}
 
 		return cliente;

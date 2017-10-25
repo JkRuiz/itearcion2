@@ -4,23 +4,23 @@ import org.codehaus.jackson.annotate.JsonProperty;
 
 public class Zona{
 
-	@JsonProperty(value="NOMBRE")
+	@JsonProperty(value="nombre")
 	private String nombre;
 
-	@JsonProperty(value="CAPACIDAD")
+	@JsonProperty(value="capacidad")
 	private int capacidad;
 
-	@JsonProperty(value="ABIERTO")
+	@JsonProperty(value="abierto")
 	private int abierto;
 
-	@JsonProperty(value="APTODISCAPACIDAD")
+	@JsonProperty(value="aptoDiscapacidad")
 	private int aptoDiscapacidad;
 
-	@JsonProperty(value="DESCRIPCIONTECNICA")
+	@JsonProperty(value="descripcionTecnica")
 	private String descripcionTecnica;
 
-	public Zona(@JsonProperty(value="NOMBRE")String nombre,@JsonProperty(value="CAPACIDAD") int capacidad, @JsonProperty(value="ABIERTO")int abierto, 
-			@JsonProperty(value="APTODISCAPACIDAD")int aptoDiscapacidad, @JsonProperty(value="DESCRIPCIONTECNICA")String descripcionTecnica) {
+	public Zona(@JsonProperty(value="nombre")String nombre,@JsonProperty(value="capacidad") int capacidad, @JsonProperty(value="abierto")int abierto, 
+			@JsonProperty(value="aptoDiscapacidad")int aptoDiscapacidad, @JsonProperty(value="descripcionTecnica")String descripcionTecnica) {
 		super();
 		this.nombre = nombre;
 		this.capacidad = capacidad;

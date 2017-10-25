@@ -80,6 +80,26 @@ public class DAOTablaZona {
 		return zonas;
 	}
 
+	public ArrayList<Zona> darZonasFiltro(String filtro) throws SQLException, Exception {
+		ArrayList<Zona> zonas = new ArrayList<Zona>();
+
+		String sql = "SELECT * FROM ZONA ORDER BY " + filtro;
+
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		ResultSet rs = prepStmt.executeQuery();
+
+		while (rs.next()) {
+			String nombre = rs.getString("NOMBRE");
+			int capacidad = rs.getInt("CAPACIDAD");
+			int abierto = rs.getInt("ABIERTO");
+			int aptoDiscapacidad = rs.getInt("APTODISCAPACIDAD");
+			String descripcionTecnica = rs.getString("DESCRIPCIONTECNICA");
+			zonas.add(new Zona(nombre, capacidad, abierto, aptoDiscapacidad, descripcionTecnica));
+		}
+		return zonas;
+	}
+
 
 	/**
 	 * Metodo que busca el/los videos con el nombre que entra como parametro.

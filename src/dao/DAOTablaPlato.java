@@ -5,7 +5,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
+import vos.Pedido;
 import vos.Plato;
 
 public class DAOTablaPlato {
@@ -61,6 +63,7 @@ public class DAOTablaPlato {
 	 */
 	public ArrayList<Plato> darPlatos() throws SQLException, Exception {
 		ArrayList<Plato> platos = new ArrayList<Plato>();
+		ArrayList<Plato> equivalentes = new ArrayList<Plato>();
 
 		String sql = "SELECT * FROM PLATO";
 
@@ -82,31 +85,38 @@ public class DAOTablaPlato {
 			String tipo = rs.getString("TIPO");
 			String categoria = rs.getString("CATEGORIA");
 
+			String sqlAux = "SELECT * FROM EQUIVALENTES_PRODUCTOS WHERE PRODUCTO1 = "+ id + "OR PRODUCTO2 =" + id;
+			PreparedStatement prepStmtAux = conn.prepareStatement(sqlAux);
+			recursos.add(prepStmtAux);
+			ResultSet rsAux = prepStmtAux.executeQuery();
+			equivalentes = new ArrayList<Plato>();
+			while (rsAux.next())
+			{
+				Plato equiv = null;
+				int idProd1 = rsAux.getInt("PRODUCTO1");
+				int idProd2 = rsAux.getInt("PRODUCTO2");
+				if (idProd1==id) equiv = getEquivalentePorId(idProd2);
+				else equiv = getEquivalentePorId(idProd1);
+				equivalentes.add(equiv);
+			}
 			platos.add(new Plato(nombre, descripcion, traduccion, tiempoPreparacion, costoProduccion, precioVenta,
-					restaurante, id, vendidos, disponibles, tipo, categoria));
+					restaurante, id, vendidos, disponibles, tipo, categoria, equivalentes));
 		}
 		return platos;
 	}
 
-
-	/**
-	 * Metodo que busca el/los platos con el nombre que entra como parametro.
-	 * @param nombre - Nombre de el/los platos a buscar
-	 * @return ArrayList con los platos encontrados
-	 * @throws SQLException - Cualquier error que la base de datos arroje.
-	 * @throws Exception - Cualquier error que no corresponda a la base de datos
-	 */
-	public ArrayList<Plato> buscarPlatosPorNombre(String nombre) throws SQLException, Exception {
+	public ArrayList<Plato> darPlatosFiltro(String filtro) throws SQLException, Exception {
 		ArrayList<Plato> platos = new ArrayList<Plato>();
+		ArrayList<Plato> equivalentes = new ArrayList<Plato>();
 
-		String sql = "SELECT * FROM PLATO WHERE NOMBRE ='" + nombre + "'";
+		String sql = "SELECT * FROM PLATO ORDER BY " + filtro;
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
 		ResultSet rs = prepStmt.executeQuery();
 
 		while (rs.next()) {
-			String nombre2 = rs.getString("NOMBRE");
+			String nombre = rs.getString("NOMBRE");
 			String descripcion = rs.getString("DESCRIPCION");
 			String traduccion = rs.getString("TRADUCCION");
 			float tiempoPreparacion = rs.getFloat("TIEMPOPREPARACION");
@@ -119,21 +129,27 @@ public class DAOTablaPlato {
 			String tipo = rs.getString("TIPO");
 			String categoria = rs.getString("CATEGORIA");
 
-			platos.add(new Plato(nombre2, descripcion, traduccion, tiempoPreparacion, costoProduccion, precioVenta,
-					restaurante, id, vendidos, disponibles, tipo, categoria));		
+			String sqlAux = "SELECT * FROM EQUIVALENTES_PRODUCTOS WHERE PRODUCTO1 = "+ id + "OR PRODUCTO2 =" + id;
+			PreparedStatement prepStmtAux = conn.prepareStatement(sqlAux);
+			recursos.add(prepStmtAux);
+			ResultSet rsAux = prepStmtAux.executeQuery();
+			equivalentes = new ArrayList<Plato>();
+			while (rsAux.next())
+			{
+				Plato equiv = null;
+				int idProd1 = rsAux.getInt("PRODUCTO1");
+				int idProd2 = rsAux.getInt("PRODUCTO2");
+				if (idProd1==id) equiv = getEquivalentePorId(idProd2);
+				else equiv = getEquivalentePorId(idProd1);
+				equivalentes.add(equiv);
+			}
+			platos.add(new Plato(nombre, descripcion, traduccion, tiempoPreparacion, costoProduccion, precioVenta,
+					restaurante, id, vendidos, disponibles, tipo, categoria, equivalentes));
 		}
-
 		return platos;
 	}
 
-	/**
-	 * Metodo que busca el plato con el id que entra como parametro.
-	 * @param id - Id del plato a buscar
-	 * @return Video encontrado
-	 * @throws SQLException - Cualquier error que la base de datos arroje.
-	 * @throws Exception - Cualquier error que no corresponda a la base de datos
-	 */
-	public Plato buscarPlatoPorId(int id1) throws SQLException, Exception 
+	public Plato getEquivalentePorId(int id1) throws Exception
 	{
 		Plato plato = null;
 
@@ -156,9 +172,221 @@ public class DAOTablaPlato {
 			int disponibles = rs.getInt("DISPONIBLES");
 			String tipo = rs.getString("TIPO");
 			String categoria = rs.getString("CATEGORIA");
+			plato = new Plato(nombre2, descripcion, traduccion, tiempoPreparacion,
+					costoProduccion, precioVenta, restaurante, id, vendidos, disponibles, tipo, categoria, null);
+		}
+		if (plato == null) throw new Exception("No existe el plato con id " + id1);
+		return plato;
+	}
 
+	public List<Integer> getIdPlatosEquivalentes(int id) throws SQLException
+	{
+		List<Integer> idsEquiv = new ArrayList<>();
+		String sql = "SELECT * FROM EQUIVALENTES_PRODUCTOS WHERE PRODUCTO1 ="+ id + " OR PRODUCTO2 =" + id;
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		ResultSet rs = prepStmt.executeQuery();	
+		
+		while (rs.next())
+		{
+			int idProd1 = rs.getInt("PRODUCTO1");
+			int idProd2 = rs.getInt("PRODUCTO2");
+			if (idProd1 == id) idsEquiv.add(idProd2);
+			else idsEquiv.add(idProd1);
+		}
+		return idsEquiv;
+	}
+	public void addEquivalentes(String platos) throws NumberFormatException, Exception {
+		String[] productos = platos.split("-");
+
+		Plato plato1 = getEquivalentePorId(Integer.parseInt(productos[0]));
+		Plato plato2 = getEquivalentePorId(Integer.parseInt(productos[1]));
+		if (!plato1.getRestaurante().equalsIgnoreCase(plato2.getRestaurante())) throw new Exception("Los productos son de restaurantes diferentes");
+		if(!plato1.getRestaurante().equalsIgnoreCase(productos[2])) throw new Exception("Los productos no son de ese restaurante");
+		if(!plato1.getCategoria().equalsIgnoreCase(plato2.getCategoria())) throw new Exception("Los productos son de diferente categoria");
+		
+		String sql = "INSERT INTO EQUIVALENTES_PRODUCTOS VALUES ("+ productos[0] + "," + 
+				productos[1] + ", '" + productos[2] + "')";
+
+
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		prepStmt.executeQuery();	
+	}
+
+	//	public ArrayList<Plato> darPlatosPorRango(String filtro) throws SQLException, Exception {
+	//		ArrayList<Plato> platos = new ArrayList<Plato>();
+	//		String[] fechas = filtro.split("-");
+	//		for (int i = 0; i < fechas.length; i++) System.out.println(fechas[i]);
+	//		String sql = "SELECT * FROM PEDIDO WHERE FECHA > '" + fechas[0] + "' AND FECHA < '"+ fechas[1] + "'";
+	//
+	//		PreparedStatement prepStmt = conn.prepareStatement(sql);
+	//		recursos.add(prepStmt);
+	//		ResultSet rs = prepStmt.executeQuery();
+	//
+	//		while (rs.next()) {
+	//			String nombre = rs.getString("NOMBRE");
+	//			String descripcion = rs.getString("DESCRIPCION");
+	//			String traduccion = rs.getString("TRADUCCION");
+	//			float tiempoPreparacion = rs.getFloat("TIEMPOPREPARACION");
+	//			float costoProduccion = rs.getFloat("COSTOPRODUCCION");
+	//			float precioVenta = rs.getFloat("PRECIOVENTA");
+	//			String restaurante = rs.getString("RESTAURANTE");
+	//			int id = rs.getInt("ID_PLATO");
+	//			int vendidos = rs.getInt("VENDIDOS");
+	//			int disponibles = rs.getInt("DISPONIBLES");
+	//			String tipo = rs.getString("TIPO");
+	//			String categoria = rs.getString("CATEGORIA");
+	//
+	//			platos.add(new Plato(nombre, descripcion, traduccion, tiempoPreparacion, costoProduccion, precioVenta,
+	//					restaurante, id, vendidos, disponibles, tipo, categoria));
+	//		}
+	//		return platos;
+	//	}
+
+	public ArrayList<Plato> darPlatosRentZonas(String fecha1, String fecha2) throws SQLException, Exception {
+		ArrayList<Plato> platos = new ArrayList<Plato>();
+		ArrayList<Plato> equivalentes = new ArrayList<Plato>();
+
+		String sql = "SELECT * FROM (PLATO NATURAL JOIN PEDIDO_PLATO) NATURAL JOIN PEDIDO";
+
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		ResultSet rs = prepStmt.executeQuery();
+
+		while (rs.next()) {
+			String nombre = rs.getString("NOMBRE");
+			String descripcion = rs.getString("DESCRIPCION");
+			String traduccion = rs.getString("TRADUCCION");
+			float tiempoPreparacion = rs.getFloat("TIEMPOPREPARACION");
+			float costoProduccion = rs.getFloat("COSTOPRODUCCION");
+			float precioVenta = rs.getFloat("PRECIOVENTA");
+			String restaurante = rs.getString("RESTAURANTE");
+			int id = rs.getInt("ID_PLATO");
+			int vendidos = rs.getInt("VENDIDOS");
+			int disponibles = rs.getInt("DISPONIBLES");
+			String tipo = rs.getString("TIPO");
+			String categoria = rs.getString("CATEGORIA");
+
+			String sqlAux = "SELECT * FROM EQUIVALENTES_PRODUCTOS WHERE PRODUCTO1 = "+ id + "OR PRODUCTO2 =" + id;
+			PreparedStatement prepStmtAux = conn.prepareStatement(sqlAux);
+			recursos.add(prepStmtAux);
+			ResultSet rsAux = prepStmtAux.executeQuery();
+			equivalentes = new ArrayList<Plato>();
+			while (rsAux.next())
+			{
+				Plato equiv = null;
+				int idProd1 = rsAux.getInt("PRODUCTO1");
+				int idProd2 = rsAux.getInt("PRODUCTO2");
+				if (idProd1==id) equiv = getEquivalentePorId(idProd2);
+				else equiv = getEquivalentePorId(idProd1);
+				equivalentes.add(equiv);
+			}
+			platos.add(new Plato(nombre, descripcion, traduccion, tiempoPreparacion, costoProduccion, precioVenta,
+					restaurante, id, vendidos, disponibles, tipo, categoria, equivalentes));
+		}
+		return platos;
+	}
+
+	/**
+	 * Metodo que busca el/los platos con el nombre que entra como parametro.
+	 * @param nombre - Nombre de el/los platos a buscar
+	 * @return ArrayList con los platos encontrados
+	 * @throws SQLException - Cualquier error que la base de datos arroje.
+	 * @throws Exception - Cualquier error que no corresponda a la base de datos
+	 */
+	public ArrayList<Plato> buscarPlatosPorNombre(String nombre) throws SQLException, Exception {
+		ArrayList<Plato> platos = new ArrayList<Plato>();
+		ArrayList<Plato> equivalentes = new ArrayList<Plato>();
+
+		String sql = "SELECT * FROM PLATO WHERE NOMBRE ='" + nombre + "'";
+
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		ResultSet rs = prepStmt.executeQuery();
+
+		while (rs.next()) {
+			String nombre2 = rs.getString("NOMBRE");
+			String descripcion = rs.getString("DESCRIPCION");
+			String traduccion = rs.getString("TRADUCCION");
+			float tiempoPreparacion = rs.getFloat("TIEMPOPREPARACION");
+			float costoProduccion = rs.getFloat("COSTOPRODUCCION");
+			float precioVenta = rs.getFloat("PRECIOVENTA");
+			String restaurante = rs.getString("RESTAURANTE");
+			int id = rs.getInt("ID_PLATO");
+			int vendidos = rs.getInt("VENDIDOS");
+			int disponibles = rs.getInt("DISPONIBLES");
+			String tipo = rs.getString("TIPO");
+			String categoria = rs.getString("CATEGORIA");
+
+			String sqlAux = "SELECT * FROM EQUIVALENTES_PRODUCTOS WHERE PRODUCTO1 = "+ id + "OR PRODUCTO2 =" + id;
+			PreparedStatement prepStmtAux = conn.prepareStatement(sqlAux);
+			recursos.add(prepStmtAux);
+			ResultSet rsAux = prepStmtAux.executeQuery();
+			equivalentes = new ArrayList<Plato>();
+			while (rsAux.next())
+			{
+				Plato equiv = null;
+				int idProd1 = rsAux.getInt("PRODUCTO1");
+				int idProd2 = rsAux.getInt("PRODUCTO2");
+				if (idProd1==id) equiv = getEquivalentePorId(idProd2);
+				else equiv = getEquivalentePorId(idProd1);
+				equivalentes.add(equiv);
+			}
+			platos.add(new Plato(nombre2, descripcion, traduccion, tiempoPreparacion, costoProduccion, precioVenta,
+					restaurante, id, vendidos, disponibles, tipo, categoria, equivalentes));
+		}
+		return platos;
+	}
+
+	/**
+	 * Metodo que busca el plato con el id que entra como parametro.
+	 * @param id - Id del plato a buscar
+	 * @return Video encontrado
+	 * @throws SQLException - Cualquier error que la base de datos arroje.
+	 * @throws Exception - Cualquier error que no corresponda a la base de datos
+	 */
+	public Plato buscarPlatoPorId(int id1) throws SQLException, Exception 
+	{
+		ArrayList<Plato> equivalentes = new ArrayList<Plato>();
+		Plato plato = null;
+
+		String sql = "SELECT * FROM PLATO WHERE ID_PLATO =" + id1;
+
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		ResultSet rs = prepStmt.executeQuery();
+
+		if(rs.next()) {
+			String nombre2 = rs.getString("NOMBRE");
+			String descripcion = rs.getString("DESCRIPCION");
+			String traduccion = rs.getString("TRADUCCION");
+			float tiempoPreparacion = rs.getFloat("TIEMPOPREPARACION");
+			float costoProduccion = rs.getFloat("COSTOPRODUCCION");
+			float precioVenta = rs.getFloat("PRECIOVENTA");
+			String restaurante = rs.getString("RESTAURANTE");
+			int id = rs.getInt("ID_PLATO");
+			int vendidos = rs.getInt("VENDIDOS");
+			int disponibles = rs.getInt("DISPONIBLES");
+			String tipo = rs.getString("TIPO");
+			String categoria = rs.getString("CATEGORIA");
+
+			String sqlAux = "SELECT * FROM EQUIVALENTES_PRODUCTOS WHERE PRODUCTO1 = "+ id + "OR PRODUCTO2 =" + id;
+			PreparedStatement prepStmtAux = conn.prepareStatement(sqlAux);
+			recursos.add(prepStmtAux);
+			ResultSet rsAux = prepStmtAux.executeQuery();
+			equivalentes = new ArrayList<Plato>();
+			while (rsAux.next())
+			{
+				Plato equiv = null;
+				int idProd1 = rsAux.getInt("PRODUCTO1");
+				int idProd2 = rsAux.getInt("PRODUCTO2");
+				if (idProd1==id) equiv = getEquivalentePorId(idProd2);
+				else equiv = getEquivalentePorId(idProd1);
+				equivalentes.add(equiv);
+			}
 			plato = new Plato(nombre2, descripcion, traduccion, tiempoPreparacion, costoProduccion, precioVenta,
-					restaurante, id, vendidos, disponibles, tipo, categoria);	
+					restaurante, id, vendidos, disponibles, tipo, categoria, equivalentes);	
 		}
 		if (plato == null) throw new Exception("No existe ningun plato con el id " + id1);
 		return plato;
@@ -205,7 +433,7 @@ public class DAOTablaPlato {
 	public void updatePlato(Plato plato) throws SQLException, Exception {
 
 		String sql = "UPDATE PLATO SET ";
-		
+
 		sql += "NOMBRE='" + plato.getNombre() + "',";
 		sql += "DESCRIPCION='" + plato.getDescripcion()  + "',";
 		sql += "TRADUCCION='" + plato.getTraduccion()  + "',";
@@ -217,7 +445,7 @@ public class DAOTablaPlato {
 		sql += "DISPONIBLES=" + plato.getDisponibles() + ",";
 		sql += "TIPO='" + plato.getTipo() + "',";
 		sql += "CATEGORIA='" + plato.getCategoria() + "'";
-		
+
 		sql += " WHERE ID_PLATO = " + plato.getIdPlato();
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
@@ -250,15 +478,15 @@ public class DAOTablaPlato {
 		prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
 		prepStmt.executeQuery();
-		
+
 		sql = "DELETE FROM PEDIDO_PLATO";
 		sql += " WHERE ID_PLATO = " + plato.getIdPlato();
 
 		prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
 		prepStmt.executeQuery();
-		
-		
+
+
 		sql = "DELETE FROM PLATO";
 		sql += " WHERE ID_PLATO = " + plato.getIdPlato();
 

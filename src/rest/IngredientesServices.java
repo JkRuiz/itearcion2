@@ -1,7 +1,10 @@
 package rest;
 
+import java.util.List;
+
 import javax.servlet.ServletContext;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -41,18 +44,18 @@ public class IngredientesServices {
 	 * @return Json con todos los videos de la base de datos o json con 
      * el error que se produjo
 	 */
-//	@GET
-//	@Produces({ MediaType.APPLICATION_JSON })
-//	public Response getRestaurantes() {
-//		RotondAndesTM tm = new RotondAndesTM(getPath());
-//		List<Restaurante> restaurantes;
-//		try {
-//			restaurantes = tm.da
-//		} catch (Exception e) {
-//			return Response.status(500).entity(doErrorMessage(e)).build();
-//		}
-//		return Response.status(200).entity(videos).build();
-//	}
+	@GET
+	@Produces({ MediaType.APPLICATION_JSON })
+	public Response getIngredientes() {
+		RotondAndesTM tm = new RotondAndesTM(getPath());
+		List<Ingredientes> ingredientes;
+		try {
+			ingredientes = tm.darIngredientes();
+		} catch (Exception e) {
+			return Response.status(500).entity(doErrorMessage(e)).build();
+		}
+		return Response.status(200).entity(ingredientes).build();
+	}
 
 	 /**
      * Metodo que expone servicio REST usando GET que busca el video con el id que entra como parametro
@@ -113,6 +116,26 @@ public class IngredientesServices {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response addIngrediente(Ingredientes ingrediente) {
+		RotondAndesTM tm = new RotondAndesTM(getPath());
+		try {
+			tm.addIngrediente(ingrediente);
+		} catch (Exception e) {
+			return Response.status(500).entity(doErrorMessage(e)).build();
+		}
+		return Response.status(200).entity(ingrediente).build();
+	}
+	
+	 /**
+     *
+     * Metodo que expone servicio REST usando POST que agrega el ingrediente que recibe en Json
+     * <b>URL: </b> http://"ip o nombre de host":8080/VideoAndes/rest/videos/video
+     * @param video - video a agregar
+     * @return Json con el video que agrego o Json con el error que se produjo
+     */
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response addEquivalencia(Ingredientes ingrediente) {
 		RotondAndesTM tm = new RotondAndesTM(getPath());
 		try {
 			tm.addIngrediente(ingrediente);

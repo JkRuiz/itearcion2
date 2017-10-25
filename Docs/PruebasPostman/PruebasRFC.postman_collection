@@ -1,0 +1,451 @@
+{
+	"variables": [],
+	"info": {
+		"name": "PruebasRFC",
+		"_postman_id": "49020714-604e-5933-ae71-ff1128dc4d82",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "RFC1.1 - GET productos por restaurante",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"status code is 200\"] = responseCode.code===200"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": {
+					"raw": "http://localhost:8080/RotondAndes/rest/productos/filtro?filtro=restaurante",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"RotondAndes",
+						"rest",
+						"productos",
+						"filtro"
+					],
+					"query": [
+						{
+							"key": "filtro",
+							"value": "restaurante",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Prueba el GET productos ordenados por restaurante"
+			},
+			"response": []
+		},
+		{
+			"name": "RFC1.2 - GET productos por categoria",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"status code is 200\"] = responseCode.code===200"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": {
+					"raw": "http://localhost:8080/RotondAndes/rest/productos/filtro?filtro=categoria",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"RotondAndes",
+						"rest",
+						"productos",
+						"filtro"
+					],
+					"query": [
+						{
+							"key": "filtro",
+							"value": "categoria",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Prueba el GET productos organizados por categorai "
+			},
+			"response": []
+		},
+		{
+			"name": "RFC1.3 - GET productos por precio",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"status code is 200\"] = responseCode.code===200"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": {
+					"raw": "http://localhost:8080/RotondAndes/rest/productos/filtro?filtro=precio",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"RotondAndes",
+						"rest",
+						"productos",
+						"filtro"
+					],
+					"query": [
+						{
+							"key": "filtro",
+							"value": "precio",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Prueba el GET productos filtrados por precio"
+			},
+			"response": []
+		},
+		{
+			"name": "RCF1.4 GET productos por disponibilidad",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"status code is 200\"] = responseCode.code===200"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": {
+					"raw": "http://localhost:8080/RotondAndes/rest/productos/filtro?filtro=disponibles",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"RotondAndes",
+						"rest",
+						"productos",
+						"filtro"
+					],
+					"query": [
+						{
+							"key": "filtro",
+							"value": "disponibles",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Prueba del GET productos organizados por disponibilidad"
+			},
+			"response": []
+		},
+		{
+			"name": "RCF 2.1 - GET zonas por nombre",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"status code is 200\"] = responseCode.code===200"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": {
+					"raw": "http://localhost:8080/RotondAndes/rest/zonas/filtro?filtro=nombre",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"RotondAndes",
+						"rest",
+						"zonas",
+						"filtro"
+					],
+					"query": [
+						{
+							"key": "filtro",
+							"value": "nombre",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Prueba el GET Zonas organizadas por nombre"
+			},
+			"response": []
+		},
+		{
+			"name": "RCF2.2 - GET zonas por capacidad",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"status code is 200\"] = responseCode.code===200"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": {
+					"raw": "http://localhost:8080/RotondAndes/rest/zonas/filtro?filtro=capacidad",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"RotondAndes",
+						"rest",
+						"zonas",
+						"filtro"
+					],
+					"query": [
+						{
+							"key": "filtro",
+							"value": "capacidad",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Prueba del GET zonas organizadas por capacidad"
+			},
+			"response": []
+		},
+		{
+			"name": "RCF2.3 - GET zonas por abierto",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"status code is 200\"] = responseCode.code===200"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": {
+					"raw": "http://localhost:8080/RotondAndes/rest/zonas/filtro?filtro=abierta",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"RotondAndes",
+						"rest",
+						"zonas",
+						"filtro"
+					],
+					"query": [
+						{
+							"key": "filtro",
+							"value": "abierta",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Prueba el GET zonas organizadas dependiendo de si es abierta o no, si es 0 no es abierta y si es 1 si es abierta"
+			},
+			"response": []
+		},
+		{
+			"name": "RCF 2.4 - GET zonas por discapacidad",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"status code is 200\"] = responseCode.code===200"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": {
+					"raw": "http://localhost:8080/RotondAndes/rest/zonas/filtro?filtro=discapacidad",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"RotondAndes",
+						"rest",
+						"zonas",
+						"filtro"
+					],
+					"query": [
+						{
+							"key": "filtro",
+							"value": "discapacidad",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Prueba el GET zonas organizadas dependiendo de si son aptas o no para discapacitados, si son 0 no son aptas y si son 1 si son aptas"
+			},
+			"response": []
+		},
+		{
+			"name": "RCF3.1 - GET clientes",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"status code is 200\"] = responseCode.code===200"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:8080/RotondAndes/rest/clientes",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Prueba el GET clientes"
+			},
+			"response": []
+		},
+		{
+			"name": "RCF3.2 - GET pedidos cliente",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"status code is 200\"] = responseCode.code===200"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": {
+					"raw": "http://localhost:8080/RotondAndes/rest/pedidos/email?email=elfulano@gmail.com",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"RotondAndes",
+						"rest",
+						"pedidos",
+						"email"
+					],
+					"query": [
+						{
+							"key": "email",
+							"value": "elfulano@gmail.com",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Prueba el GET de los pedidos de un cliente especifico, en la URL se especifica el email del cliente del cual se desean saber los pedidos"
+			},
+			"response": []
+		},
+		{
+			"name": "RFC4 - GET platos mas ofrecidos",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"status code is 200\"] = responseCode.code===200"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:8080/RotondAndes/rest/productos/masOfrecidos",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Prueba el GET del platos que mas presente esta en los menus "
+			},
+			"response": []
+		}
+	]
+}

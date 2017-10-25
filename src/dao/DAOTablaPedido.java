@@ -76,13 +76,42 @@ public class DAOTablaPedido {
 			String emailUser = rs.getString("EMAIL_USER");
 			int pagado = rs.getInt("PAGADO");
 			int entregado = rs.getInt("ENTREGADO");
-
-			pedidos.add(new Pedido(numPedido, precio, fecha, emailUser, pagado, entregado));
+			String hora = rs.getString("HORA");
+			String cambio = rs.getString("CAMBIO");
+			pedidos.add(new Pedido(numPedido, precio, fecha, emailUser, pagado, entregado, hora, cambio));
 		}
 		return pedidos;
 	}
 
+	/**
+	 * Metodo que, usando la conexión a la base de datos, saca todos los pedidos de la base de datos
+	 * <b>SQL Statement:</b> SELECT * FROM PEDIDOS;
+	 * @return Arraylist con los pedidos de la base de datos.
+	 * @throws SQLException - Cualquier error que la base de datos arroje.
+	 * @throws Exception - Cualquier error que no corresponda a la base de datos
+	 */
+	public ArrayList<Pedido> darPedidosCliente(String emailCliente) throws SQLException, Exception {
+		ArrayList<Pedido> pedidos = new ArrayList<Pedido>();
 
+		String sql = "SELECT * FROM PEDIDO WHERE EMAIL_USER ='" + emailCliente + "'";
+
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		ResultSet rs = prepStmt.executeQuery();
+
+		while (rs.next()) {
+			int numPedido = rs.getInt("NUM_PEDIDO");
+			float precio = rs.getFloat("PRECIO");
+			String fecha = rs.getString("FECHA");
+			String emailUser = rs.getString("EMAIL_USER");
+			int pagado = rs.getInt("PAGADO");
+			int entregado = rs.getInt("ENTREGADO");
+			String hora = rs.getString("HORA");
+			String cambio = rs.getString("CAMBIO");
+			pedidos.add(new Pedido(numPedido, precio, fecha, emailUser, pagado, entregado, hora, cambio));
+		}
+		return pedidos;
+	}
 
 	/**
 	 * Metodo que busca el video con el id que entra como parametro.
@@ -127,7 +156,9 @@ public class DAOTablaPedido {
 		sql += "TO_DATE('" + pedido.getFecha() + "', 'DD/MM/YYYY')"  + ",'";
 		sql += pedido.getEmailUser() + "',";
 		sql += pedido.getPagado() + ",";
-		sql += pedido.getEntregado() + ")";
+		sql += pedido.getEntregado() + ",'";
+		sql += pedido.getHora() + "','";
+		sql += pedido.getCambios() + "')";
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);

@@ -11,6 +11,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -59,14 +60,6 @@ public class ZonaServices {
 		}
 		return Response.status(200).entity(zonas).build();
 	}
-
-	public static Comparator<Zona>  nomComparator = new Comparator<Zona>()
-	{
-		public int compare(Zona o1, Zona o2) {
-			return o1.getNombre().compareTo(o2.getNombre());
-		}            
-
-	};	
 	
 	 /**
      * Metodo que expone servicio REST usando GET que busca el video con el id que entra como parametro
@@ -76,126 +69,25 @@ public class ZonaServices {
      * el error que se produjo
      */
 	@GET
-	@Path("Nombre")
+	@Path( "{filtro}" )
 	@Produces( { MediaType.APPLICATION_JSON } )
-	public Response getZonasPorNombre()
+	public Response getZonasPorNombre( @QueryParam("filtro") String filtro)
 	{
 		RotondAndesTM tm = new RotondAndesTM( getPath( ) );
 		List<Zona> zonas = new ArrayList<>();
 		try
 		{
-			zonas = tm.darZonas();
-			Collections.sort(zonas, nomComparator);
-			return Response.status( 200 ).entity(zonas).build( );			
+			if (filtro.length() < 6)
+				throw new Exception("Filtro no valido");
+			zonas = tm.darZonasFiltro(filtro);
 		}
 		catch( Exception e )
 		{
 			return Response.status( 500 ).entity( doErrorMessage( e ) ).build( );
 		}
+		return Response.status( 200 ).entity(zonas).build( );			
 	}
 
-	
-	public static Comparator<Zona>  capacidadComparator = new Comparator<Zona>()
-	{
-		public int compare(Zona o1, Zona o2) {
-			return o2.getCapacidad() - o1.getCapacidad();
-		}            
-
-	};	
-	
-	 /**
-     * Metodo que expone servicio REST usando GET que busca el video con el id que entra como parametro
-     * <b>URL: </b> http://"ip o nombre de host":8080/VideoAndes/rest/videos/<<id>>" para la busqueda"
-     * @param name - Nombre del video a buscar que entra en la URL como parametro 
-     * @return Json con el/los videos encontrados con el nombre que entra como parametro o json con 
-     * el error que se produjo
-     */
-	@GET
-	@Path("Capacidad")
-	@Produces( { MediaType.APPLICATION_JSON } )
-	public Response getZonasPorCapacidad()
-	{
-		RotondAndesTM tm = new RotondAndesTM( getPath( ) );
-		List<Zona> zonas = new ArrayList<>();
-		try
-		{
-			zonas = tm.darZonas();
-			Collections.sort(zonas, capacidadComparator);
-			return Response.status( 200 ).entity(zonas).build( );			
-		}
-		catch( Exception e )
-		{
-			return Response.status( 500 ).entity( doErrorMessage( e ) ).build( );
-		}
-	}
-	
-	public static Comparator<Zona>  abiertoComparator = new Comparator<Zona>()
-	{
-		public int compare(Zona o1, Zona o2) {
-			return o2.getAbierto() - o1.getAbierto();
-		}            
-
-	};	
-	
-	 /**
-     * Metodo que expone servicio REST usando GET que busca el video con el id que entra como parametro
-     * <b>URL: </b> http://"ip o nombre de host":8080/VideoAndes/rest/videos/<<id>>" para la busqueda"
-     * @param name - Nombre del video a buscar que entra en la URL como parametro 
-     * @return Json con el/los videos encontrados con el nombre que entra como parametro o json con 
-     * el error que se produjo
-     */
-	@GET
-	@Path("Abierta")
-	@Produces( { MediaType.APPLICATION_JSON } )
-	public Response getZonasPorAbierto()
-	{
-		RotondAndesTM tm = new RotondAndesTM( getPath( ) );
-		List<Zona> zonas = new ArrayList<>();
-		try
-		{
-			zonas = tm.darZonas();
-			Collections.sort(zonas, abiertoComparator);
-			return Response.status( 200 ).entity(zonas).build( );			
-		}
-		catch( Exception e )
-		{
-			return Response.status( 500 ).entity( doErrorMessage( e ) ).build( );
-		}
-	}
-	
-	public static Comparator<Zona>  discapacidadComparator = new Comparator<Zona>()
-	{
-		public int compare(Zona o1, Zona o2) {
-			return o1.getAptoDiscapacidad() - o2.getAptoDiscapacidad();
-		}            
-
-	};	
-	
-	 /**
-     * Metodo que expone servicio REST usando GET que busca el video con el id que entra como parametro
-     * <b>URL: </b> http://"ip o nombre de host":8080/VideoAndes/rest/videos/<<id>>" para la busqueda"
-     * @param name - Nombre del video a buscar que entra en la URL como parametro 
-     * @return Json con el/los videos encontrados con el nombre que entra como parametro o json con 
-     * el error que se produjo
-     */
-	@GET
-	@Path("Discapacidad")
-	@Produces( { MediaType.APPLICATION_JSON } )
-	public Response getZonasPorDiscapacidad()
-	{
-		RotondAndesTM tm = new RotondAndesTM( getPath( ) );
-		List<Zona> zonas = new ArrayList<>();
-		try
-		{
-			zonas = tm.darZonas();
-			Collections.sort(zonas, discapacidadComparator);
-			return Response.status( 200 ).entity(zonas).build( );			
-		}
-		catch( Exception e )
-		{
-			return Response.status( 500 ).entity( doErrorMessage( e ) ).build( );
-		}
-	}
 	
     /**
      * Metodo que expone servicio REST usando GET que busca el video con el nombre que entra como parametro

@@ -1,36 +1,39 @@
 package vos;
 
+import java.util.List;
+
 import org.codehaus.jackson.annotate.JsonProperty;
 
 public class ClienteFrecuente {
 
-	@JsonProperty(value="EMAIL")
+	@JsonProperty(value="email")
 	private String email;
 	
-	@JsonProperty(value="PASSWORD")
+	@JsonProperty(value="password")
 	private String password;
 	
-	@JsonProperty(value="USERNAME")
+	@JsonProperty(value="username")
 	private String username;
 	
-	@JsonProperty(value="PREFERENCIAPRECIO")
+	@JsonProperty(value="preferenciaPrecio")
 	private float preferenciaPrecio;
 	
-	@JsonProperty(value="PREFERENCIACATEGORIA")
+	@JsonProperty(value="preferenciaCategoria")
 	private String preferenciaCategoria;
 	
-	@JsonProperty(value="NOMBRE")
+	@JsonProperty(value="nombre")
 	private String nombre;
 	
-	@JsonProperty(value="IDENTIFICACION")
+	@JsonProperty(value="identificacion")
 	private long identificacion;
 	
-	
+	@JsonProperty(value="historialPlatos")
+	private List pedidos;
 
-	public ClienteFrecuente(@JsonProperty(value="EMAIL")String email,@JsonProperty(value="PASSWORD") String password, 
-			@JsonProperty(value="USERNAME")String username,@JsonProperty(value="PREFERENCIAPRECIO") float preferenciaPrecio,
-			@JsonProperty(value="PREFERENCIACATEGORIA")String preferenciaCategoria, @JsonProperty(value="NOMBRE") String nombre,
-			@JsonProperty(value="IDENTIFICACION") long identificacion) {
+	public ClienteFrecuente(@JsonProperty(value="email")String email,@JsonProperty(value="password") String password, 
+			@JsonProperty(value="username")String username,@JsonProperty(value="preferenciaPrecio") float preferenciaPrecio,
+			@JsonProperty(value="preferenciaCategoria")String preferenciaCategoria, @JsonProperty(value="nombre") String nombre,
+			@JsonProperty(value="identificacion") long identificacion, @JsonProperty(value="historialPlatos") List pedidos) {
 		super();
 		this.email = email;
 		this.password = password;
@@ -39,6 +42,15 @@ public class ClienteFrecuente {
 		this.preferenciaCategoria = preferenciaCategoria;
 		this.nombre = nombre;
 		this.identificacion = identificacion;
+		this.pedidos = pedidos;
+	}
+
+	public List getHistorialPlatos() {
+		return pedidos;
+	}
+
+	public void setHistorialPlatos(List historialPlatos) {
+		this.pedidos = historialPlatos;
 	}
 
 	public String getEmail() {

@@ -1,12 +1,16 @@
 package rest;
 
+import java.util.List;
+
 import javax.servlet.ServletContext;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -43,19 +47,39 @@ public class PedidoServices {
 	 * @return Json con todos los videos de la base de datos o json con 
      * el error que se produjo
 	 */
-//	@GET
-//	@Produces({ MediaType.APPLICATION_JSON })
-//	public Response getRestaurantes() {
-//		RotondAndesTM tm = new RotondAndesTM(getPath());
-//		List<Restaurante> restaurantes;
-//		try {
-//			restaurantes = tm.da
-//		} catch (Exception e) {
-//			return Response.status(500).entity(doErrorMessage(e)).build();
-//		}
-//		return Response.status(200).entity(videos).build();
-//	}
+	@GET
+	@Produces({ MediaType.APPLICATION_JSON })
+	public Response getPedidos() {
+		RotondAndesTM tm = new RotondAndesTM(getPath());
+		List<Pedido> pedidos;
+		try {
+			pedidos = tm.darPedidos();
+		} catch (Exception e) {
+			return Response.status(500).entity(doErrorMessage(e)).build();
+		}
+		return Response.status(200).entity(pedidos).build();
+	}
 
+	/**
+	 * Metodo que expone servicio REST usando GET que da todos los restaurantes de la base de datos.
+	 * <b>URL: </b> http://"ip o nombre de host":8080/VideoAndes/rest/videos
+	 * @return Json con todos los videos de la base de datos o json con 
+     * el error que se produjo
+	 */
+	@GET
+	@Path( "{email}" )
+	@Produces({ MediaType.APPLICATION_JSON })
+	public Response getPedidosCliente(@QueryParam("email") String emailCliente) {
+		RotondAndesTM tm = new RotondAndesTM(getPath());
+		List<Pedido> pedidos;
+		try {
+			pedidos = tm.darPedidosCliente(emailCliente);
+		} catch (Exception e) {
+			return Response.status(500).entity(doErrorMessage(e)).build();
+		}
+		return Response.status(200).entity(pedidos).build();
+	}
+	
 	 /**
      * Metodo que expone servicio REST usando GET que busca el video con el id que entra como parametro
      * <b>URL: </b> http://"ip o nombre de host":8080/VideoAndes/rest/videos/<<id>>" para la busqueda"
@@ -102,8 +126,7 @@ public class PedidoServices {
 //		}
 //		return Response.status(200).entity(videos).build();
 //	}
-
-
+	
     /**
      * Requerimiento F9
      * Metodo que expone servicio REST usando POST que agrega el video que recibe en Json
@@ -112,7 +135,7 @@ public class PedidoServices {
      * @return Json con el video que agrego o Json con el error que se produjo
      */
 	@POST
-	@Path( "{idPlato: \\d+}" )
+	@Path( "plato/{idPlato: \\d+}" )
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response addPedidoPlato(Pedido pedido,  @PathParam( "idPlato" ) int idPlato) {
@@ -124,10 +147,47 @@ public class PedidoServices {
 		}
 		return Response.status(200).entity(pedido).build();
 	}
-	//REVISAR LO QUE SE RETORNA
 	
+	/**
+     * Metodo que expone servicio REST usando POST que agrega el video que recibe en Json
+     * <b>URL: </b> http://"ip o nombre de host":8080/VideoAndes/rest/videos/video
+     * @param video - video a agregar
+     * @return Json con el video que agrego o Json con el error que se produjo
+     */
+	@POST
+	@Path( "menu/{idMenu: \\d+}" )
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response addPedidoMenu(Pedido pedido,  @PathParam( "idMenu" ) int idMenu) {
+		RotondAndesTM tm = new RotondAndesTM(getPath());
+		try {
+			tm.addPedidoMenu(pedido, idMenu);
+		} catch (Exception e) {
+			return Response.status(500).entity(doErrorMessage(e)).build();
+		}
+		return Response.status(200).entity(pedido).build();
+	}
 	
-	
+
+	/**
+     * Metodo que expone servicio REST usando POST que agrega el video que recibe en Json
+     * <b>URL: </b> http://"ip o nombre de host":8080/VideoAndes/rest/videos/video
+     * @param video - video a agregar
+     * @return Json con el video que agrego o Json con el error que se produjo
+     */
+	@POST
+	@Path( "menu/{idMenu: \\d+}/{equivalencia}" )
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response addPedidoMenuEquivalencia(Pedido pedido,  @PathParam( "idMenu" ) int idMenu, @PathParam( "equivalencia" ) String equivalencia) {
+		RotondAndesTM tm = new RotondAndesTM(getPath());
+		try {
+			tm.addPedidoMenuEquivalencia(pedido, idMenu, equivalencia);
+		} catch (Exception e) {
+			return Response.status(500).entity(doErrorMessage(e)).build();
+		}
+		return Response.status(200).entity(pedido).build();
+	}
 	
     /**
      * Requerimiento F10

@@ -1,19 +1,24 @@
 package rest;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.servlet.ServletContext;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import tm.RotondAndesTM;
 import vos.Plato;
+import vos.Zona;
 
 @Path("productos")
 public class PlatoServices {
@@ -37,7 +42,6 @@ public class PlatoServices {
 		return "{ \"ERROR\": \""+ e.getMessage() + "\"}" ;
 	}
 	
-
 	/**
 	 * Requerimiento CF1
 	 * Metodo que expone servicio REST usando GET que da todos los restaurantes de la base de datos.
@@ -46,12 +50,15 @@ public class PlatoServices {
      * el error que se produjo
 	 */
 	@GET
+	@Path( "{filtro}" )
 	@Produces({ MediaType.APPLICATION_JSON })
-	public Response getProductos() {
+	public Response getProductos( @QueryParam("filtro") String filtro) {
 		RotondAndesTM tm = new RotondAndesTM(getPath());
 		List<Plato> platos;
 		try {
-			platos = tm.darProductos();
+			if (filtro.length() < 4)
+				throw new Exception("Filtro no valido");
+			platos = tm.darProductosFiltro(filtro);
 		} catch (Exception e) {
 			return Response.status(500).entity(doErrorMessage(e)).build();
 		}
@@ -67,6 +74,7 @@ public class PlatoServices {
      * el error que se produjo
 	 */
 	@GET
+	@Path("masOfrecidos")
 	@Produces({ MediaType.APPLICATION_JSON })
 	public Response getProductoMasOfrecidos() {
 		RotondAndesTM tm = new RotondAndesTM(getPath());
@@ -126,7 +134,25 @@ public class PlatoServices {
 //		return Response.status(200).entity(videos).build();
 //	}
 
-
+	/**
+     * Metodo que expone servicio REST usando POST que agrega el video que recibe en Json
+     * <b>URL: </b> http://"ip o nombre de host":8080/VideoAndes/rest/videos/video
+     * @param video - video a agregar
+     * @return Json con el video que agrego o Json con el error que se produjo
+	 * @throws Exception 
+     */
+	@POST
+	@Path("equivalentes/{productos}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public void addEquivalencia(@QueryParam("productos") String productos) throws Exception {
+		RotondAndesTM tm = new RotondAndesTM(getPath());
+		try {
+			tm.addEquivalenciaPlato(productos);
+		} catch (Exception e) {
+			throw new Exception (doErrorMessage(e));
+		}
+	}
+	
     /**
      * Requerimiento F4
      * Metodo que expone servicio REST usando POST que agrega el video que recibe en Json
@@ -148,23 +174,24 @@ public class PlatoServices {
 	}
 	
     /**
-     * Metodo que expone servicio REST usando PUT que actualiza el video que recibe en Json
+     * Metodo que agrega un ingrediente a un plato
      * <b>URL: </b> http://"ip o nombre de host":8080/VideoAndes/rest/videos
      * @param video - video a actualizar. 
      * @return Json con el video que actualizo o Json con el error que se produjo
      */
-//	@PUT
-//	@Consumes(MediaType.APPLICATION_JSON)
-//	@Produces(MediaType.APPLICATION_JSON)
-//	public Response updateVideo(Video video) {
-//		VideoAndesTM tm = new VideoAndesTM(getPath());
-//		try {
-//			tm.updateVideo(video);
-//		} catch (Exception e) {
-//			return Response.status(500).entity(doErrorMessage(e)).build();
-//		}
-//		return Response.status(200).entity(video).build();
-//	}
+	@PUT
+	@Path( "{ingrediente}" )
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response agregarIngrediente(Plato plato, @QueryParam("ingrediente") String name) {
+		RotondAndesTM tm = new RotondAndesTM(getPath());
+		try {
+			tm.addIngredienteAPlato(plato, name);
+		} catch (Exception e) {
+			return Response.status(500).entity(doErrorMessage(e)).build();
+		}
+		return Response.status(200).entity(plato).build();
+	}
 	
     /**
      * Metodo que expone servicio REST usando DELETE que elimina el video que recibe en Json
