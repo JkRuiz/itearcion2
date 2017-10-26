@@ -214,6 +214,16 @@ public class DAOTablaPlato {
 		prepStmt.executeQuery();	
 	}
 
+	
+	public void SeVendioProducto(int id1) throws Exception
+	{
+		String sql = "UPDATE PLATO SET VENDIDOS = VENDIDOS+1, DISPONIBLES = DISPONIBLES-1 WHERE ID_PLATO=" + id1;
+
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		prepStmt.executeQuery();
+		
+	}
 	//	public ArrayList<Plato> darPlatosPorRango(String filtro) throws SQLException, Exception {
 	//		ArrayList<Plato> platos = new ArrayList<Plato>();
 	//		String[] fechas = filtro.split("-");

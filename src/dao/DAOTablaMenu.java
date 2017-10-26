@@ -178,6 +178,16 @@ public class DAOTablaMenu {
 		}
 		return menu;
 	}
+	
+	public void SeVendioMenu(int id1) throws Exception
+	{
+		String sql = "UPDATE MENU SET VENDIDOS = VENDIDOS+1, DISPONIBLES = DISPONIBLES-1 WHERE ID_MENU=" + id1;
+
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		prepStmt.executeQuery();
+		
+	}
 
 	/**
 	 * Metodo que agrega el menu que entra como parametro a la base de datos.

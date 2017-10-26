@@ -27,6 +27,7 @@ import vos.IngredientesPlato;
 import vos.Menu;
 import vos.MenuPlato;
 import vos.Pedido;
+import vos.PedidoConsolidado;
 import vos.PedidoMenu;
 import vos.PedidoPlato;
 import vos.Plato;
@@ -546,7 +547,38 @@ public class RotondAndesTM {
 		}
 		return pedidos;
 	}
-		
+	
+	public PedidoConsolidado darPedidosRestaurante(String restaurante) throws Exception {
+		PedidoConsolidado pedido;
+		DAOTablaPedido daoPedido = new DAOTablaPedido();
+		try 
+		{
+			//////transaccion
+			this.conn = darConexion();
+			daoPedido.setConn(conn);
+			pedido = daoPedido.darPedidosConsolidadosRestaurante(restaurante);
+
+		} catch (SQLException e) {
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				daoPedido.cerrarRecursos();
+				if(this.conn!=null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
+		return pedido;
+	}
 	/**
 	 * REQUERIMIENTO FC4
 	 * Metodo que modela la transaccion que retorna el plato mas ofrecido en la base de datos
@@ -907,6 +939,7 @@ public class RotondAndesTM {
 		DAOTablaPedido daoPedido = new DAOTablaPedido();
 		DAOTablaPedidoMenu daoPedidoMenu = new DAOTablaPedidoMenu();
 		DAOTablaMenu daoMenu = new DAOTablaMenu();
+		DAOTablaPlato daoPlato = new DAOTablaPlato();
 		try 
 		{
 			//////transaccion
@@ -914,12 +947,17 @@ public class RotondAndesTM {
 			daoPedido.setConn(conn);
 			daoPedidoMenu.setConn(conn);
 			daoMenu.setConn(conn);
-			if (daoMenu.buscarMenuPorId(idMenu).getDisponibles() < 1)
-				throw new Exception("No hay disponibilidad del plato " + daoMenu.buscarMenuPorId(idMenu).getNombre());
+			daoPlato.setConn(conn);
+			Menu menu = daoMenu.buscarMenuPorId(idMenu);
+			if (menu.getDisponibles() < 1)
+				throw new Exception("No hay disponibilidad del menu " + menu.getNombre());
 
 			daoPedido.addPedido(pedido);
 			PedidoMenu pedidoMenu = new PedidoMenu(pedido.getNumPedido(), idMenu);
 			daoPedidoMenu.addPedidoMenu(pedidoMenu);
+			for (int i = 0; i <  menu.getProductos().size(); i++)
+				daoPlato.SeVendioProducto((int) menu.getProductos().get(i));
+			daoMenu.SeVendioMenu(idMenu);
 			conn.commit();
 			
 		} catch (SQLException e) {
@@ -1017,6 +1055,7 @@ public class RotondAndesTM {
 			daoPedido.addPedido(pedido);
 			PedidoPlato pedidoPlato = new PedidoPlato(pedido.getNumPedido(), idPlato);
 			daoPedidoPlato.addPedidoPlato(pedidoPlato);
+			daoPlato.SeVendioProducto(idPlato);
 			conn.commit();
 			
 		} catch (SQLException e) {
@@ -1152,7 +1191,7 @@ public class RotondAndesTM {
 			daoMenu.setConn(conn);
 			daoMenuPlato.setConn(conn);
 			daoMenu.addMenu(menu);
-			MenuPlato menuPlato = new MenuPlato(menu.getId(), idPlato);
+			MenuPlato menuPlato = new MenuPlato(menu.getIdMenu(), idPlato);
 			daoMenuPlato.addMenuPlato(menuPlato);
 			conn.commit();
 			
@@ -1194,7 +1233,7 @@ public class RotondAndesTM {
 			this.conn = darConexion();
 			daoMenu.setConn(conn);
 			daoMenuPlato.setConn(conn);
-			MenuPlato menuPlato = new MenuPlato(menu.getId(), idPlato);
+			MenuPlato menuPlato = new MenuPlato(menu.getIdMenu(), idPlato);
 			daoMenuPlato.addMenuPlato(menuPlato);
 			conn.commit();
 			
