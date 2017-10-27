@@ -17,6 +17,7 @@ import javax.ws.rs.core.Response;
 
 import tm.RotondAndesTM;
 import vos.Pedido;
+import vos.PedidoConsolidado;
 
 @Path("pedidos")
 public class PedidoServices {
@@ -78,6 +79,26 @@ public class PedidoServices {
 			return Response.status(500).entity(doErrorMessage(e)).build();
 		}
 		return Response.status(200).entity(pedidos).build();
+	}
+	
+	/**
+	 * Metodo que expone servicio REST usando GET que da todos los restaurantes de la base de datos.
+	 * <b>URL: </b> http://"ip o nombre de host":8080/VideoAndes/rest/videos
+	 * @return Json con todos los videos de la base de datos o json con 
+     * el error que se produjo
+	 */
+	@GET
+	@Path( "restaurante/{restaurante}" )
+	@Produces({ MediaType.APPLICATION_JSON })
+	public Response getPedidos(@QueryParam("restaurante") String restaurante) {
+		RotondAndesTM tm = new RotondAndesTM(getPath());
+		PedidoConsolidado pedido;
+		try {
+			pedido = tm.darPedidosRestaurante(restaurante);
+		} catch (Exception e) {
+			return Response.status(500).entity(doErrorMessage(e)).build();
+		}
+		return Response.status(200).entity(pedido).build();
 	}
 	
 	 /**

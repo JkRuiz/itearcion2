@@ -8,6 +8,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import vos.Pedido;
+import vos.PedidoConsolidado;
+import vos.ProductoConsolidado;
 
 public class DAOTablaPedido {
 
@@ -83,6 +85,70 @@ public class DAOTablaPedido {
 		return pedidos;
 	}
 
+	public PedidoConsolidado darPedidosConsolidadosRestaurante(String restaurante) throws SQLException, Exception {
+		ArrayList<ProductoConsolidado> productos = new ArrayList<ProductoConsolidado>();
+		int consumidoRegistrados = 0;
+		int consumidoNoRegistrados = 0;
+		
+		String sql = "SELECT NOMBRE,PRECIOVENTA,VENDIDOS,ID_PLATO FROM PLATO WHERE RESTAURANTE='"+ restaurante + "'";
+
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		ResultSet rs = prepStmt.executeQuery();
+
+		while (rs.next()) {
+			String nomProducto = rs.getString("NOMBRE");
+			int precioVenta = rs.getInt("PRECIOVENTA");
+			int vendidos = rs.getInt("VENDIDOS");
+			int idPlato = rs.getInt("ID_PLATO");
+			int ventaTotalDinero = precioVenta*vendidos;
+			
+			//Se mira quienes pidieron el plato correspondiente, verificando si es o no un usuario registrado
+			String sqlAux = "SELECT EMAIL_USER FROM PEDIDO_PLATO NATURAL JOIN PEDIDO NATURAL JOIN PLATO WHERE ID_PLATO ="+ idPlato;
+			PreparedStatement prepStmtAux = conn.prepareStatement(sqlAux);
+			recursos.add(prepStmtAux);
+			ResultSet rsAux = prepStmtAux.executeQuery();
+			while (rsAux.next())
+			{
+				String emailUser = rsAux.getString("EMAIL_USER");
+				
+				String sqlAux2 = "SELECT count(*) FROM CLIENTEFR WHERE EMAIL = '" + emailUser + "'";
+				PreparedStatement prepStmtAux2 = conn.prepareStatement(sqlAux2);
+				recursos.add(prepStmtAux2);
+				ResultSet rsAux2 = prepStmtAux2.executeQuery();
+				if (rsAux2.next())
+				{
+					int count = rsAux2.getInt("COUNT(*)");
+					if (count == 0) consumidoNoRegistrados++;
+					else consumidoRegistrados++;
+				}
+			}
+			
+			//Se mira quienes pidieron el plato correspondiente POR MEDIO DE UN MENU, verificando si es o no un usuario registrado
+			String sqlAux2 = "select EMAIL_USER from pedido natural join pedido_menus where id_menu = (select id_menu from MENU_PLATO where id_plato ="+ idPlato + ")";
+			PreparedStatement prepStmtAux2 = conn.prepareStatement(sqlAux2);
+			recursos.add(prepStmtAux2);
+			ResultSet rsAux2 = prepStmtAux2.executeQuery();
+			while (rsAux2.next())
+			{
+				String emailUser = rsAux2.getString("EMAIL_USER");
+				
+				String sqlAux3 = "SELECT count(*) FROM CLIENTEFR WHERE EMAIL = '" + emailUser + "'";
+				PreparedStatement prepStmtAux3 = conn.prepareStatement(sqlAux3);
+				recursos.add(prepStmtAux3);
+				ResultSet rsAux3 = prepStmtAux3.executeQuery();
+				if (rsAux3.next())
+				{
+					int count = rsAux3.getInt("COUNT(*)");
+					if (count == 0) consumidoNoRegistrados++;
+					else consumidoRegistrados++;
+				}
+			}
+			
+			productos.add(new ProductoConsolidado(nomProducto, ventaTotalDinero, vendidos));
+		}
+		return new PedidoConsolidado(productos, consumidoRegistrados, consumidoNoRegistrados);
+	}
 	/**
 	 * Metodo que, usando la conexión a la base de datos, saca todos los pedidos de la base de datos
 	 * <b>SQL Statement:</b> SELECT * FROM PEDIDOS;

@@ -112,14 +112,6 @@ public class Menu {
 	public void setRestaurante(String restaurante) {
 		this.restaurante = restaurante;
 	}
-
-	public int getId() {
-		return idMenu;
-	}
-
-	public void setId(int idMenu) {
-		this.idMenu = idMenu;
-	}
 	
 	
 	
