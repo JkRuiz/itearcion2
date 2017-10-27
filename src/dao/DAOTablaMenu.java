@@ -267,4 +267,32 @@ public class DAOTablaMenu {
 		prepStmt.executeQuery();
 	}
 
+	public void surtir(String nombre) throws SQLException, Exception {
+		String sql1= "SELECT DISPONIBLES, MAX_DISP FROM MENU WHERE NOMBRESTAURANTE = '" + nombre + "' FOR UPDATE";
+		PreparedStatement prepStmt1 = conn.prepareStatement(sql1);
+		recursos.add(prepStmt1);
+		prepStmt1.executeQuery();
+		
+		String sql2 = "UPDATE MENU SET DISPONIBLES = MAX_DISP WHERE NOMBRERESTAURANTE = '" + nombre + "'";
+
+		PreparedStatement prepStmt2 = conn.prepareStatement(sql2);
+		recursos.add(prepStmt2);
+		prepStmt2.executeQuery();
+	}
+
+	public void disminuirDisponibilidad(int idMenu, int i) throws SQLException {
+		String sql = "UPDATE MENU SET DISPONIBLES = DISPONIBLES - " + i + " WHERE ID_PLATO = '" + idMenu + "'";
+
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		prepStmt.executeQuery();
+	}
+	
+	public void aumentarDisponibilidad(int idMenu, int i) throws SQLException {
+		String sql = "UPDATE MENU SET DISPONIBLES = DISPONIBLES + " + i + " WHERE ID_PLATO = '" + idMenu + "'";
+
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		prepStmt.executeQuery();
+	}
 }

@@ -7,6 +7,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import vos.Ingredientes;
+import vos.Plato;
+import vos.Restaurante;
 
 
 public class DAOTablaIngredientes {
@@ -101,7 +103,7 @@ public class DAOTablaIngredientes {
 			String traduccion = rs.getString("TRADUCCION");
 			ingrediente = new Ingredientes(nombre2, descripcion, traduccion);
 		}
-
+		if(ingrediente == null) throw new Exception("No existe ingrediente con nombre");
 		return ingrediente;
 	}
 
@@ -179,5 +181,4 @@ public class DAOTablaIngredientes {
 		recursos.add(prepStmt);
 		prepStmt.executeQuery();
 	}
-
 }

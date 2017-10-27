@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import vos.Ingredientes;
 import vos.Restaurante;
 
 public class DAOTablaRestaurante {
@@ -111,7 +112,7 @@ public class DAOTablaRestaurante {
 			float valorVentas = rs.getFloat("VALOR_VENTAS");
 			restaurante = new Restaurante(nombre2, representante, tipoComida, paginaWeb, zona, valorCostos, valorVentas);
 		}
-
+		if(restaurante == null) throw new Exception("No existe restaurante con el nombre: " + nombre);
 		return restaurante;
 	}
 

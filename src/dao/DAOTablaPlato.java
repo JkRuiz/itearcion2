@@ -196,6 +196,7 @@ public class DAOTablaPlato {
 		}
 		return idsEquiv;
 	}
+	
 	public void addEquivalentes(String platos) throws NumberFormatException, Exception {
 		String[] productos = platos.split("-");
 
@@ -495,4 +496,32 @@ public class DAOTablaPlato {
 		prepStmt.executeQuery();
 	}
 
+	public void surtir(String nombre) throws SQLException, Exception {
+		String sql1= "SELECT DISPONIBLES, MAX_DISP FROM PLATO WHERE NOMBRESTAURANTE = '" + nombre + "' FOR UPDATE";
+		PreparedStatement prepStmt1 = conn.prepareStatement(sql1);
+		recursos.add(prepStmt1);
+		prepStmt1.executeQuery();
+		
+		String sql2 = "UPDATE PLATO SET DISPONIBLES = MAX_DISP WHERE NOMBRERESTAURANTE = '" + nombre + "'";
+
+		PreparedStatement prepStmt2 = conn.prepareStatement(sql2);
+		recursos.add(prepStmt2);
+		prepStmt2.executeQuery();
+	}
+
+	public void disminuirDisponibilidad(int idPlato, int i) throws SQLException {
+		String sql = "UPDATE PLATO SET DISPONIBLES = DISPONIBLES - " + i + " WHERE ID_PLATO = '" + idPlato + "'";
+
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		prepStmt.executeQuery();
+	}
+	
+	public void aumentarDisponibilidad(int idPlato, int i) throws SQLException {
+		String sql = "UPDATE PLATO SET DISPONIBLES = DISPONIBLES + " + i + " WHERE ID_PLATO = '" + idPlato + "'";
+
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		prepStmt.executeQuery();
+	}
 }

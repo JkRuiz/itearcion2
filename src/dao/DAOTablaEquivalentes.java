@@ -7,6 +7,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import vos.Equivalentes;
+import vos.Ingredientes;
+import vos.Restaurante;
 
 public class DAOTablaEquivalentes {
 
@@ -41,6 +43,65 @@ public class DAOTablaEquivalentes {
 					ex.printStackTrace();
 				}
 		}
+	}
+	
+	/**
+	 * Metodo que busca el/los ingredientes con el nombre que entra como parametro.
+	 * @param nombre - Nombre de el/los ingredientes a buscar
+	 * @return ArrayList con los ingredientes encontrados
+	 * @throws SQLException - Cualquier error que la base de datos arroje.
+	 * @throws Exception - Cualquier error que no corresponda a la base de datos
+	 */
+	public Ingredientes buscarIngredientePorName(String nombre) throws SQLException, Exception {
+		Ingredientes ingrediente = null;
+
+		String sql = "SELECT * FROM INGREDIENTES WHERE NOMBRE ='" + nombre + "'";
+
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		ResultSet rs = prepStmt.executeQuery();
+
+		if (rs.next()) {
+			String nombre2 = rs.getString("NOMBRE");
+			String descripcion = rs.getString("DESCRIPCION");
+			String traduccion = rs.getString("TRADUCCION");
+			ingrediente = new Ingredientes(nombre2, descripcion, traduccion);
+		}
+		if(ingrediente == null) throw new Exception("No existe ingrediente con nombre");
+		return ingrediente;
+	}
+	
+	/**
+	 * Metodo que busca el restaurante con el nombre que entra como parametro.
+	 * @param name - Nombre de el restaurante a buscar
+	 * @return Restaurante el restaurante encontrado
+	 * @throws SQLException - Cualquier error que la base de datos arroje.
+	 * @throws Exception - Cualquier error que no corresponda a la base de datos
+	 */
+	public Restaurante buscarRestaurantePorNombre(String nombre) throws SQLException, Exception {
+		Restaurante restaurante = null;
+
+		String sql = "SELECT * FROM RESTAURANTES WHERE NOMBRE ='" + nombre + "'";
+
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		ResultSet rs = prepStmt.executeQuery();
+
+		if (rs.next()) {
+			String nombre2 = rs.getString("NOMBRE");
+			String representante = rs.getString("REPRESENTANTE");
+			String tipoComida = rs.getString("TIPOCOMIDA");
+			String paginaWeb = "";
+			if(rs.getString("PAGINAWEB") != null)
+			paginaWeb = rs.getString("PAGINAWEB");
+			
+			String zona = rs.getString("ZONA");
+			float valorCostos = rs.getFloat("VALOR_COSTOS");
+			float valorVentas = rs.getFloat("VALOR_VENTAS");
+			restaurante = new Restaurante(nombre2, representante, tipoComida, paginaWeb, zona, valorCostos, valorVentas);
+		}
+		if(restaurante == null) throw new Exception("No existe restaurante con el nombre: " + nombre);
+		return restaurante;
 	}
 
 	/**
@@ -141,5 +202,24 @@ public class DAOTablaEquivalentes {
 		recursos.add(prepStmt);
 		prepStmt.executeQuery();
 	}
+	
+	@SuppressWarnings("static-access")
+	public void addEquivalente(String str) throws NumberFormatException, Exception {
+		String[] params = str.split("-");
 
+		Ingredientes ing1 = buscarIngredientePorName(params[0]);
+		Ingredientes ing2 = buscarIngredientePorName(params[1]);
+		if (ing1.getNombre().equals(ing2.getNombre())) {
+			throw new Exception("Los ingredientes son los mismos");
+		}
+		
+		buscarRestaurantePorNombre(params[2]);
+		
+		String sql = "INSERT INTO EQUIVALENTES_INGR VALUES ("+ params[0] + "," + 
+				params[1] + ", '" + params[2] + "')";
+
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		prepStmt.executeQuery();
+	}
 }

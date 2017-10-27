@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Properties;
 
 import dao.DAOTablaClienteFrecuente;
+import dao.DAOTablaEquivalentes;
 import dao.DAOTablaIngredientes;
 import dao.DAOTablaIngredientesPlato;
 import dao.DAOTablaMenu;
@@ -158,8 +159,52 @@ public class RotondAndesTM {
 		}
 		return platos;
 	}
+
+	/**
+	 * REQUERIMIENTO F11
+	 * Agrega una equivalencia entre ingredientes para un restaurante.
+	 * @param ingredientes <nombre ing1>-<nombre ing2>-<nombre restaurante>
+	 * @throws Exception en caso de que sean el mismo ingrediente,
+	 * de que alguno de los ingredientes no exista, o de que el restaurante no exista.
+	 */
+	public void addEquivalenciaIngrediente(String ingredientes) throws Exception {
+		DAOTablaEquivalentes daoEquiv = new DAOTablaEquivalentes();
+		try 
+		{
+			//////transaccion
+			this.conn = darConexion();
+			conn.setTransactionIsolation(conn.TRANSACTION_REPEATABLE_READ);
+			daoEquiv.setConn(conn);
+			daoEquiv.addEquivalente(ingredientes);
+			conn.commit();
+		} catch (SQLException e) {
+			conn.rollback();
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			conn.rollback();
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				daoEquiv.cerrarRecursos();
+				if(this.conn!=null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
+	}
 	
-	
+	/**
+	 * REQUERIMIENTO F12
+	 * @param productos
+	 * @throws Exception
+	 */
 	public void addEquivalenciaPlato(String productos) throws Exception {
 		DAOTablaPlato daoPlatos = new DAOTablaPlato();
 		try 
@@ -188,7 +233,170 @@ public class RotondAndesTM {
 			}
 		}
 	}
-
+	
+	/**
+	 * REQUERIMIENTO F13
+	 * Surte todos los pruductos del restaurante indicado.
+	 * @param nombre nombre del restaurante
+	 * @throws Exception en caso de que no se logre re surtir el restaurante.
+	 */
+	public void surtirRestaurante(String nombre) throws Exception {
+		DAOTablaMenu daoMenu = new DAOTablaMenu();
+		DAOTablaPlato daoPlato = new DAOTablaPlato();
+		try 
+		{
+			//////transaccion
+			this.conn = darConexion();
+			conn.setTransactionIsolation(conn.TRANSACTION_REPEATABLE_READ);
+			daoMenu.setConn(conn);
+			daoPlato.setConn(conn);
+			daoMenu.surtir(nombre);
+			daoPlato.surtir(nombre);
+			conn.commit();
+		} catch (SQLException e) {
+			conn.rollback();
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			conn.rollback();
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				daoMenu.cerrarRecursos();
+				daoPlato.cerrarRecursos();
+				if(this.conn!=null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
+	}
+	
+	/**
+	 * REQUERIMIENTO F15
+	 * Registra el pedido de productos de una mesa.
+	 * @param pedido Pedido de la mesa que se esta registrando.
+	 * @param info <Num prods pedido>-(<id producto>-<categoria>)*
+	 * @throws Exception en caso de que el pedido ya exista, o que algun producto no exista.
+	 */
+	public void registrarPedidoMesa(Pedido pedido, String info) throws Exception {
+		DAOTablaPedidoMenu daoPedidoMenu = new DAOTablaPedidoMenu();
+		DAOTablaPedidoPlato daoPedidoPlato = new DAOTablaPedidoPlato();
+		DAOTablaMenu daoMenu = new DAOTablaMenu();
+		DAOTablaPlato daoPlato = new DAOTablaPlato();
+		DAOTablaPedido daoPedido = new DAOTablaPedido();
+		try 
+		{
+			//////transaccion
+			this.conn = darConexion();
+			conn.setTransactionIsolation(conn.TRANSACTION_REPEATABLE_READ);
+			daoPedidoMenu.setConn(conn);
+			daoPedidoPlato.setConn(conn);
+			daoPedido.setConn(conn);
+			daoMenu.setConn(conn);
+			daoPlato.setConn(conn);
+			
+			daoPedido.addPedido(pedido);
+			
+			String[] params = info.split("-");
+			int count = Integer.parseInt(params[0]);
+			for(int i = 0; i < count; i++) {
+				if(params[2*i + 2].compareTo("P") == 0) {
+					int idPlato = Integer.parseInt(params[2*i + 1]);
+					daoPlato.disminuirDisponibilidad(idPlato, 1);
+					daoPedidoPlato.addPedidoPlato(new PedidoPlato(pedido.getNumPedido(), idPlato));
+				} else {
+					int idMenu = Integer.parseInt(params[2*i + 1]);
+					daoMenu.disminuirDisponibilidad(idMenu, 1);
+					daoPedidoMenu.addPedidoMenu(new PedidoMenu(pedido.getNumPedido(), idMenu));
+				}
+			}
+			
+			conn.commit();
+		} catch (SQLException e) {
+			conn.rollback();
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			conn.rollback();
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				daoPedidoMenu.cerrarRecursos();
+				daoPedidoPlato.cerrarRecursos();
+				daoPedido.cerrarRecursos();
+				daoMenu.cerrarRecursos();
+				daoPlato.cerrarRecursos();
+				if(this.conn!=null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
+	}
+	
+	/**
+	 * REQUERIMIENTO F17
+	 * Cancela un pedido que no se haya servido.
+	 * @param pedido Pedido que se esta cancelado.
+	 * @throws Exception en caso de que no se pueda cancelar el pedido.
+	 */
+	public void cancelarPedido(Pedido pedido) throws Exception {
+		//TODO FALTA POR IMPLEMENTAR
+		DAOTablaPedidoMenu daoPedidoMenu = new DAOTablaPedidoMenu();
+		DAOTablaPedidoPlato daoPedidoPlato = new DAOTablaPedidoPlato();
+		DAOTablaPedido daoPedido = new DAOTablaPedido();
+		DAOTablaPlato daoPlato = new DAOTablaPlato();
+		DAOTablaMenu daoMenu = new DAOTablaMenu();
+		try 
+		{
+			//////transaccion
+			this.conn = darConexion();
+			conn.setTransactionIsolation(conn.TRANSACTION_REPEATABLE_READ);
+			daoPedidoMenu.setConn(conn);
+			daoPedidoPlato.setConn(conn);
+			daoPedido.setConn(conn);
+			daoPlato.setConn(conn);
+			daoMenu.setConn(conn);
+			
+			daoPedido.addPedido(pedido);
+			
+			conn.commit();
+		} catch (SQLException e) {
+			conn.rollback();
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			conn.rollback();
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				daoPedidoMenu.cerrarRecursos();
+				daoPedidoPlato.cerrarRecursos();
+				daoPedido.cerrarRecursos();
+				if(this.conn!=null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
+	}
+	
 	/**
 	 * REQUERIMIENTO FC2
 	 * Metodo que modela la transaccion que retorna todos las zonas de la base de datos.
