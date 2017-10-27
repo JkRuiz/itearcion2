@@ -206,7 +206,7 @@ public class DAOTablaMenu {
 		sql += menu.getVendidos() + ",";
 		sql += menu.getDisponibles() + ",'";
 		sql += menu.getRestaurante() + "',";
-		sql += menu.getId() + ")";
+		sql += menu.getIdMenu() + ")";
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
@@ -231,7 +231,7 @@ public class DAOTablaMenu {
 		sql += "VENDIDOS=" + menu.getVendidos() + ",";
 		sql += "DISPONIBLES=" + menu.getDisponibles() + ",";
 		sql += "NOMRESTAURANTE='" + menu.getRestaurante() + "'";
-		sql += " WHERE ID_MENU = " + menu.getId();
+		sql += " WHERE ID_MENU = " + menu.getIdMenu();
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
@@ -249,28 +249,28 @@ public class DAOTablaMenu {
 	public void deleteMenu(Menu menu) throws SQLException, Exception {
 
 		String sql = "DELETE FROM MENU_PLATO";
-		sql += " WHERE ID_MENU = " + menu.getId();
+		sql += " WHERE ID_MENU = " + menu.getIdMenu();
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
 		prepStmt.executeQuery();
 
 		sql = "DELETE FROM PEDIDO_MENU";
-		sql += " WHERE ID_MENU = " + menu.getId();
+		sql += " WHERE ID_MENU = " + menu.getIdMenu();
 
 		prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
 		prepStmt.executeQuery();
 
 		sql = "DELETE FROM RESERVA";
-		sql += " WHERE ID_MENU = " + menu.getId();
+		sql += " WHERE ID_MENU = " + menu.getIdMenu();
 
 		prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
 		prepStmt.executeQuery();
 
 		sql = "DELETE FROM MENU";
-		sql += " WHERE ID_MENU = " + menu.getId();
+		sql += " WHERE ID_MENU = " + menu.getIdMenu();
 
 		prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);

@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import vos.PedidoMenu;
+import vos.PedidoPlato;
 
 
 public class DAOTablaPedidoMenu {
@@ -189,5 +190,23 @@ public class DAOTablaPedidoMenu {
 //		recursos.add(prepStmt);
 //		prepStmt.executeQuery();
 //	}
+	
+	public ArrayList<PedidoMenu> bucarPedidoMenuPorIdPedido(int id) throws SQLException, Exception 
+	{
+		ArrayList<PedidoMenu>  pedidosMenu = new ArrayList<>();
+
+		String sql = "SELECT * FROM PEDIDO_MENUS WHERE NUM_PEDIDO =" + id;
+
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		ResultSet rs = prepStmt.executeQuery();
+
+		while (rs.next()) {
+			int numPedido = rs.getInt("NUM_PEDIDO");
+			int idMenu = rs.getInt("ID_MENU");
+			pedidosMenu.add(new PedidoMenu(numPedido, idMenu));
+		}
+		return pedidosMenu;
+	}
 
 }

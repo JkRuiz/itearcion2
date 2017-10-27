@@ -346,6 +346,7 @@ public class RotondAndesTM {
 		}
 	}
 	
+	
 	/**
 	 * REQUERIMIENTO F17
 	 * Cancela un pedido que no se haya servido.
@@ -1263,7 +1264,6 @@ public class RotondAndesTM {
 			daoPedido.addPedido(pedido);
 			PedidoPlato pedidoPlato = new PedidoPlato(pedido.getNumPedido(), idPlato);
 			daoPedidoPlato.addPedidoPlato(pedidoPlato);
-			daoPlato.SeVendioProducto(idPlato);
 			conn.commit();
 			
 		} catch (SQLException e) {
@@ -1289,7 +1289,7 @@ public class RotondAndesTM {
 	}
 	
 	/**
-	 * REQUERIMIENTO F10
+	 * REQUERIMIENTO F10 y RF16
 	 * Metodo que modela la transaccion que agrega un solo pedidoPlato a la base de datos.
 	 * <b> post: </b> se ha agregado el pedidoPlato que entra como parametro
 	 * @param pedidoPlato - el pedidoPlato a agregar. pedidoPlato != null
@@ -1298,11 +1298,13 @@ public class RotondAndesTM {
 	public void pedidoEntregado(Pedido pedido) throws Exception {
 		DAOTablaPedido daoPedido = new DAOTablaPedido();
 		DAOTablaPedidoPlato daoPedidoPlato = new DAOTablaPedidoPlato();
+		DAOTablaPedidoMenu daoPedidoMenu = new DAOTablaPedidoMenu(); 
+		DAOTablaMenu daoMenu = new DAOTablaMenu();
 		DAOTablaPlato daoPlato = new DAOTablaPlato();
 		ArrayList<PedidoPlato> pedidosPlatos = new ArrayList<>();
+		ArrayList<PedidoMenu> pedidosMenus = new ArrayList<>();
 		try 
-		{
-			
+		{	
 			//////transaccion
 			this.conn = darConexion();
 			daoPedido.setConn(conn);
@@ -1311,14 +1313,12 @@ public class RotondAndesTM {
 			daoPedido.updatePedido(pedido);
 			pedidosPlatos = daoPedidoPlato.bucarPedidoPlatoPorIdPedido(pedido.getNumPedido());
 			for (PedidoPlato p : pedidosPlatos)
-			{
-				Plato plato = daoPlato.buscarPlatoPorId(p.getIdPlato());
-				plato.setDisponibles(plato.getDisponibles()-1);
-				plato.setVendidos(plato.getVendidos() + 1);
-				daoPlato.updatePlato(plato);
-			}
-			conn.commit();
+				daoPlato.SeVendioProducto(p.getIdPlato());
 			
+			pedidosMenus = daoPedidoMenu.bucarPedidoMenuPorIdPedido(pedido.getNumPedido());
+			for (PedidoMenu m : pedidosMenus)
+				daoMenu.SeVendioMenu(m.getIdMenu());
+			conn.commit();
 		} catch (SQLException e) {
 			System.err.println("SQLException:" + e.getMessage());
 			e.printStackTrace();
