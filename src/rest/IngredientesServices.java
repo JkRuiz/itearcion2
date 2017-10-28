@@ -14,6 +14,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import tm.RotondAndesTM;
+import vos.Informacion;
 import vos.Ingredientes;
 
 @Path("ingredientes")
@@ -193,12 +194,13 @@ public class IngredientesServices {
      * Requerimiento F11
      */
 	@POST
-	@Path("equivalentes/{productos}")
+	@Path("equivalentes")
+	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public void addEquiv(@QueryParam("productos") String param) {
+	public void addEquiv(Informacion informacionEq) {
 		RotondAndesTM tm = new RotondAndesTM(getPath());
 		try {
-			tm.addEquivalenciaIngrediente(param);
+			tm.addEquivalenciaIngrediente(informacionEq.getInformacion());
 		} catch (Exception e) {	}
 	}
 }

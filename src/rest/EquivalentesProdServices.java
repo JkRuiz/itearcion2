@@ -164,7 +164,7 @@ public class EquivalentesProdServices {
 	public Response agregarIngrediente(Plato plato, @QueryParam("ingrediente") String name) {
 		RotondAndesTM tm = new RotondAndesTM(getPath());
 		try {
-			tm.addIngredienteAPlato(plato, name);
+			tm.addIngredienteAPlato(plato.getIdPlato(), name);
 		} catch (Exception e) {
 			return Response.status(500).entity(doErrorMessage(e)).build();
 		}

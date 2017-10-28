@@ -68,7 +68,7 @@ public class DAOTablaPedidoMenu {
 	public ArrayList<PedidoMenu> darPedidosMenu() throws SQLException, Exception {
 		ArrayList<PedidoMenu> pedidosMenu = new ArrayList<PedidoMenu>();
 
-		String sql = "SELECT * FROM PEDIDO_MENU";
+		String sql = "SELECT * FROM PEDIDO_MENUS";
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);

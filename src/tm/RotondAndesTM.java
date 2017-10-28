@@ -175,7 +175,7 @@ public class RotondAndesTM {
 		{
 			//////transaccion
 			this.conn = darConexion();
-			conn.setTransactionIsolation(conn.TRANSACTION_REPEATABLE_READ);
+			conn.setTransactionIsolation(conn.TRANSACTION_READ_COMMITTED);
 			daoEquiv.setConn(conn);
 			daoEquiv.addEquivalente(ingredientes);
 			conn.commit();
@@ -213,7 +213,7 @@ public class RotondAndesTM {
 		{
 			//////transaccion
 			this.conn = darConexion();
-			conn.setTransactionIsolation(conn.TRANSACTION_REPEATABLE_READ);
+			conn.setTransactionIsolation(conn.TRANSACTION_READ_COMMITTED);
 			daoPlatos.setConn(conn);
 			daoPlatos.addEquivalentes(productos);
 		} catch (SQLException e) {
@@ -250,7 +250,7 @@ public class RotondAndesTM {
 		{
 			//////transaccion
 			this.conn = darConexion();
-			conn.setTransactionIsolation(conn.TRANSACTION_REPEATABLE_READ);
+			conn.setTransactionIsolation(conn.TRANSACTION_READ_COMMITTED);
 			daoMenu.setConn(conn);
 			daoPlato.setConn(conn);
 			daoMenu.surtir(nombre);
@@ -297,7 +297,7 @@ public class RotondAndesTM {
 		{
 			//////transaccion
 			this.conn = darConexion();
-			conn.setTransactionIsolation(conn.TRANSACTION_REPEATABLE_READ);
+			conn.setTransactionIsolation(conn.TRANSACTION_READ_COMMITTED);
 			daoPedidoMenu.setConn(conn);
 			daoPedidoPlato.setConn(conn);
 			daoPedido.setConn(conn);
@@ -363,7 +363,7 @@ public class RotondAndesTM {
 		{
 			//////transaccion
 			this.conn = darConexion();
-			conn.setTransactionIsolation(conn.TRANSACTION_REPEATABLE_READ);
+			conn.setTransactionIsolation(conn.TRANSACTION_READ_COMMITTED);
 			daoPedidoMenu.setConn(conn);
 			daoPedidoPlato.setConn(conn);
 			daoPedido.setConn(conn);
@@ -1420,7 +1420,7 @@ public class RotondAndesTM {
 	 * @param plato - el plato a agregar. plato != null
 	 * @throws Exception - cualquier error que se genere agregando el restaurante
 	 */
-	public void addIngredienteAPlato(Plato plato, String nomIngrediente) throws Exception {
+	public void addIngredienteAPlato(int idPlato, String nomIngrediente) throws Exception {
 		DAOTablaPlato daoPlato = new DAOTablaPlato();
 		DAOTablaIngredientesPlato daoPlatoIngrediente = new DAOTablaIngredientesPlato();
 		try 
@@ -1430,7 +1430,7 @@ public class RotondAndesTM {
 			conn.setTransactionIsolation(conn.TRANSACTION_READ_COMMITTED);
 			daoPlato.setConn(conn);
 			daoPlatoIngrediente.setConn(conn);
-			IngredientesPlato ingPlato = new IngredientesPlato(plato.getIdPlato(), nomIngrediente);
+			IngredientesPlato ingPlato = new IngredientesPlato(idPlato, nomIngrediente);
 			daoPlatoIngrediente.addIngredientesPlato(ingPlato);
 			conn.commit();
 
