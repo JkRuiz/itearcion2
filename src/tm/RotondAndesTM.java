@@ -311,11 +311,11 @@ public class RotondAndesTM {
 			for(int i = 0; i < count; i++) {
 				if(params[2*i + 2].compareTo("P") == 0) {
 					int idPlato = Integer.parseInt(params[2*i + 1]);
-					daoPlato.disminuirDisponibilidad(idPlato, 1);
+					//daoPlato.disminuirDisponibilidad(idPlato, 1);
 					daoPedidoPlato.addPedidoPlato(new PedidoPlato(pedido.getNumPedido(), idPlato));
 				} else {
 					int idMenu = Integer.parseInt(params[2*i + 1]);
-					daoMenu.disminuirDisponibilidad(idMenu, 1);
+					//daoMenu.disminuirDisponibilidad(idMenu, 1);
 					daoPedidoMenu.addPedidoMenu(new PedidoMenu(pedido.getNumPedido(), idMenu));
 				}
 			}

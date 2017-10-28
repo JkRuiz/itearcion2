@@ -192,7 +192,7 @@ public class PlatoServices {
 			tm.addIngredienteAPlato(informacion.getProducto(), informacion.getIngrediente());
 		} catch (Exception e) {
 			return Response.status(500).entity(doErrorMessage(e)).build();
-		}
+		} 
 		return Response.status(200).entity(new Informacion()).build();
 	}
 	
