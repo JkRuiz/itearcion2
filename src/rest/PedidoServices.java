@@ -17,6 +17,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import tm.RotondAndesTM;
+import vos.Informacion;
 import vos.Pedido;
 import vos.PedidoConsolidado;
 
@@ -254,14 +255,17 @@ public class PedidoServices {
      * Requerimiento F15
      */
 	@POST
-	@Path("mesa/{info}")
+	@Path("mesa")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public void registrarPedidoMesa(@QueryParam("info") String info, Pedido pedido) {
+	public Response registrarPedidoMesa(Informacion info) {
 		RotondAndesTM tm = new RotondAndesTM(getPath());
 		try {
-			tm.registrarPedidoMesa(pedido, info);
-		} catch (Exception e) {	}
+			tm.registrarPedidoMesa(new Pedido(info.getPedido()), info.getInformacion());
+		} catch (Exception e) {	
+			return Response.status(500).entity(doErrorMessage(e)).build();
+		}
+		return Response.status(200).entity(new Informacion()).build();
 	}
 	
 	/**
@@ -270,10 +274,13 @@ public class PedidoServices {
 	@DELETE
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public void cancelarPedido(Pedido pedido) {
+	public Response cancelarPedido(Pedido pedido) {
 		RotondAndesTM tm = new RotondAndesTM(getPath());
 		try {
 			tm.cancelarPedido(pedido);
-		} catch (Exception e) {	}
+		} catch (Exception e) { 
+			return Response.status(500).entity(doErrorMessage(e)).build();
+		}
+		return Response.status(200).entity(new Informacion()).build();
 	}
 }

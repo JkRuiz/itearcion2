@@ -196,11 +196,14 @@ public class IngredientesServices {
 	@POST
 	@Path("equivalentes")
 	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
-	public void addEquiv(Informacion informacionEq) {
+	@Produces({ MediaType.APPLICATION_JSON })
+	public Response addEquiv(Informacion informacionEq) {
 		RotondAndesTM tm = new RotondAndesTM(getPath());
 		try {
 			tm.addEquivalenciaIngrediente(informacionEq.getInformacion());
-		} catch (Exception e) {	}
+		} catch (Exception e) {
+			return Response.status(500).entity(doErrorMessage(e)).build();
+		}
+		return Response.status(200).entity(new Informacion()).build();
 	}
 }

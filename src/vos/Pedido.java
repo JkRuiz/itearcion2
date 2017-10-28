@@ -45,6 +45,10 @@ public class Pedido {
 		else cambios = "Sin cambios";
 	}
 
+	public Pedido(int pedido) {
+		this.numPedido = pedido;
+	}
+
 	public String getCambios() {
 		return cambios;
 	}

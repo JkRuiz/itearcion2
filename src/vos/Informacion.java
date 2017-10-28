@@ -8,7 +8,7 @@ public class Informacion {
 	private String informacion;
 
 	@JsonProperty(value="pedido")
-	private Pedido pedido;
+	private int pedido;
 	
 	@JsonProperty(value="producto")
 	private int producto;
@@ -16,13 +16,17 @@ public class Informacion {
 	@JsonProperty(value="ingrediente")
 	private String ingrediente;
 	
-	public Informacion(@JsonProperty(value="informacion") String informacion, @JsonProperty(value="pedido") Pedido pedido,
+	public Informacion(@JsonProperty(value="informacion") String informacion, @JsonProperty(value="pedido") int pedido,
 			@JsonProperty(value="producto") int producto, @JsonProperty(value="ingrediente")String ingrediente) {
 		super();
 		this.informacion = informacion;
 		this.pedido = pedido;
 		this.producto = producto;
 		this.ingrediente = ingrediente;
+	}
+
+	public Informacion() {
+		informacion = "Se realizo correctamente la operacion.";
 	}
 
 	public String getIngrediente() {
@@ -33,11 +37,11 @@ public class Informacion {
 		this.ingrediente = ingrediente;
 	}
 
-	public Pedido getPedido() {
+	public int getPedido() {
 		return pedido;
 	}
 
-	public void setPedido(Pedido pedido) {
+	public void setPedido(int pedido) {
 		this.pedido = pedido;
 	}
 

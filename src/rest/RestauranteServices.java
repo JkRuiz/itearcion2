@@ -15,6 +15,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import tm.RotondAndesTM;
+import vos.Informacion;
 import vos.Restaurante;
 
 @Path("restaurantes")
@@ -170,12 +171,16 @@ public class RestauranteServices {
 	 * @param nombre
 	 */
 	@PUT
-	@Path("surtir/{nombre}")
+	@Path("surtir")
+	@Consumes({ MediaType.APPLICATION_JSON })
 	@Produces({ MediaType.APPLICATION_JSON })
-	public void getRestaurantes(@QueryParam("nombre") String nombre) {
+	public Response getRestaurantes(Informacion info) {
 		RotondAndesTM tm = new RotondAndesTM(getPath());
 		try {
-			tm.surtirRestaurante(nombre);
-		} catch (Exception e) {	}
+			tm.surtirRestaurante(info.getInformacion());
+		} catch (Exception e) {
+			return Response.status(500).entity(doErrorMessage(e)).build();
+		}
+		return Response.status(200).entity(new Informacion()).build();
 	}
 }
