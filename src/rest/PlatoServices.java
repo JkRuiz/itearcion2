@@ -17,6 +17,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import tm.RotondAndesTM;
+import vos.Informacion;
 import vos.Plato;
 import vos.Zona;
 
@@ -142,15 +143,17 @@ public class PlatoServices {
 	 * @throws Exception 
      */
 	@POST
-	@Path("equivalentes/{productos}")
+	@Path("equivalentes")
+	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public void addEquivalencia(@QueryParam("productos") String productos) throws Exception {
+	public Response addEquivalencia(Informacion informacionEq) throws Exception {
 		RotondAndesTM tm = new RotondAndesTM(getPath());
 		try {
-			tm.addEquivalenciaPlato(productos);
+			tm.addEquivalenciaPlato(informacionEq.getInformacion());
 		} catch (Exception e) {
 			throw new Exception (doErrorMessage(e));
 		}
+		return Response.status(200).entity(informacionEq).build();
 	}
 	
     /**
@@ -180,17 +183,17 @@ public class PlatoServices {
      * @return Json con el video que actualizo o Json con el error que se produjo
      */
 	@PUT
-	@Path( "{ingrediente}" )
+	@Path( "ingrediente" )
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response agregarIngrediente(Plato plato, @QueryParam("ingrediente") String name) {
+	public Response agregarIngrediente(Informacion informacion) {
 		RotondAndesTM tm = new RotondAndesTM(getPath());
 		try {
-			tm.addIngredienteAPlato(plato, name);
+			tm.addIngredienteAPlato(informacion.getProducto(), informacion.getIngrediente());
 		} catch (Exception e) {
 			return Response.status(500).entity(doErrorMessage(e)).build();
 		}
-		return Response.status(200).entity(plato).build();
+		return Response.status(200).entity(informacion).build();
 	}
 	
     /**
