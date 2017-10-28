@@ -81,6 +81,7 @@ public class DAOTablaMenu {
 			int disponibles = rs.getInt("DISPONIBLES");
 			String restaurante = rs.getString("NOMRESTAURANTE");
 			int idMenu = rs.getInt("ID_MENU");
+			int max_disp = rs.getInt("MAX_DISP");
 			
 			String sqlAux = "SELECT * FROM MENU_PLATO WHERE ID_MENU ="+idMenu;
 			PreparedStatement prepStmtAux = conn.prepareStatement(sqlAux);
@@ -91,7 +92,7 @@ public class DAOTablaMenu {
 				int idPlato = rsAux.getInt("ID_PLATO");
 				productos.add(idPlato);
 			}
-			menus.add(new Menu(nombre, costoProd, precioVent, vendidos, disponibles, restaurante, idMenu, productos));
+			menus.add(new Menu(nombre, costoProd, precioVent, vendidos, disponibles, restaurante, idMenu, productos, max_disp));
 		}
 		return menus;
 	}
@@ -122,6 +123,7 @@ public class DAOTablaMenu {
 			int disponibles = rs.getInt("DISPONIBLES");
 			String restaurante = rs.getString("NOMRESTAURANTE");
 			int idMenu = rs.getInt("ID_MENU");
+			int max_disp = rs.getInt("MAX_DISP");
 			
 			String sqlAux = "SELECT * FROM MENU_PLATO WHERE ID_MENU ="+idMenu;
 			PreparedStatement prepStmtAux = conn.prepareStatement(sqlAux);
@@ -132,7 +134,7 @@ public class DAOTablaMenu {
 				int idPlato = rsAux.getInt("ID_PLATO");
 				productos.add(idPlato);
 			}
-			menus.add(new Menu(nombre2, costoProd, precioVent, vendidos, disponibles, restaurante, idMenu, productos));
+			menus.add(new Menu(nombre2, costoProd, precioVent, vendidos, disponibles, restaurante, idMenu, productos, max_disp));
 		}
 
 		return menus;
@@ -164,6 +166,7 @@ public class DAOTablaMenu {
 			int disponibles = rs.getInt("DISPONIBLES");
 			String restaurante = rs.getString("NOMRESTAURANTE");
 			int idMenu = rs.getInt("ID_MENU");
+			int max_disp = rs.getInt("MAX_DISP");
 			
 			String sqlAux = "SELECT * FROM MENU_PLATO WHERE ID_MENU ="+idMenu;
 			PreparedStatement prepStmtAux = conn.prepareStatement(sqlAux);
@@ -174,7 +177,7 @@ public class DAOTablaMenu {
 				int idPlato = rsAux.getInt("ID_PLATO");
 				productos.add(idPlato);
 			}
-			menu = new Menu(nombre, costoProd, precioVent, vendidos, disponibles, restaurante, idMenu, productos);
+			menu = new Menu(nombre, costoProd, precioVent, vendidos, disponibles, restaurante, idMenu, productos, max_disp);
 		}
 		return menu;
 	}

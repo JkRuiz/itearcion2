@@ -86,6 +86,7 @@ public class DAOTablaPlato {
 			int disponibles = rs.getInt("DISPONIBLES");
 			String tipo = rs.getString("TIPO");
 			String categoria = rs.getString("CATEGORIA");
+			int max_disp = rs.getInt("MAX_DISP");
 
 			String sqlAux = "SELECT * FROM EQUIVALENTES_PRODUCTOS WHERE PRODUCTO1 = "+ id + "OR PRODUCTO2 =" + id;
 			PreparedStatement prepStmtAux = conn.prepareStatement(sqlAux);
@@ -102,7 +103,7 @@ public class DAOTablaPlato {
 				equivalentes.add(equiv);
 			}
 			platos.add(new Plato(nombre, descripcion, traduccion, tiempoPreparacion, costoProduccion, precioVenta,
-					restaurante, id, vendidos, disponibles, tipo, categoria, equivalentes));
+					restaurante, id, vendidos, disponibles, tipo, categoria, equivalentes, max_disp));
 		}
 		return platos;
 	}
@@ -130,6 +131,7 @@ public class DAOTablaPlato {
 			int disponibles = rs.getInt("DISPONIBLES");
 			String tipo = rs.getString("TIPO");
 			String categoria = rs.getString("CATEGORIA");
+			int max_disp = rs.getInt("MAX_DISP");
 
 			String sqlAux = "SELECT * FROM EQUIVALENTES_PRODUCTOS WHERE PRODUCTO1 = "+ id + "OR PRODUCTO2 =" + id;
 			PreparedStatement prepStmtAux = conn.prepareStatement(sqlAux);
@@ -146,7 +148,7 @@ public class DAOTablaPlato {
 				equivalentes.add(equiv);
 			}
 			platos.add(new Plato(nombre, descripcion, traduccion, tiempoPreparacion, costoProduccion, precioVenta,
-					restaurante, id, vendidos, disponibles, tipo, categoria, equivalentes));
+					restaurante, id, vendidos, disponibles, tipo, categoria, equivalentes, max_disp));
 		}
 		return platos;
 	}
@@ -174,8 +176,9 @@ public class DAOTablaPlato {
 			int disponibles = rs.getInt("DISPONIBLES");
 			String tipo = rs.getString("TIPO");
 			String categoria = rs.getString("CATEGORIA");
+			int max_disp = rs.getInt("MAX_DISP");
 			plato = new Plato(nombre2, descripcion, traduccion, tiempoPreparacion,
-					costoProduccion, precioVenta, restaurante, id, vendidos, disponibles, tipo, categoria, null);
+					costoProduccion, precioVenta, restaurante, id, vendidos, disponibles, tipo, categoria, null, max_disp);
 		}
 		if (plato == null) throw new Exception("No existe el plato con id " + id1);
 		return plato;
@@ -280,6 +283,7 @@ public class DAOTablaPlato {
 			int disponibles = rs.getInt("DISPONIBLES");
 			String tipo = rs.getString("TIPO");
 			String categoria = rs.getString("CATEGORIA");
+			int max_disp = rs.getInt("MAX_DISP");
 
 			String sqlAux = "SELECT * FROM EQUIVALENTES_PRODUCTOS WHERE PRODUCTO1 = "+ id + "OR PRODUCTO2 =" + id;
 			PreparedStatement prepStmtAux = conn.prepareStatement(sqlAux);
@@ -296,7 +300,7 @@ public class DAOTablaPlato {
 				equivalentes.add(equiv);
 			}
 			platos.add(new Plato(nombre, descripcion, traduccion, tiempoPreparacion, costoProduccion, precioVenta,
-					restaurante, id, vendidos, disponibles, tipo, categoria, equivalentes));
+					restaurante, id, vendidos, disponibles, tipo, categoria, equivalentes, max_disp));
 		}
 		return platos;
 	}
@@ -331,6 +335,7 @@ public class DAOTablaPlato {
 			int disponibles = rs.getInt("DISPONIBLES");
 			String tipo = rs.getString("TIPO");
 			String categoria = rs.getString("CATEGORIA");
+			int max_disp = rs.getInt("MAX_DISP");
 
 			String sqlAux = "SELECT * FROM EQUIVALENTES_PRODUCTOS WHERE PRODUCTO1 = "+ id + "OR PRODUCTO2 =" + id;
 			PreparedStatement prepStmtAux = conn.prepareStatement(sqlAux);
@@ -347,7 +352,7 @@ public class DAOTablaPlato {
 				equivalentes.add(equiv);
 			}
 			platos.add(new Plato(nombre2, descripcion, traduccion, tiempoPreparacion, costoProduccion, precioVenta,
-					restaurante, id, vendidos, disponibles, tipo, categoria, equivalentes));
+					restaurante, id, vendidos, disponibles, tipo, categoria, equivalentes, max_disp));
 		}
 		return platos;
 	}
@@ -383,6 +388,7 @@ public class DAOTablaPlato {
 			int disponibles = rs.getInt("DISPONIBLES");
 			String tipo = rs.getString("TIPO");
 			String categoria = rs.getString("CATEGORIA");
+			int max_disp = rs.getInt("MAX_DISP");
 
 			String sqlAux = "SELECT * FROM EQUIVALENTES_PRODUCTOS WHERE PRODUCTO1 = "+ id + "OR PRODUCTO2 =" + id;
 			PreparedStatement prepStmtAux = conn.prepareStatement(sqlAux);
@@ -399,7 +405,7 @@ public class DAOTablaPlato {
 				equivalentes.add(equiv);
 			}
 			plato = new Plato(nombre2, descripcion, traduccion, tiempoPreparacion, costoProduccion, precioVenta,
-					restaurante, id, vendidos, disponibles, tipo, categoria, equivalentes);	
+					restaurante, id, vendidos, disponibles, tipo, categoria, equivalentes, max_disp);	
 		}
 		if (plato == null) throw new Exception("No existe ningun plato con el id " + id1);
 		return plato;
@@ -563,8 +569,9 @@ public class DAOTablaPlato {
 			int disponibles = rs.getInt("DISPONIBLES");
 			String tipo = rs.getString("TIPO");
 			String categoria = rs.getString("CATEGORIA");
+			int max_disp = rs.getInt("MAX_DISP");
 			platos.add(new Plato(nombre2, descripcion, traduccion, tiempoPreparacion, costoProduccion, precioVenta,
-					restaurante, id, vendidos, disponibles, tipo, categoria, null));
+					restaurante, id, vendidos, disponibles, tipo, categoria, null, max_disp));
 		}
 		return platos;
 	}

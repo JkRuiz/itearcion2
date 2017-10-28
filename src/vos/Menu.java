@@ -31,9 +31,12 @@ public class Menu {
 	@JsonProperty(value="productos")
 	private List productos;
 	
+	@JsonProperty(value="max_disponibles")
+	private int max_disp;
+	
 	public Menu(@JsonProperty(value="nombre")String nombre, @JsonProperty(value="costoProd")float costoProd, @JsonProperty(value="precioVent")float precioVent,
 			@JsonProperty(value="vendidos")int vendidos, @JsonProperty(value="disponibles")int disponibles,@JsonProperty(value="restaurante")String restaurante,
-			@JsonProperty(value="idMenu")int idMenu, @JsonProperty(value="productos") List productos) {
+			@JsonProperty(value="idMenu")int idMenu, @JsonProperty(value="productos") List productos, @JsonProperty(value="max_disponibles")int max_disp) {
 		super();
 		this.nombre = nombre;
 		this.costoProd = costoProd;
@@ -43,6 +46,7 @@ public class Menu {
 		this.restaurante = restaurante;
 		this.idMenu = idMenu;
 		this.productos = productos;
+		this.max_disp = max_disp;
 	}
 
 	public List getProductos() {
@@ -112,6 +116,16 @@ public class Menu {
 	public void setRestaurante(String restaurante) {
 		this.restaurante = restaurante;
 	}
+
+	public int getMax_disp() {
+		return max_disp;
+	}
+
+	public void setMax_disp(int max_disp) {
+		this.max_disp = max_disp;
+	}
+	
+	
 	
 	
 	
