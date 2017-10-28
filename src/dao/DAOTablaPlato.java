@@ -565,7 +565,7 @@ public class DAOTablaPlato {
 			float precioVenta = rs.getFloat("PRECIOVENTA");
 			String restaurante = rs.getString("RESTAURANTE");
 			int id = rs.getInt("ID_PLATO");
-			int vendidos = rs.getInt("VENDIDOS");
+			int vendidos = rs.getInt("VENDIDOS"); 
 			int disponibles = rs.getInt("DISPONIBLES");
 			String tipo = rs.getString("TIPO");
 			String categoria = rs.getString("CATEGORIA");

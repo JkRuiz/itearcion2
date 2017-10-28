@@ -331,7 +331,7 @@ public class RotondAndesTM {
 			System.err.println("GeneralException:" + e.getMessage());
 			e.printStackTrace();
 			throw e;
-		} finally {
+		} finally {  
 			try {
 				daoPedidoMenu.cerrarRecursos();
 				daoPedidoPlato.cerrarRecursos();
@@ -765,6 +765,9 @@ public class RotondAndesTM {
 		return pedidos;
 	}
 	
+	/**
+	 * Requerimiento C8
+	 */
 	public PedidoConsolidado darPedidosRestaurante(String restaurante) throws Exception {
 		PedidoConsolidado pedido;
 		DAOTablaPedido daoPedido = new DAOTablaPedido();

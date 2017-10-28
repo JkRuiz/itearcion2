@@ -234,6 +234,14 @@ public class Plato {
 		this.categoria = categoria;
 	}
 
+	public int getMax_disp() {
+		return max_disp;
+	}
+
+	public void setMax_disp(int max_disp) {
+		this.max_disp = max_disp;
+	}
+
 	
 	
 	
