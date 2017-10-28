@@ -8,6 +8,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -182,4 +183,27 @@ public class IngredientesServices {
 //		}
 //		return Response.status(200).entity(video).build();
 //	}
+	
+	
+//	@Path("equivalentes/{productos}")
+//	@Produces(MediaType.APPLICATION_JSON)
+//	public void addEquivalencia(@QueryParam("productos") String productos) throws Exception {
+	
+	/**
+     * Requerimiento F11
+     * Metodo que expone servicio REST usando POST que agrega la equivalencia entre ingredientes 
+     * para un restaurante
+     * <b>URL: </b> http://"ip o nombre de host":8080/VideoAndes/rest/videos/video
+     * @param video - video a agregar
+     * @return Json con el video que agrego o Json con el error que se produjo
+     */
+	@POST
+	@Path("equivalentes/{productos}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public void addEquiv(@QueryParam("productos") String param) {
+		RotondAndesTM tm = new RotondAndesTM(getPath());
+		try {
+			tm.addEquivalenciaIngrediente(param);
+		} catch (Exception e) {	}
+	}
 }

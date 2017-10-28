@@ -354,7 +354,6 @@ public class RotondAndesTM {
 	 * @throws Exception en caso de que no se pueda cancelar el pedido.
 	 */
 	public void cancelarPedido(Pedido pedido) throws Exception {
-		//TODO FALTA POR IMPLEMENTAR
 		DAOTablaPedidoMenu daoPedidoMenu = new DAOTablaPedidoMenu();
 		DAOTablaPedidoPlato daoPedidoPlato = new DAOTablaPedidoPlato();
 		DAOTablaPedido daoPedido = new DAOTablaPedido();
@@ -834,9 +833,9 @@ public class RotondAndesTM {
 	
 	/**
 	 * REQUERIMIENTO FC7
-	 * Metodo que modela la transaccion que retorna el plato mas ofrecido en la base de datos
-	 * @return platoMasOfrecido - objeto que modela  el plato mas ofrecido.
-	 * @throws Exception -  cualquier error que se genere durante la transaccion
+	 * Retorna los platos que ha consumido un cliente frecuente de la rotonda
+	 * @return platos - platos que ha consumido el cliente indicado por parametro
+	 * @throws Exception - cualquier error que se genere durante la busqueda
 	 */
 	public List<Plato> darProductosConsumidos(ClienteFrecuente cliente) throws Exception {
 		List<Plato> platos;
