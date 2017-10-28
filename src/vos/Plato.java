@@ -2,6 +2,8 @@ package vos;
 
 import java.util.ArrayList;
 
+import javax.swing.plaf.basic.BasicInternalFrameTitlePane.MaximizeAction;
+
 import org.codehaus.jackson.annotate.JsonProperty;
 
 public class Plato {
@@ -82,6 +84,9 @@ public class Plato {
 	
 	@JsonProperty(value="equivalentes")
 	private ArrayList equivalentes;
+	
+	@JsonProperty(value="max_disponibles")
+	private int max_disp;
 
 	/**
 	 * Metodo constructor 
@@ -102,7 +107,8 @@ public class Plato {
 			@JsonProperty(value="tiempoPreparacion")float tiempoPreparacion, @JsonProperty(value="costoProduccion")float costoProduccion,
 			@JsonProperty(value="precioVenta")float precioVenta, @JsonProperty(value="restaurante")String restaurante, 
 			@JsonProperty(value="idPlato")int idPlato,@JsonProperty(value="vendidos") int vendidos, @JsonProperty(value="disponibles")int disponibles, 
-			@JsonProperty(value="tipo")String tipo,@JsonProperty(value="categoria")String categoria,@JsonProperty(value="equivalentes") ArrayList equivalentes) {
+			@JsonProperty(value="tipo")String tipo,@JsonProperty(value="categoria")String categoria,@JsonProperty(value="equivalentes") ArrayList equivalente
+			, @JsonProperty(value="max_disponibles")int max_disp) {
 		super();
 		this.nombre = nombre;
 		this.descripcion = descripcion;
@@ -116,7 +122,8 @@ public class Plato {
 		this.disponibles = disponibles;
 		this.tipo = tipo;
 		this.categoria = categoria;
-		this.equivalentes = equivalentes;
+		this.equivalentes = equivalente;
+		this.max_disp = max_disp;
 	}
 
 	public ArrayList getEquivalentes() {
