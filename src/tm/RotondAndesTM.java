@@ -358,8 +358,6 @@ public class RotondAndesTM {
 		DAOTablaPedidoMenu daoPedidoMenu = new DAOTablaPedidoMenu();
 		DAOTablaPedidoPlato daoPedidoPlato = new DAOTablaPedidoPlato();
 		DAOTablaPedido daoPedido = new DAOTablaPedido();
-		DAOTablaPlato daoPlato = new DAOTablaPlato();
-		DAOTablaMenu daoMenu = new DAOTablaMenu();
 		try 
 		{
 			//////transaccion
@@ -368,10 +366,10 @@ public class RotondAndesTM {
 			daoPedidoMenu.setConn(conn);
 			daoPedidoPlato.setConn(conn);
 			daoPedido.setConn(conn);
-			daoPlato.setConn(conn);
-			daoMenu.setConn(conn);
 			
-			daoPedido.addPedido(pedido);
+			daoPedidoMenu.removerPedidos(pedido);
+			daoPedidoPlato.removerPedidos(pedido);
+			daoPedido.removerPedido(pedido);
 			
 			conn.commit();
 		} catch (SQLException e) {
@@ -788,6 +786,7 @@ public class RotondAndesTM {
 		}
 		return pedido;
 	}
+	
 	/**
 	 * REQUERIMIENTO FC4
 	 * Metodo que modela la transaccion que retorna el plato mas ofrecido en la base de datos
@@ -831,6 +830,44 @@ public class RotondAndesTM {
 			}
 		}
 		return platoMasOfercido;
+	}
+	
+	/**
+	 * REQUERIMIENTO FC7
+	 * Metodo que modela la transaccion que retorna el plato mas ofrecido en la base de datos
+	 * @return platoMasOfrecido - objeto que modela  el plato mas ofrecido.
+	 * @throws Exception -  cualquier error que se genere durante la transaccion
+	 */
+	public List<Plato> darProductosConsumidos(ClienteFrecuente cliente) throws Exception {
+		List<Plato> platos;
+		DAOTablaPlato daoPlatos = new DAOTablaPlato();
+		try 
+		{
+			//////transaccion
+			this.conn = darConexion();
+			daoPlatos.setConn(conn);
+			platos = daoPlatos.darPlatosCliente(cliente);
+
+		} catch (SQLException e) {
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				daoPlatos.cerrarRecursos();
+				if(this.conn!=null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
+		return platos;
 	}
 	
 	/**

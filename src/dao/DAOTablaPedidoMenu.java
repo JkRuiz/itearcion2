@@ -6,6 +6,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import com.sun.xml.internal.bind.v2.schemagen.xmlschema.List;
+
+import sun.util.BuddhistCalendar;
+import vos.Pedido;
 import vos.PedidoMenu;
 import vos.PedidoPlato;
 
@@ -207,6 +211,14 @@ public class DAOTablaPedidoMenu {
 			pedidosMenu.add(new PedidoMenu(numPedido, idMenu));
 		}
 		return pedidosMenu;
+	}
+
+	public void removerPedidos(Pedido pedido) throws SQLException, Exception {
+		String sql = "DELETE * FROM PEDIDO_MENUS WHERE NUM_PEDIDO =" + pedido.getNumPedido();
+
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		prepStmt.executeQuery();
 	}
 
 }

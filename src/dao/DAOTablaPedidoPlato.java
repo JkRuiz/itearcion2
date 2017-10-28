@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import vos.Pedido;
 import vos.PedidoPlato;
 
 
@@ -147,6 +148,14 @@ public class DAOTablaPedidoPlato {
 		recursos.add(prepStmt);
 		prepStmt.executeQuery();
 
+	}
+
+	public void removerPedidos(Pedido pedido) throws SQLException, Exception {
+		String sql = "DELETE * FROM PEDIDO_PLATO WHERE NUM_PEDIDO =" + pedido.getNumPedido();
+
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		prepStmt.executeQuery();
 	}
 	
 	/**

@@ -253,6 +253,14 @@ public class DAOTablaPedido {
 			prepStmt.executeQuery();
 		}
 
+	public void removerPedido(Pedido pedido) throws SQLException, Exception {
+		String sql = "DELETE * FROM PEDIDO WHERE NUM_PEDIDO =" + pedido.getNumPedido();
+
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		prepStmt.executeQuery();
+	}
+
 	/**
 	 * Metodo que elimina el video que entra como parametro en la base de datos.
 	 * @param video - el video a borrar. video !=  null

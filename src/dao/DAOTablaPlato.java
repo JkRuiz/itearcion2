@@ -7,7 +7,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import vos.ClienteFrecuente;
 import vos.Pedido;
+import vos.PedidoMenu;
 import vos.Plato;
 
 public class DAOTablaPlato {
@@ -533,5 +535,52 @@ public class DAOTablaPlato {
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
 		prepStmt.executeQuery();
+	}
+
+	public List<Plato> darPlatosCliente(ClienteFrecuente cliente) throws SQLException, Exception {
+		List<Plato> platos = new ArrayList<>();
+		String sql = "SELECT * FROM PLATO WHERE ID_PLATO "
+				+ "IN (SELECT ID_PLATO FROM (PEDIDO_PLATO NATURAL JOIN PEDIDO) "
+				+ "WHERE EMAIL_USER = '" + cliente.getEmail() +"') OR ID_PLATO IN "
+				+ "(SELECT ID_PLATO FROM MENU_PLATO WHERE ID_MENU IN "
+				+ "(SELECT ID_MENU FROM PEDIDO_MENUS NATURAL JOIN PEDIDO "
+				+ "WHERE EMAIL_USER = '" + cliente.getEmail() +"' ));";
+		
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		ResultSet rs = prepStmt.executeQuery();
+
+		while (rs.next()) {
+			String nombre2 = rs.getString("NOMBRE");
+			String descripcion = rs.getString("DESCRIPCION");
+			String traduccion = rs.getString("TRADUCCION");
+			float tiempoPreparacion = rs.getFloat("TIEMPOPREPARACION");
+			float costoProduccion = rs.getFloat("COSTOPRODUCCION");
+			float precioVenta = rs.getFloat("PRECIOVENTA");
+			String restaurante = rs.getString("RESTAURANTE");
+			int id = rs.getInt("ID_PLATO");
+			int vendidos = rs.getInt("VENDIDOS");
+			int disponibles = rs.getInt("DISPONIBLES");
+			String tipo = rs.getString("TIPO");
+			String categoria = rs.getString("CATEGORIA");
+
+			String sqlAux = "SELECT * FROM EQUIVALENTES_PRODUCTOS WHERE PRODUCTO1 = "+ id + "OR PRODUCTO2 =" + id;
+			PreparedStatement prepStmtAux = conn.prepareStatement(sqlAux);
+			recursos.add(prepStmtAux);
+			ResultSet rsAux = prepStmtAux.executeQuery();
+			ArrayList<Plato> equivalentes = new ArrayList<Plato>();
+			while (rsAux.next())
+			{
+				Plato equiv = null;
+				int idProd1 = rsAux.getInt("PRODUCTO1");
+				int idProd2 = rsAux.getInt("PRODUCTO2");
+				if (idProd1==id) equiv = getEquivalentePorId(idProd2);
+				else equiv = getEquivalentePorId(idProd1);
+				equivalentes.add(equiv);
+			}
+			platos.add(new Plato(nombre2, descripcion, traduccion, tiempoPreparacion, costoProduccion, precioVenta,
+					restaurante, id, vendidos, disponibles, tipo, categoria, equivalentes));
+		}
+		return platos;
 	}
 }
