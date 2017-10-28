@@ -27,7 +27,7 @@ public class RestauranteServices {
 	private ServletContext context;
 
 	/**
-	 * Metodo que retorna el path de la carpeta WEB-INF/ConnectionData en el deploy actual dentro del servidor.
+	 * Metodo que retorna el path de la carpeta WEB-INF /ConnectionData en el deploy actual dentro del servidor.
 	 * @return path de la carpeta WEB-INF/ConnectionData en el deploy actual.
 	 */
 	private String getPath() {
