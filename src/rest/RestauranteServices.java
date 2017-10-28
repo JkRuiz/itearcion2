@@ -6,8 +6,10 @@ import javax.servlet.ServletContext;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -163,4 +165,17 @@ public class RestauranteServices {
 //		return Response.status(200).entity(video).build();
 //	}
 	
+	/**
+	 * Requerimiento F13
+	 * @param nombre
+	 */
+	@PUT
+	@Path("surtir/{nombre}")
+	@Produces({ MediaType.APPLICATION_JSON })
+	public void getRestaurantes(@QueryParam("nombre") String nombre) {
+		RotondAndesTM tm = new RotondAndesTM(getPath());
+		try {
+			tm.surtirRestaurante(nombre);
+		} catch (Exception e) {	}
+	}
 }

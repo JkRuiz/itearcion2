@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.servlet.ServletContext;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -248,5 +249,31 @@ public class PedidoServices {
 //		}
 //		return Response.status(200).entity(video).build();
 //	}
-
+	
+	/**
+     * Requerimiento F15
+     */
+	@POST
+	@Path("mesa/{info}")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public void registrarPedidoMesa(@QueryParam("info") String info, Pedido pedido) {
+		RotondAndesTM tm = new RotondAndesTM(getPath());
+		try {
+			tm.registrarPedidoMesa(pedido, info);
+		} catch (Exception e) {	}
+	}
+	
+	/**
+     * Requerimiento F17
+     */
+	@DELETE
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public void cancelarPedido(Pedido pedido) {
+		RotondAndesTM tm = new RotondAndesTM(getPath());
+		try {
+			tm.cancelarPedido(pedido);
+		} catch (Exception e) {	}
+	}
 }

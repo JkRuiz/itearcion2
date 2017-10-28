@@ -563,23 +563,8 @@ public class DAOTablaPlato {
 			int disponibles = rs.getInt("DISPONIBLES");
 			String tipo = rs.getString("TIPO");
 			String categoria = rs.getString("CATEGORIA");
-
-			String sqlAux = "SELECT * FROM EQUIVALENTES_PRODUCTOS WHERE PRODUCTO1 = "+ id + "OR PRODUCTO2 =" + id;
-			PreparedStatement prepStmtAux = conn.prepareStatement(sqlAux);
-			recursos.add(prepStmtAux);
-			ResultSet rsAux = prepStmtAux.executeQuery();
-			ArrayList<Plato> equivalentes = new ArrayList<Plato>();
-			while (rsAux.next())
-			{
-				Plato equiv = null;
-				int idProd1 = rsAux.getInt("PRODUCTO1");
-				int idProd2 = rsAux.getInt("PRODUCTO2");
-				if (idProd1==id) equiv = getEquivalentePorId(idProd2);
-				else equiv = getEquivalentePorId(idProd1);
-				equivalentes.add(equiv);
-			}
 			platos.add(new Plato(nombre2, descripcion, traduccion, tiempoPreparacion, costoProduccion, precioVenta,
-					restaurante, id, vendidos, disponibles, tipo, categoria, equivalentes));
+					restaurante, id, vendidos, disponibles, tipo, categoria, null));
 		}
 		return platos;
 	}

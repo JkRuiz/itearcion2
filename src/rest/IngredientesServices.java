@@ -191,11 +191,6 @@ public class IngredientesServices {
 	
 	/**
      * Requerimiento F11
-     * Metodo que expone servicio REST usando POST que agrega la equivalencia entre ingredientes 
-     * para un restaurante
-     * <b>URL: </b> http://"ip o nombre de host":8080/VideoAndes/rest/videos/video
-     * @param video - video a agregar
-     * @return Json con el video que agrego o Json con el error que se produjo
      */
 	@POST
 	@Path("equivalentes/{productos}")
