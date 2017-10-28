@@ -137,6 +137,7 @@ public class RotondAndesTM {
 		{
 			//////transaccion
 			this.conn = darConexion();
+			conn.setTransactionIsolation(conn.TRANSACTION_READ_COMMITTED);
 			daoPlatos.setConn(conn);
 			platos = daoPlatos.darPlatosFiltro(filtro);
 		} catch (SQLException e) {
@@ -212,6 +213,7 @@ public class RotondAndesTM {
 		{
 			//////transaccion
 			this.conn = darConexion();
+			conn.setTransactionIsolation(conn.TRANSACTION_REPEATABLE_READ);
 			daoPlatos.setConn(conn);
 			daoPlatos.addEquivalentes(productos);
 		} catch (SQLException e) {
@@ -410,6 +412,7 @@ public class RotondAndesTM {
 		{
 			//////transaccion
 			this.conn = darConexion();
+			conn.setTransactionIsolation(conn.TRANSACTION_READ_COMMITTED);
 			daoZona.setConn(conn);
 			zonas = daoZona.darZonas();
 
@@ -448,6 +451,7 @@ public class RotondAndesTM {
 		{
 			//////transaccion
 			this.conn = darConexion();
+			conn.setTransactionIsolation(conn.TRANSACTION_READ_COMMITTED);
 			daoCliente.setConn(conn);
 			clientes = daoCliente.darClientes();
 
@@ -481,6 +485,7 @@ public class RotondAndesTM {
 		{
 			//////transaccion
 			this.conn = darConexion();
+			conn.setTransactionIsolation(conn.TRANSACTION_READ_COMMITTED);
 			daoCliente.setConn(conn);
 			daoPedido.setConn(conn);
 			pedidosCliente = daoPedido.darPedidosCliente(emailCliente);
@@ -513,6 +518,7 @@ public class RotondAndesTM {
 		{
 			//////transaccion
 			this.conn = darConexion();
+			conn.setTransactionIsolation(conn.TRANSACTION_READ_COMMITTED);
 			daoZona.setConn(conn);
 			zonas = daoZona.darZonasFiltro(filtro);
 		} catch (SQLException e) {
@@ -582,6 +588,7 @@ public class RotondAndesTM {
 		{
 			//////transaccion
 			this.conn = darConexion();
+			conn.setTransactionIsolation(conn.TRANSACTION_READ_COMMITTED);
 			daoRestaurante.setConn(conn);
 			restaurantes = daoRestaurante.darRestaurantes();
 
@@ -619,6 +626,7 @@ public class RotondAndesTM {
 		{
 			//////transaccion
 			this.conn = darConexion();
+			conn.setTransactionIsolation(conn.TRANSACTION_READ_COMMITTED);
 			daoUsuario.setConn(conn);
 			usuarios = daoUsuario.darUsuarios();
 
@@ -656,6 +664,7 @@ public class RotondAndesTM {
 		{
 			//////transaccion
 			this.conn = darConexion();
+			conn.setTransactionIsolation(conn.TRANSACTION_READ_COMMITTED);
 			daoMenu.setConn(conn);
 			menus = daoMenu.darMenus();
 
@@ -693,6 +702,7 @@ public class RotondAndesTM {
 		{
 			//////transaccion
 			this.conn = darConexion();
+			conn.setTransactionIsolation(conn.TRANSACTION_READ_COMMITTED);
 			daoIngredientes.setConn(conn);
 			ingredientes = daoIngredientes.darIngredientes();
 
@@ -730,6 +740,7 @@ public class RotondAndesTM {
 		{
 			//////transaccion
 			this.conn = darConexion();
+			conn.setTransactionIsolation(conn.TRANSACTION_READ_COMMITTED);
 			daoPedido.setConn(conn);
 			pedidos = daoPedido.darPedidos();
 
@@ -762,6 +773,7 @@ public class RotondAndesTM {
 		{
 			//////transaccion
 			this.conn = darConexion();
+			conn.setTransactionIsolation(conn.TRANSACTION_READ_COMMITTED);
 			daoPedido.setConn(conn);
 			pedido = daoPedido.darPedidosConsolidadosRestaurante(restaurante);
 
@@ -802,6 +814,7 @@ public class RotondAndesTM {
 		{
 			//////transaccion
 			this.conn = darConexion();
+			conn.setTransactionIsolation(conn.TRANSACTION_READ_COMMITTED);
 			daoPlatos.setConn(conn);
 			daoMenuPlato.setConn(conn);
 			platos = daoPlatos.darPlatos();
@@ -845,6 +858,7 @@ public class RotondAndesTM {
 		{
 			//////transaccion
 			this.conn = darConexion();
+			conn.setTransactionIsolation(conn.TRANSACTION_READ_COMMITTED);
 			daoPlatos.setConn(conn);
 			platos = daoPlatos.darPlatosCliente(cliente);
 
@@ -883,6 +897,7 @@ public class RotondAndesTM {
 		{
 			//////transaccion
 			this.conn = darConexion();
+			conn.setTransactionIsolation(conn.TRANSACTION_READ_COMMITTED);
 			daoUsuario.setConn(conn);
 			daoUsuario.addUsuario(usuario);
 			conn.commit();
@@ -922,6 +937,7 @@ public class RotondAndesTM {
 		{
 			//////transaccion
 			this.conn = darConexion();
+			conn.setTransactionIsolation(conn.TRANSACTION_READ_COMMITTED);
 			daoCliente.setConn(conn);
 			daoCliente.addCliente(cliente);
 			conn.commit();
@@ -960,6 +976,7 @@ public class RotondAndesTM {
 		{
 			//////transaccion
 			this.conn = darConexion();
+			conn.setTransactionIsolation(conn.TRANSACTION_READ_COMMITTED);
 			daoRestaurante.setConn(conn);
 			daoRestaurante.addRestaurante(restaurante);
 			conn.commit();
@@ -998,6 +1015,7 @@ public class RotondAndesTM {
 		{
 			//////transaccion
 			this.conn = darConexion();
+			conn.setTransactionIsolation(conn.TRANSACTION_READ_COMMITTED);
 			daoPlato.setConn(conn);
 			daoPlato.addPlato(plato);
 			conn.commit();
@@ -1036,6 +1054,7 @@ public class RotondAndesTM {
 		{
 			//////transaccion
 			this.conn = darConexion();
+			conn.setTransactionIsolation(conn.TRANSACTION_READ_COMMITTED);
 			daoIngrediente.setConn(conn);
 			daoIngrediente.addIngrediente(ingrediente);
 			conn.commit();
@@ -1074,6 +1093,7 @@ public class RotondAndesTM {
 		{
 			//////transaccion
 			this.conn = darConexion();
+			conn.setTransactionIsolation(conn.TRANSACTION_READ_COMMITTED);
 			daoMenu.setConn(conn);
 			daoMenu.addMenu(menu);
 			conn.commit();
@@ -1112,6 +1132,7 @@ public class RotondAndesTM {
 		{
 			//////transaccion
 			this.conn = darConexion();
+			conn.setTransactionIsolation(conn.TRANSACTION_READ_COMMITTED);
 			daoZona.setConn(conn);
 			daoZona.addZona(zona);
 			conn.commit();
@@ -1150,6 +1171,7 @@ public class RotondAndesTM {
 		{
 			//////transaccion
 			this.conn = darConexion();
+			conn.setTransactionIsolation(conn.TRANSACTION_READ_COMMITTED);
 			daoCliente.setConn(conn);
 			daoCliente.updateCliente(cliente);
 			conn.commit();
@@ -1190,6 +1212,7 @@ public class RotondAndesTM {
 		{
 			//////transaccion
 			this.conn = darConexion();
+			conn.setTransactionIsolation(conn.TRANSACTION_READ_COMMITTED);
 			daoPedido.setConn(conn);
 			daoPedidoMenu.setConn(conn);
 			daoMenu.setConn(conn);
@@ -1228,6 +1251,13 @@ public class RotondAndesTM {
 		}
 	}
 	
+	/**
+	 * RF14
+	 * @param pedido
+	 * @param idMenu
+	 * @param equivalencia
+	 * @throws Exception
+	 */
 	public void addPedidoMenuEquivalencia(Pedido pedido, int idMenu, String equivalencia) throws Exception {
 		DAOTablaPedido daoPedido = new DAOTablaPedido();
 		DAOTablaPedidoMenu daoPedidoMenu = new DAOTablaPedidoMenu();
@@ -1239,6 +1269,7 @@ public class RotondAndesTM {
 			
 			//////transaccion
 			this.conn = darConexion();
+			conn.setTransactionIsolation(conn.TRANSACTION_READ_COMMITTED);
 			daoPedido.setConn(conn);
 			daoPedidoMenu.setConn(conn);
 			daoMenu.setConn(conn);
@@ -1292,6 +1323,7 @@ public class RotondAndesTM {
 		{
 			//////transaccion
 			this.conn = darConexion();
+			conn.setTransactionIsolation(conn.TRANSACTION_READ_COMMITTED);
 			daoPedido.setConn(conn);
 			daoPedidoPlato.setConn(conn);
 			daoPlato.setConn(conn);
@@ -1344,6 +1376,7 @@ public class RotondAndesTM {
 		{	
 			//////transaccion
 			this.conn = darConexion();
+			conn.setTransactionIsolation(conn.TRANSACTION_READ_COMMITTED);
 			daoPedido.setConn(conn);
 			daoPedidoPlato.setConn(conn);
 			daoPlato.setConn(conn);
@@ -1392,6 +1425,7 @@ public class RotondAndesTM {
 		{
 			//////transaccion
 			this.conn = darConexion();
+			conn.setTransactionIsolation(conn.TRANSACTION_READ_COMMITTED);
 			daoPlato.setConn(conn);
 			daoPlatoIngrediente.setConn(conn);
 			IngredientesPlato ingPlato = new IngredientesPlato(plato.getIdPlato(), nomIngrediente);
@@ -1433,6 +1467,7 @@ public class RotondAndesTM {
 		{
 			//////transaccion
 			this.conn = darConexion();
+			conn.setTransactionIsolation(conn.TRANSACTION_READ_COMMITTED);
 			daoMenu.setConn(conn);
 			daoMenuPlato.setConn(conn);
 			daoMenu.addMenu(menu);
@@ -1476,6 +1511,7 @@ public class RotondAndesTM {
 		{
 			//////transaccion
 			this.conn = darConexion();
+			conn.setTransactionIsolation(conn.TRANSACTION_READ_COMMITTED);
 			daoMenu.setConn(conn);
 			daoMenuPlato.setConn(conn);
 			MenuPlato menuPlato = new MenuPlato(menu.getIdMenu(), idPlato);
