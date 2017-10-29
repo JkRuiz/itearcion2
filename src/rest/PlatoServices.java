@@ -136,6 +136,7 @@ public class PlatoServices {
 //	}
 
 	/**
+	 * Requerimiento F12
      * Metodo que expone servicio REST usando POST que agrega el video que recibe en Json
      * <b>URL: </b> http://"ip o nombre de host":8080/VideoAndes/rest/videos/video
      * @param video - video a agregar
@@ -153,7 +154,7 @@ public class PlatoServices {
 		} catch (Exception e) {
 			throw new Exception (doErrorMessage(e));
 		}
-		return Response.status(200).entity(informacionEq).build();
+		return Response.status(200).entity(new Informacion()).build();
 	}
 	
     /**
