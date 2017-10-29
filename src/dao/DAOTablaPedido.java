@@ -89,7 +89,7 @@ public class DAOTablaPedido {
 		ArrayList<ProductoConsolidado> productos = new ArrayList<ProductoConsolidado>();
 		int consumidoRegistrados = 0;
 		int consumidoNoRegistrados = 0;
-		
+
 		String sql = "SELECT NOMBRE,PRECIOVENTA,VENDIDOS,ID_PLATO FROM PLATO WHERE RESTAURANTE='"+ restaurante + "'";
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
@@ -102,7 +102,7 @@ public class DAOTablaPedido {
 			int vendidos = rs.getInt("VENDIDOS");
 			int idPlato = rs.getInt("ID_PLATO");
 			int ventaTotalDinero = precioVenta*vendidos;
-			
+
 			//Se mira quienes pidieron el plato correspondiente, verificando si es o no un usuario registrado
 			String sqlAux = "SELECT EMAIL_USER FROM PEDIDO_PLATO NATURAL JOIN PEDIDO NATURAL JOIN PLATO WHERE ID_PLATO ="+ idPlato;
 			PreparedStatement prepStmtAux = conn.prepareStatement(sqlAux);
@@ -111,7 +111,7 @@ public class DAOTablaPedido {
 			while (rsAux.next())
 			{
 				String emailUser = rsAux.getString("EMAIL_USER");
-				
+
 				String sqlAux2 = "SELECT count(*) FROM CLIENTEFR WHERE EMAIL = '" + emailUser + "'";
 				PreparedStatement prepStmtAux2 = conn.prepareStatement(sqlAux2);
 				recursos.add(prepStmtAux2);
@@ -123,28 +123,36 @@ public class DAOTablaPedido {
 					else consumidoRegistrados++;
 				}
 			}
-			
-			//Se mira quienes pidieron el plato correspondiente POR MEDIO DE UN MENU, verificando si es o no un usuario registrado
-			String sqlAux2 = "select EMAIL_USER from pedido natural join pedido_menus where id_menu = (select id_menu from MENU_PLATO where id_plato ="+ idPlato + ")";
-			PreparedStatement prepStmtAux2 = conn.prepareStatement(sqlAux2);
-			recursos.add(prepStmtAux2);
-			ResultSet rsAux2 = prepStmtAux2.executeQuery();
-			while (rsAux2.next())
+
+			String sqlAltern = "select id_menu from MENU_PLATO where id_plato ="+ idPlato;
+			PreparedStatement prepStmtAltr = conn.prepareStatement(sqlAltern);
+			recursos.add(prepStmtAltr);
+			ResultSet rsAltr = prepStmtAltr.executeQuery();
+			while (rsAltr.next())
 			{
-				String emailUser = rsAux2.getString("EMAIL_USER");
-				
-				String sqlAux3 = "SELECT count(*) FROM CLIENTEFR WHERE EMAIL = '" + emailUser + "'";
-				PreparedStatement prepStmtAux3 = conn.prepareStatement(sqlAux3);
-				recursos.add(prepStmtAux3);
-				ResultSet rsAux3 = prepStmtAux3.executeQuery();
-				if (rsAux3.next())
+				int idMenu = rsAltr.getInt("ID_MENU");
+				System.out.println("ID DEL PLATO----------------------------" + idPlato);
+				//Se mira quienes pidieron el plato correspondiente POR MEDIO DE UN MENU, verificando si es o no un usuario registrado
+				String sqlAux2 = "select EMAIL_USER from pedido natural join pedido_menus where id_menu =" + idMenu;
+				PreparedStatement prepStmtAux2 = conn.prepareStatement(sqlAux2);
+				recursos.add(prepStmtAux2);
+				ResultSet rsAux2 = prepStmtAux2.executeQuery();
+				while (rsAux2.next())
 				{
-					int count = rsAux3.getInt("COUNT(*)");
-					if (count == 0) consumidoNoRegistrados++;
-					else consumidoRegistrados++;
+					String emailUser = rsAux2.getString("EMAIL_USER");
+
+					String sqlAux3 = "SELECT count(*) FROM CLIENTEFR WHERE EMAIL = '" + emailUser + "'";
+					PreparedStatement prepStmtAux3 = conn.prepareStatement(sqlAux3);
+					recursos.add(prepStmtAux3);
+					ResultSet rsAux3 = prepStmtAux3.executeQuery();
+					if (rsAux3.next())
+					{
+						int count = rsAux3.getInt("COUNT(*)");
+						if (count == 0) consumidoNoRegistrados++;
+						else consumidoRegistrados++;
+					}
 				}
 			}
-			
 			productos.add(new ProductoConsolidado(nomProducto, ventaTotalDinero, vendidos));
 		}
 		return new PedidoConsolidado(productos, consumidoRegistrados, consumidoNoRegistrados);
@@ -218,9 +226,9 @@ public class DAOTablaPedido {
 
 		String sql = "INSERT INTO PEDIDO VALUES (";
 		sql += pedido.getNumPedido() + ",";
-		sql += pedido.getPrecio() + ",";
-		sql += "TO_DATE('" + pedido.getFecha() + "', 'DD/MM/YYYY')"  + ",'";
+		sql += pedido.getPrecio() + ",'";
 		sql += pedido.getEmailUser() + "',";
+		sql += "TO_DATE('" + pedido.getFecha() + "', 'DD/MM/YYYY')"  + ",";
 		sql += pedido.getPagado() + ",";
 		sql += pedido.getEntregado() + ",'";
 		sql += pedido.getHora() + "','";
@@ -240,40 +248,40 @@ public class DAOTablaPedido {
 	 * @throws SQLException - Cualquier error que la base de datos arroje. No pudo actualizar el video.
 	 * @throws Exception - Cualquier error que no corresponda a la base de datos
 	 */
-		public void updatePedido(Pedido pedido) throws SQLException, Exception {
-	
-			String sql = "UPDATE PEDIDO SET ";
-			sql += "PAGADO=" + pedido.getPagado() + ",";
-			sql += "ENTREGADO=" + pedido.getEntregado();
-			sql += " WHERE NUM_PEDIDO = " + pedido.getNumPedido();
-	
-	
-			PreparedStatement prepStmt = conn.prepareStatement(sql);
-			recursos.add(prepStmt);
-			prepStmt.executeQuery();
-		}
+	public void updatePedido(Pedido pedido) throws SQLException, Exception {
 
-		public Pedido darPedido(int numPedido) throws SQLException {
-			Pedido pedido = null;
-			String sql = "SELECT * FROM PEDIDO WHERE NUM_PEDIDO=" + numPedido;
-			
-			PreparedStatement prepStmt = conn.prepareStatement(sql);
-			recursos.add(prepStmt);
-			ResultSet rs  = prepStmt.executeQuery();
-			
-			if(rs.next()) {
-				float precio = rs.getFloat("PRECIO");
-				String fecha = rs.getString("FECHA");
-				String emailUser = rs.getString("EMAIL_USER");
-				int pagado = rs.getInt("PAGADO");
-				int entregado = rs.getInt("ENTREGADO");
-				String hora = rs.getString("HORA");
-				String cambio = rs.getString("CAMBIO");
-				pedido = new Pedido(numPedido, precio, fecha, emailUser, pagado, entregado, hora, cambio);
-			}
-			return pedido;
+		String sql = "UPDATE PEDIDO SET ";
+		sql += "PAGADO=" + pedido.getPagado() + ",";
+		sql += "ENTREGADO=" + pedido.getEntregado();
+		sql += " WHERE NUM_PEDIDO = " + pedido.getNumPedido();
+
+
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		prepStmt.executeQuery();
+	}
+
+	public Pedido darPedido(int numPedido) throws SQLException {
+		Pedido pedido = null;
+		String sql = "SELECT * FROM PEDIDO WHERE NUM_PEDIDO=" + numPedido;
+
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		ResultSet rs  = prepStmt.executeQuery();
+
+		if(rs.next()) {
+			float precio = rs.getFloat("PRECIO");
+			String fecha = rs.getString("FECHA");
+			String emailUser = rs.getString("EMAIL_USER");
+			int pagado = rs.getInt("PAGADO");
+			int entregado = rs.getInt("ENTREGADO");
+			String hora = rs.getString("HORA");
+			String cambio = rs.getString("CAMBIO");
+			pedido = new Pedido(numPedido, precio, fecha, emailUser, pagado, entregado, hora, cambio);
 		}
-		
+		return pedido;
+	}
+
 	public void removerPedido(Pedido pedido) throws SQLException, Exception {
 		String sql = "DELETE * FROM PEDIDO WHERE NUM_PEDIDO =" + pedido.getNumPedido();
 

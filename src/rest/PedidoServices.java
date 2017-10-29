@@ -84,6 +84,7 @@ public class PedidoServices {
 	}
 	
 	/**
+	 * RFC 8
 	 * Metodo que expone servicio REST usando GET que da todos los restaurantes de la base de datos.
 	 * <b>URL: </b> http://"ip o nombre de host":8080/VideoAndes/rest/videos
 	 * @return Json con todos los videos de la base de datos o json con 
@@ -98,7 +99,7 @@ public class PedidoServices {
 		try {
 			pedido = tm.darPedidosRestaurante(restaurante);
 		} catch (Exception e) {
-			return Response.status(500).entity(doErrorMessage(e)).build();
+			return Response.status(400).entity(doErrorMessage(e)).build();
 		}
 		return Response.status(200).entity(pedido).build();
 	}
@@ -193,6 +194,7 @@ public class PedidoServices {
 	
 
 	/**
+	 * RF14
      * Metodo que expone servicio REST usando POST que agrega el video que recibe en Json
      * <b>URL: </b> http://"ip o nombre de host":8080/VideoAndes/rest/videos/video
      * @param video - video a agregar
@@ -202,18 +204,18 @@ public class PedidoServices {
 	@Path( "menu/{idMenu: \\d+}/{equivalencia}" )
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response addPedidoMenuEquivalencia(Pedido pedido,  @PathParam( "idMenu" ) int idMenu, @PathParam( "equivalencia" ) String equivalencia) {
+	public Response addPedidoMenuEquivalencia(Pedido pedido,  @PathParam( "idMenu" ) int idMenu, @QueryParam( "equivalencia" ) String equivalencia) {
 		RotondAndesTM tm = new RotondAndesTM(getPath());
 		try {
 			tm.addPedidoMenuEquivalencia(pedido, idMenu, equivalencia);
 		} catch (Exception e) {
-			return Response.status(500).entity(doErrorMessage(e)).build();
+			return Response.status(400).entity(doErrorMessage(e)).build();
 		}
 		return Response.status(200).entity(pedido).build();
 	}
 	
     /**
-     * Requerimiento F10 
+     * Requerimiento RF10 y RF16
      * Metodo que expone servicio REST usando PUT que actualiza el video que recibe en Json
      * <b>URL: </b> http://"ip o nombre de host":8080/VideoAndes/rest/videos
      * @param video - video a actualizar. 
@@ -227,7 +229,7 @@ public class PedidoServices {
 		try {
 			tm.pedidoEntregado(pedido);
 		} catch (Exception e) {
-			return Response.status(500).entity(doErrorMessage(e)).build();
+			return Response.status(400).entity(doErrorMessage(e)).build();
 		}
 		return Response.status(200).entity(pedido).build();
 	}

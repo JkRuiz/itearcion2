@@ -152,7 +152,7 @@ public class PlatoServices {
 		try {
 			tm.addEquivalenciaPlato(informacionEq.getInformacion());
 		} catch (Exception e) {
-			throw new Exception (doErrorMessage(e));
+			return Response.status(400).entity(doErrorMessage(e)).build();
 		}
 		return Response.status(200).entity(new Informacion()).build();
 	}

@@ -205,12 +205,6 @@ public class DAOTablaPlato {
 	public void addEquivalentes(String platos) throws NumberFormatException, Exception {
 		String[] productos = platos.split("-");
 
-		Plato plato1 = getEquivalentePorId(Integer.parseInt(productos[0]));
-		Plato plato2 = getEquivalentePorId(Integer.parseInt(productos[1]));
-		if (!plato1.getRestaurante().equalsIgnoreCase(plato2.getRestaurante())) throw new Exception("Los productos son de restaurantes diferentes");
-		if(!plato1.getRestaurante().equalsIgnoreCase(productos[2])) throw new Exception("Los productos no son de ese restaurante");
-		if(!plato1.getCategoria().equalsIgnoreCase(plato2.getCategoria())) throw new Exception("Los productos son de diferente categoria");
-		
 		String sql = "INSERT INTO EQUIVALENTES_PRODUCTOS VALUES ("+ productos[0] + "," + 
 				productos[1] + ", '" + productos[2] + "')";
 
