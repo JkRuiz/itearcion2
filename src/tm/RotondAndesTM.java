@@ -141,10 +141,12 @@ public class RotondAndesTM {
 			daoPlatos.setConn(conn);
 			platos = daoPlatos.darPlatosFiltro(filtro);
 		} catch (SQLException e) {
+			conn.rollback();
 			System.err.println("SQLException:" + e.getMessage());
 			e.printStackTrace();
 			throw e;
 		} catch (Exception e) {
+			conn.rollback();
 			System.err.println("GeneralException:" + e.getMessage());
 			e.printStackTrace();
 			throw e;
@@ -432,10 +434,12 @@ public class RotondAndesTM {
 			zonas = daoZona.darZonas();
 
 		} catch (SQLException e) {
+			conn.rollback();
 			System.err.println("SQLException:" + e.getMessage());
 			e.printStackTrace();
 			throw e;
 		} catch (Exception e) {
+			conn.rollback();
 			System.err.println("GeneralException:" + e.getMessage());
 			e.printStackTrace();
 			throw e;
@@ -471,10 +475,12 @@ public class RotondAndesTM {
 			clientes = daoCliente.darClientes();
 
 		} catch (SQLException e) {
+			conn.rollback();
 			System.err.println("SQLException:" + e.getMessage());
 			e.printStackTrace();
 			throw e;
 		} catch (Exception e) {
+			conn.rollback();
 			System.err.println("GeneralException:" + e.getMessage());
 			e.printStackTrace();
 			throw e;
@@ -505,10 +511,12 @@ public class RotondAndesTM {
 			daoPedido.setConn(conn);
 			pedidosCliente = daoPedido.darPedidosCliente(emailCliente);
 		} catch (SQLException e) {
+			conn.rollback();
 			System.err.println("SQLException:" + e.getMessage());
 			e.printStackTrace();
 			throw e;
 		} catch (Exception e) {
+			conn.rollback();
 			System.err.println("GeneralException:" + e.getMessage());
 			e.printStackTrace();
 			throw e;
@@ -537,10 +545,12 @@ public class RotondAndesTM {
 			daoZona.setConn(conn);
 			zonas = daoZona.darZonasFiltro(filtro);
 		} catch (SQLException e) {
+			conn.rollback();
 			System.err.println("SQLException:" + e.getMessage());
 			e.printStackTrace();
 			throw e;
 		} catch (Exception e) {
+			conn.rollback();
 			System.err.println("GeneralException:" + e.getMessage());
 			e.printStackTrace();
 			throw e;
@@ -800,10 +810,12 @@ public class RotondAndesTM {
 			pedido = daoPedido.darPedidosConsolidadosRestaurante(restaurante);
 
 		} catch (SQLException e) {
+			conn.rollback();
 			System.err.println("SQLException:" + e.getMessage());
 			e.printStackTrace();
 			throw e;
 		} catch (Exception e) {
+			conn.rollback();
 			System.err.println("GeneralException:" + e.getMessage());
 			e.printStackTrace();
 			throw e;
@@ -846,10 +858,12 @@ public class RotondAndesTM {
 					platoMasOfercido = p;
 
 		} catch (SQLException e) {
+			conn.rollback();
 			System.err.println("SQLException:" + e.getMessage());
 			e.printStackTrace();
 			throw e;
 		} catch (Exception e) {
+			conn.rollback();
 			System.err.println("GeneralException:" + e.getMessage());
 			e.printStackTrace();
 			throw e;
@@ -927,10 +941,12 @@ public class RotondAndesTM {
 			conn.commit();
 
 		} catch (SQLException e) {
+			conn.rollback();
 			System.err.println("SQLException:" + e.getMessage());
 			e.printStackTrace();
 			throw e;
 		} catch (Exception e) {
+			conn.rollback();
 			System.err.println("GeneralException:" + e.getMessage());
 			e.printStackTrace();
 			throw e;
@@ -967,10 +983,12 @@ public class RotondAndesTM {
 			conn.commit();
 
 		} catch (SQLException e) {
+			conn.rollback();
 			System.err.println("SQLException:" + e.getMessage());
 			e.printStackTrace();
 			throw e;
 		} catch (Exception e) {
+			conn.rollback();
 			System.err.println("GeneralException:" + e.getMessage());
 			e.printStackTrace();
 			throw e;
@@ -1006,10 +1024,12 @@ public class RotondAndesTM {
 			conn.commit();
 
 		} catch (SQLException e) {
+			conn.rollback();
 			System.err.println("SQLException:" + e.getMessage());
 			e.printStackTrace();
 			throw e;
 		} catch (Exception e) {
+			conn.rollback();
 			System.err.println("GeneralException:" + e.getMessage());
 			e.printStackTrace();
 			throw e;
@@ -1045,10 +1065,12 @@ public class RotondAndesTM {
 			conn.commit();
 
 		} catch (SQLException e) {
+			conn.rollback();
 			System.err.println("SQLException:" + e.getMessage());
 			e.printStackTrace();
 			throw e;
 		} catch (Exception e) {
+			conn.rollback();
 			System.err.println("GeneralException:" + e.getMessage());
 			e.printStackTrace();
 			throw e;
@@ -1084,10 +1106,12 @@ public class RotondAndesTM {
 			conn.commit();
 
 		} catch (SQLException e) {
+			conn.rollback();
 			System.err.println("SQLException:" + e.getMessage());
 			e.printStackTrace();
 			throw e;
 		} catch (Exception e) {
+			conn.rollback();
 			System.err.println("GeneralException:" + e.getMessage());
 			e.printStackTrace();
 			throw e;
@@ -1123,10 +1147,12 @@ public class RotondAndesTM {
 			conn.commit();
 
 		} catch (SQLException e) {
+			conn.rollback();
 			System.err.println("SQLException:" + e.getMessage());
 			e.printStackTrace();
 			throw e;
 		} catch (Exception e) {
+			conn.rollback();
 			System.err.println("GeneralException:" + e.getMessage());
 			e.printStackTrace();
 			throw e;
@@ -1162,10 +1188,12 @@ public class RotondAndesTM {
 			conn.commit();
 
 		} catch (SQLException e) {
+			conn.rollback();
 			System.err.println("SQLException:" + e.getMessage());
 			e.printStackTrace();
 			throw e;
 		} catch (Exception e) {
+			conn.rollback();
 			System.err.println("GeneralException:" + e.getMessage());
 			e.printStackTrace();
 			throw e;
@@ -1201,10 +1229,12 @@ public class RotondAndesTM {
 			conn.commit();
 
 		} catch (SQLException e) {
+			conn.rollback();
 			System.err.println("SQLException:" + e.getMessage());
 			e.printStackTrace();
 			throw e;
 		} catch (Exception e) {
+			conn.rollback();
 			System.err.println("GeneralException:" + e.getMessage());
 			e.printStackTrace();
 			throw e;
@@ -1254,10 +1284,12 @@ public class RotondAndesTM {
 			conn.commit();
 
 		} catch (SQLException e) {
+			conn.rollback();
 			System.err.println("SQLException:" + e.getMessage());
 			e.printStackTrace();
 			throw e;
 		} catch (Exception e) {
+			conn.rollback();
 			System.err.println("GeneralException:" + e.getMessage());
 			e.printStackTrace();
 			throw e;
@@ -1364,10 +1396,12 @@ public class RotondAndesTM {
 			conn.commit();
 
 		} catch (SQLException e) {
+			conn.rollback();
 			System.err.println("SQLException:" + e.getMessage());
 			e.printStackTrace();
 			throw e;
 		} catch (Exception e) {
+			conn.rollback();
 			System.err.println("GeneralException:" + e.getMessage());
 			e.printStackTrace();
 			throw e;
@@ -1469,10 +1503,12 @@ public class RotondAndesTM {
 			conn.commit();
 
 		} catch (SQLException e) {
+			conn.rollback();
 			System.err.println("SQLException:" + e.getMessage());
 			e.printStackTrace();
 			throw e;
 		} catch (Exception e) {
+			conn.rollback();
 			System.err.println("GeneralException:" + e.getMessage());
 			e.printStackTrace();
 			throw e;
@@ -1512,10 +1548,12 @@ public class RotondAndesTM {
 			conn.commit();
 
 		} catch (SQLException e) {
+			conn.rollback();
 			System.err.println("SQLException:" + e.getMessage());
 			e.printStackTrace();
 			throw e;
 		} catch (Exception e) {
+			conn.rollback();
 			System.err.println("GeneralException:" + e.getMessage());
 			e.printStackTrace();
 			throw e;
@@ -1555,10 +1593,12 @@ public class RotondAndesTM {
 			conn.commit();
 
 		} catch (SQLException e) {
+			conn.rollback();
 			System.err.println("SQLException:" + e.getMessage());
 			e.printStackTrace();
 			throw e;
 		} catch (Exception e) {
+			conn.rollback();
 			System.err.println("GeneralException:" + e.getMessage());
 			e.printStackTrace();
 			throw e;
