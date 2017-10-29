@@ -228,9 +228,9 @@ public class DAOTablaPedido {
 				+ "NUM_PEDIDO, PRECIO, FECHA, EMAIL_USER,"
 				+ "PAGADO, ENTREGADO, HORA, CAMBIO) VALUES (";
 		sql += pedido.getNumPedido() + ",";
-		sql += ((int)pedido.getPrecio()) + ",'";
+		sql += ((int)pedido.getPrecio()) + ",";
+		sql += "TO_DATE('" + pedido.getFecha() + "', 'DD/MM/YYYY')"  + ",'";
 		sql += pedido.getEmailUser() + "',";
-		sql += "TO_DATE('" + pedido.getFecha() + "', 'DD/MM/YYYY')"  + ",";
 		sql += pedido.getPagado() + ",";
 		sql += pedido.getEntregado() + ",'";
 		sql += pedido.getHora() + "','";
