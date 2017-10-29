@@ -253,6 +253,27 @@ public class DAOTablaPedido {
 			prepStmt.executeQuery();
 		}
 
+		public Pedido darPedido(int numPedido) throws SQLException {
+			Pedido pedido = null;
+			String sql = "SELECT * FROM PEDIDO WHERE NUM_PEDIDO=" + numPedido;
+			
+			PreparedStatement prepStmt = conn.prepareStatement(sql);
+			recursos.add(prepStmt);
+			ResultSet rs  = prepStmt.executeQuery();
+			
+			if(rs.next()) {
+				float precio = rs.getFloat("PRECIO");
+				String fecha = rs.getString("FECHA");
+				String emailUser = rs.getString("EMAIL_USER");
+				int pagado = rs.getInt("PAGADO");
+				int entregado = rs.getInt("ENTREGADO");
+				String hora = rs.getString("HORA");
+				String cambio = rs.getString("CAMBIO");
+				pedido = new Pedido(numPedido, precio, fecha, emailUser, pagado, entregado, hora, cambio);
+			}
+			return pedido;
+		}
+		
 	public void removerPedido(Pedido pedido) throws SQLException, Exception {
 		String sql = "DELETE * FROM PEDIDO WHERE NUM_PEDIDO =" + pedido.getNumPedido();
 

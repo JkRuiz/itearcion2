@@ -213,7 +213,7 @@ public class PedidoServices {
 	}
 	
     /**
-     * Requerimiento F10
+     * Requerimiento F10 
      * Metodo que expone servicio REST usando PUT que actualiza el video que recibe en Json
      * <b>URL: </b> http://"ip o nombre de host":8080/VideoAndes/rest/videos
      * @param video - video a actualizar. 

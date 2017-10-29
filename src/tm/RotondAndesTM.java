@@ -1382,6 +1382,8 @@ public class RotondAndesTM {
 			daoPedido.setConn(conn);
 			daoPedidoPlato.setConn(conn);
 			daoPlato.setConn(conn);
+			if (daoPedido.darPedido(pedido.getNumPedido()) == null)
+				throw new Exception ("No existe ningun pedido con el numero " + pedido.getNumPedido());
 			daoPedido.updatePedido(pedido);
 			pedidosPlatos = daoPedidoPlato.bucarPedidoPlatoPorIdPedido(pedido.getNumPedido());
 			for (PedidoPlato p : pedidosPlatos)
