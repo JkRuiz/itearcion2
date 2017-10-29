@@ -215,6 +215,14 @@ public class RotondAndesTM {
 			this.conn = darConexion();
 			conn.setTransactionIsolation(conn.TRANSACTION_READ_COMMITTED);
 			daoPlatos.setConn(conn);
+			String[] producto = productos.split("-");
+
+			Plato plato1 = daoPlatos.getEquivalentePorId(Integer.parseInt(producto[0]));
+			Plato plato2 = daoPlatos.getEquivalentePorId(Integer.parseInt(producto[1]));
+			if (plato1.getRestaurante().equalsIgnoreCase(plato2.getRestaurante()) == false) throw new Exception("Los productos son de restaurantes diferentes");
+			if(!plato1.getRestaurante().equalsIgnoreCase(producto[2])) throw new Exception("Los productos no son de ese restaurante");
+			if(!plato1.getCategoria().equalsIgnoreCase(plato2.getCategoria())) throw new Exception("Los productos son de diferente categoria");
+			
 			daoPlatos.addEquivalentes(productos);
 			conn.commit();
 		} catch (SQLException e) {
@@ -776,6 +784,7 @@ public class RotondAndesTM {
 	 */
 	public PedidoConsolidado darPedidosRestaurante(String restaurante) throws Exception {
 		PedidoConsolidado pedido;
+		DAOTablaRestaurante daoRestaurante = new DAOTablaRestaurante();
 		DAOTablaPedido daoPedido = new DAOTablaPedido();
 		try 
 		{
@@ -783,6 +792,9 @@ public class RotondAndesTM {
 			this.conn = darConexion();
 			conn.setTransactionIsolation(conn.TRANSACTION_READ_COMMITTED);
 			daoPedido.setConn(conn);
+			daoRestaurante.setConn(conn);
+			if (daoRestaurante.buscarRestaurantePorNombre(restaurante) == null)
+				throw new Exception ("No existe el restaurante con el nombre " + restaurante);
 			pedido = daoPedido.darPedidosConsolidadosRestaurante(restaurante);
 
 		} catch (SQLException e) {
@@ -1290,7 +1302,9 @@ public class RotondAndesTM {
 				throw new Exception("El menu con id " + idMenu + " no posee el producto " + plato1.getNombre());
 			if (!daoPlato.getIdPlatosEquivalentes(plato1.getIdPlato()).contains(plato2.getIdPlato()))
 				throw new Exception("Los productos " + plato1.getNombre() + " y " + plato2.getNombre() + " no son equivalentes");
-			pedido.setCambios("Cambiar el plato " + plato1.getNombre() + " por el plato " + plato2.getNombre());
+			if (plato1.getRestaurante().equalsIgnoreCase(eq[2]) == false)
+				throw new Exception("Los productos no pertenecen al restaurante " + eq[2]);
+			pedido.setCambios("Cambiar el producto " + plato1.getNombre() + " por el producto " + plato2.getNombre());
 			daoPedido.addPedido(pedido);
 			PedidoMenu pedidoMenu = new PedidoMenu(pedido.getNumPedido(), idMenu);
 			daoPedidoMenu.addPedidoMenu(pedidoMenu);
@@ -1394,6 +1408,8 @@ public class RotondAndesTM {
 			daoPedidoMenu.setConn(conn);
 			daoMenu.setConn(conn);
 			daoPlato.setConn(conn);
+			daoPedidoMenu.setConn(conn);
+			daoMenu.setConn(conn);
 			if (daoPedido.darPedido(pedido.getNumPedido()) == null)
 				throw new Exception ("No existe ningun pedido con el numero " + pedido.getNumPedido());
 			daoPedido.updatePedido(pedido);

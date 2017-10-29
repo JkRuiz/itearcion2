@@ -1,32 +1,127 @@
 {
 	"info": {
 		"name": "PruebasRC Iteracion3",
-		"_postman_id": "8ad7a695-7c07-5b1f-6d7f-2fc323f71cef",
+		"_postman_id": "99f88cef-9f36-860b-e83a-e74129ab6cdc",
 		"description": "",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
 			"name": "RC7",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"status code is 200\"] = responseCode.code===200"
+						]
+					}
+				}
+			],
 			"request": {
 				"method": "GET",
 				"header": [],
 				"body": {},
 				"url": {
-					"raw": ""
+					"raw": "http://localhost:8080/RotondAndes/rest/productos/consumidos/elfulano@gmail.com",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"RotondAndes",
+						"rest",
+						"productos",
+						"consumidos",
+						"elfulano@gmail.com"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Pruebas RFC8 - Exito",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"status code is 200\"] = responseCode.code===200"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:8080/RotondAndes/rest/pedidos/restaurante/restaurante?restaurante=Harbort",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"RotondAndes",
+						"rest",
+						"pedidos",
+						"restaurante",
+						"restaurante"
+					],
+					"query": [
+						{
+							"key": "restaurante",
+							"value": "Harbort",
+							"equals": true
+						}
+					]
 				},
 				"description": ""
 			},
 			"response": []
 		},
 		{
-			"name": "RC8",
+			"name": "Pruebas RFC8 - Error",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"status code is 400\"] = responseCode.code===400"
+						]
+					}
+				}
+			],
 			"request": {
 				"method": "GET",
 				"header": [],
 				"body": {},
 				"url": {
-					"raw": ""
+					"raw": "http://localhost:8080/RotondAndes/rest/pedidos/restaurante/restaurante?restaurante=X",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"RotondAndes",
+						"rest",
+						"pedidos",
+						"restaurante",
+						"restaurante"
+					],
+					"query": [
+						{
+							"key": "restaurante",
+							"value": "X",
+							"equals": true
+						}
+					]
 				},
 				"description": ""
 			},

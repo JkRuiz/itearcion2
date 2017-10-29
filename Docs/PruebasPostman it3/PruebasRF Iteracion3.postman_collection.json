@@ -1,7 +1,7 @@
 {
 	"info": {
 		"name": "PruebasRF Iteracion3",
-		"_postman_id": "e768f4cd-8cbd-eab6-3332-d5c05e94a360",
+		"_postman_id": "721d8697-d865-3aba-a7b8-b3705d3eb7ff",
 		"description": "",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -44,8 +44,7 @@
 						"ingredientes",
 						"equivalentes"
 					]
-				},
-				"description": ""
+				}
 			},
 			"response": []
 		},
@@ -87,8 +86,7 @@
 						"ingredientes",
 						"equivalentes"
 					]
-				},
-				"description": ""
+				}
 			},
 			"response": []
 		},
@@ -214,8 +212,7 @@
 						"restaurantes",
 						"surtir"
 					]
-				},
-				"description": ""
+				}
 			},
 			"response": []
 		},
@@ -257,8 +254,7 @@
 						"restaurantes",
 						"surtir"
 					]
-				},
-				"description": ""
+				}
 			},
 			"response": []
 		},
@@ -285,10 +281,10 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"numPedido\" : 11,\n\t\"precio\" : 35000,\n\t\"fecha\" : \"20/11/2013\",\n\t\"emailUser\" : \"elfulano@gmail.com\",\n\t\"pagado\" : 0,\n\t\"entregado\" : 0,\n\t\"hora\" : \"10:30:00 PM\",\n\t\"cambios\" : \"Ninguno\"\n}"
+					"raw": "{\n\t\"numPedido\" : 11,\n\t\"precio\" : 35000,\n\t\"fecha\" : \"20/11/2013\",\n\t\"emailUser\" : \"elfulano@gmail.com\",\n\t\"pagado\" : 0,\n\t\"entregado\" : 0,\n\t\"hora\" : \"10:30:00 PM\"\n}"
 				},
 				"url": {
-					"raw": "http://localhost:8080/RotondAndes/rest/pedidos/menu/1/18-118-Harb",
+					"raw": "http://localhost:8080/RotondAndes/rest/pedidos/menu/1/equivalencia?equivalencia=18-118-Harb",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -300,7 +296,14 @@
 						"pedidos",
 						"menu",
 						"1",
-						"18-118-Harb"
+						"equivalencia"
+					],
+					"query": [
+						{
+							"key": "equivalencia",
+							"value": "18-118-Harb",
+							"equals": true
+						}
 					]
 				}
 			},
@@ -332,7 +335,7 @@
 					"raw": "{\n\t\"numPedido\" : 11,\n\t\"precio\" : 35000,\n\t\"fecha\" : \"20/11/2013\",\n\t\"emailUser\" : \"elfulano@gmail.com\",\n\t\"pagado\" : 0,\n\t\"entregado\" : 0,\n\t\"hora\" : \"10:30:00 PM\",\n\t\"cambios\" : \"Ninguno\"\n}"
 				},
 				"url": {
-					"raw": "http://localhost:8080/RotondAndes/rest/pedidos/menu/1/18-118-Harb",
+					"raw": "http://localhost:8080/RotondAndes/rest/pedidos/menu/1/equivalencia?equivalencia=18-118-Harb",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -344,7 +347,14 @@
 						"pedidos",
 						"menu",
 						"1",
-						"18-118-Harb"
+						"equivalencia"
+					],
+					"query": [
+						{
+							"key": "equivalencia",
+							"value": "18-118-Harb",
+							"equals": true
+						}
 					]
 				}
 			},
@@ -501,7 +511,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": ""
+					"raw": "{\n\t\"numPedido\" : 100,\n\t\"precio\" : 78000,\n\t\"fecha\" : \"20/11/2014\",\n\t\"emailUser\" : \"elfulano@gmail.com\",\n\t\"pagado\" : 1,\n\t\"entregado\" : 1,\n\t\"hora\" : \"3:00:00 PM\",\n\t\"cambios\" : \"Ninguno\"\n}"
 				},
 				"url": {
 					"raw": "http://localhost:8080/RotondAndes/rest/pedidos/",
