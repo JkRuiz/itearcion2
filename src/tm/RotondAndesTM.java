@@ -792,7 +792,7 @@ public class RotondAndesTM {
 		{
 			//////transaccion
 			this.conn = darConexion();
-			conn.setTransactionIsolation(conn.TRANSACTION_READ_COMMITTED);
+			conn.setReadOnly(true);;
 			daoPedido.setConn(conn);
 			daoRestaurante.setConn(conn);
 			if (daoRestaurante.buscarRestaurantePorNombre(restaurante) == null)

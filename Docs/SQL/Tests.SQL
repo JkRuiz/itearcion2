@@ -16,6 +16,7 @@ SET AUTOCOMMIT ON;
 commit;
 select * from PLATO where RESTAURANTE = 'EL TORO';
 select * from pedido;
+select * from restaurantes where nombre = 'EL TORO 2';
 select * from pedido_plato WHERE NUM_PEDIDO = 12;
 select * from pedido_menus WHERE NUM_PEDIDO = 12;
 select * from menu_plato;
