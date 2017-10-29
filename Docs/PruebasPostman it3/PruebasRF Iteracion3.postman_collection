@@ -1,0 +1,88 @@
+{
+	"variables": [],
+	"info": {
+		"name": "PruebasRF Iteracion3",
+		"_postman_id": "e610bf9c-c8eb-4518-82b3-3e457c98a947",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Pruebas RF12",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"status code is 200\"] = responseCode.code===200"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:8080/RotondAndes/rest/productos/equivalentes",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"informacion\" : \"178-158-Harb\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Pruebas RF14",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"status code is 200\"] = responseCode.code===200"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": {
+					"raw": "http://localhost:8080/RotondAndes/rest/pedidos/menu/1/equivalencia?equivalencia=18-118-Harb",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"RotondAndes",
+						"rest",
+						"pedidos",
+						"menu",
+						"1",
+						"equivalencia"
+					],
+					"query": [
+						{
+							"key": "equivalencia",
+							"value": "18-118-Harb",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "POST",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
