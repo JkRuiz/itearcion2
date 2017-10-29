@@ -1,7 +1,7 @@
 {
 	"info": {
 		"name": "PruebasRF Iteracion3",
-		"_postman_id": "721d8697-d865-3aba-a7b8-b3705d3eb7ff",
+		"_postman_id": "003b3dfa-0e1f-de13-f465-04c8ef7ec978",
 		"description": "",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -335,7 +335,7 @@
 					"raw": "{\n\t\"numPedido\" : 11,\n\t\"precio\" : 35000,\n\t\"fecha\" : \"20/11/2013\",\n\t\"emailUser\" : \"elfulano@gmail.com\",\n\t\"pagado\" : 0,\n\t\"entregado\" : 0,\n\t\"hora\" : \"10:30:00 PM\",\n\t\"cambios\" : \"Ninguno\"\n}"
 				},
 				"url": {
-					"raw": "http://localhost:8080/RotondAndes/rest/pedidos/menu/1/equivalencia?equivalencia=18-118-Harb",
+					"raw": "http://localhost:8080/RotondAndes/rest/pedidos/menu/1/equivalencia?equivalencia=78-118-Harb",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -352,7 +352,7 @@
 					"query": [
 						{
 							"key": "equivalencia",
-							"value": "18-118-Harb",
+							"value": "78-118-Harb",
 							"equals": true
 						}
 					]
