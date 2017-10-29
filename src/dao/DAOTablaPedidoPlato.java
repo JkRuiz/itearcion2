@@ -151,7 +151,7 @@ public class DAOTablaPedidoPlato {
 	}
 
 	public void removerPedidos(Pedido pedido) throws SQLException, Exception {
-		String sql = "DELETE * FROM PEDIDO_PLATO WHERE NUM_PEDIDO =" + pedido.getNumPedido();
+		String sql = "DELETE FROM PEDIDO_PLATO WHERE NUM_PEDIDO =" + pedido.getNumPedido();
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);

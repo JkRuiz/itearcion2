@@ -281,12 +281,12 @@ public class DAOTablaMenu {
 	}
 
 	public void surtir(String nombre) throws SQLException, Exception {
-		String sql1= "SELECT DISPONIBLES, MAX_DISP FROM MENU WHERE NOMBRESTAURANTE = '" + nombre + "' FOR UPDATE";
+		String sql1= "SELECT DISPONIBLES, MAX_DISP FROM MENU WHERE NOMRESTAURANTE = '" + nombre + "' FOR UPDATE";
 		PreparedStatement prepStmt1 = conn.prepareStatement(sql1);
 		recursos.add(prepStmt1);
 		prepStmt1.executeQuery();
 		
-		String sql2 = "UPDATE MENU SET DISPONIBLES = MAX_DISP WHERE NOMBRERESTAURANTE = '" + nombre + "'";
+		String sql2 = "UPDATE MENU SET DISPONIBLES = MAX_DISP WHERE NOMRESTAURANTE = '" + nombre + "'";
 
 		PreparedStatement prepStmt2 = conn.prepareStatement(sql2);
 		recursos.add(prepStmt2);

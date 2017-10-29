@@ -10,6 +10,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
@@ -17,6 +18,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import tm.RotondAndesTM;
+import vos.ClienteFrecuente;
 import vos.Informacion;
 import vos.Plato;
 import vos.Zona;
@@ -195,6 +197,25 @@ public class PlatoServices {
 			return Response.status(500).entity(doErrorMessage(e)).build();
 		} 
 		return Response.status(200).entity(new Informacion()).build();
+	}
+	
+	/**
+     * Requerimiento C7
+     */
+	@GET
+	@Path( "consumidos/{email}" )
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response darProductosConsumidos(@PathParam("email") String email) {
+		ClienteFrecuente cliente = new ClienteFrecuente(); cliente.setEmail(email);
+		RotondAndesTM tm = new RotondAndesTM(getPath());
+		List<Plato> platos = null;
+		try {
+			platos = tm.darProductosConsumidos(cliente);
+		} catch (Exception e) {
+			return Response.status(400).entity(doErrorMessage(e)).build();
+		} 
+		return Response.status(200).entity(platos).build();
 	}
 	
     /**

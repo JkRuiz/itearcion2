@@ -1,0 +1,608 @@
+{
+	"info": {
+		"name": "PruebasRF Iteracion3",
+		"_postman_id": "e768f4cd-8cbd-eab6-3332-d5c05e94a360",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Pruebas RF11.1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"status code is 200\"] = responseCode.code===200"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"informacion\" : \"Carne-Pollo-EL TORO\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/RotondAndes/rest/ingredientes/equivalentes",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"RotondAndes",
+						"rest",
+						"ingredientes",
+						"equivalentes"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Pruebas RF11.2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"status code is 400\"] = responseCode.code===400"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"informacion\" : \"Carne-Pollo-EL TORO\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/RotondAndes/rest/ingredientes/equivalentes",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"RotondAndes",
+						"rest",
+						"ingredientes",
+						"equivalentes"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Pruebas RF12.1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"status code is 200\"] = responseCode.code===200"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"informacion\" : \"3-6-EL TORO\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/RotondAndes/rest/productos/equivalentes",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"RotondAndes",
+						"rest",
+						"productos",
+						"equivalentes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Pruebas RF12.2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"status code is 400\"] = responseCode.code===400"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"informacion\" : \"178-158-Harb\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/RotondAndes/rest/productos/equivalentes",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"RotondAndes",
+						"rest",
+						"productos",
+						"equivalentes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Pruebas RF13.1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"status code is 200\"] = responseCode.code===200"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"informacion\" : \"EL TORO\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/RotondAndes/rest/restaurantes/surtir",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"RotondAndes",
+						"rest",
+						"restaurantes",
+						"surtir"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Pruebas RF13.2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"status code is 400\"] = responseCode.code===400"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"informacion\" : \"EL TORO 2\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/RotondAndes/rest/restaurantes/surtir",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"RotondAndes",
+						"rest",
+						"restaurantes",
+						"surtir"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Pruebas RF14.1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"status code is 200\"] = responseCode.code===200"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"numPedido\" : 11,\n\t\"precio\" : 35000,\n\t\"fecha\" : \"20/11/2013\",\n\t\"emailUser\" : \"elfulano@gmail.com\",\n\t\"pagado\" : 0,\n\t\"entregado\" : 0,\n\t\"hora\" : \"10:30:00 PM\",\n\t\"cambios\" : \"Ninguno\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/RotondAndes/rest/pedidos/menu/1/18-118-Harb",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"RotondAndes",
+						"rest",
+						"pedidos",
+						"menu",
+						"1",
+						"18-118-Harb"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Pruebas RF14.2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"status code is 400\"] = responseCode.code===400"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"numPedido\" : 11,\n\t\"precio\" : 35000,\n\t\"fecha\" : \"20/11/2013\",\n\t\"emailUser\" : \"elfulano@gmail.com\",\n\t\"pagado\" : 0,\n\t\"entregado\" : 0,\n\t\"hora\" : \"10:30:00 PM\",\n\t\"cambios\" : \"Ninguno\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/RotondAndes/rest/pedidos/menu/1/18-118-Harb",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"RotondAndes",
+						"rest",
+						"pedidos",
+						"menu",
+						"1",
+						"18-118-Harb"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Pruebas RF15.1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"status code is 200\"] = responseCode.code===200"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"numPedido\" : 12,\n\t\"precio\" : 78000,\n\t\"fecha\" : \"20/11/2014\",\n\t\"emailUser\" : \"elfulano@gmail.com\",\n\t\"pagado\" : 1,\n\t\"entregado\" : 0,\n\t\"hora\" : \"3:00:00 PM\",\n\t\"cambios\" : \"Ninguno\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/RotondAndes/rest/pedidos/mesa/3-1-P-2-M-3-P",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"RotondAndes",
+						"rest",
+						"pedidos",
+						"mesa",
+						"3-1-P-2-M-3-P"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Pruebas RF15.2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"status code is 400\"] = responseCode.code===400"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"numPedido\" : 12,\n\t\"precio\" : 78000,\n\t\"fecha\" : \"20/11/2014\",\n\t\"emailUser\" : \"elfulano@gmail.com\",\n\t\"pagado\" : 1,\n\t\"entregado\" : 0,\n\t\"hora\" : \"3:00:00 PM\",\n\t\"cambios\" : \"Ninguno\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/RotondAndes/rest/pedidos/mesa/3-1-P-2-M-3-P",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"RotondAndes",
+						"rest",
+						"pedidos",
+						"mesa",
+						"3-1-P-2-M-3-P"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Pruebas RF16.1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"status code is 200\"] = responseCode.code===200"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"numPedido\" : 12,\n\t\"precio\" : 78000,\n\t\"fecha\" : \"20/11/2014\",\n\t\"emailUser\" : \"elfulano@gmail.com\",\n\t\"pagado\" : 1,\n\t\"entregado\" : 1,\n\t\"hora\" : \"3:00:00 PM\",\n\t\"cambios\" : \"Ninguno\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/RotondAndes/rest/pedidos/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"RotondAndes",
+						"rest",
+						"pedidos",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Pruebas RF16.2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"status code is 400\"] = responseCode.code===400"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8080/RotondAndes/rest/pedidos/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"RotondAndes",
+						"rest",
+						"pedidos",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Pruebas RF17.1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"status code is 200\"] = responseCode.code===200"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"numPedido\" : 12\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/RotondAndes/rest/pedidos/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"RotondAndes",
+						"rest",
+						"pedidos",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Pruebas RF17.2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"status code is 400\"] = responseCode.code===400"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8080/RotondAndes/rest/pedidos/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"RotondAndes",
+						"rest",
+						"pedidos",
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

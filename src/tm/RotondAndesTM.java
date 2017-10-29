@@ -224,11 +224,14 @@ public class RotondAndesTM {
 			if(!plato1.getCategoria().equalsIgnoreCase(plato2.getCategoria())) throw new Exception("Los productos son de diferente categoria");
 			
 			daoPlatos.addEquivalentes(productos);
+			conn.commit();
 		} catch (SQLException e) {
+			conn.rollback();
 			System.err.println("SQLException:" + e.getMessage());
 			e.printStackTrace();
 			throw e;
 		} catch (Exception e) {
+			conn.rollback();
 			System.err.println("GeneralException:" + e.getMessage());
 			e.printStackTrace();
 			throw e;
@@ -254,6 +257,7 @@ public class RotondAndesTM {
 	public void surtirRestaurante(String nombre) throws Exception {
 		DAOTablaMenu daoMenu = new DAOTablaMenu();
 		DAOTablaPlato daoPlato = new DAOTablaPlato();
+		DAOTablaRestaurante daoRestaurante = new DAOTablaRestaurante();
 		try 
 		{
 			//////transaccion
@@ -261,6 +265,8 @@ public class RotondAndesTM {
 			conn.setTransactionIsolation(conn.TRANSACTION_READ_COMMITTED);
 			daoMenu.setConn(conn);
 			daoPlato.setConn(conn);
+			daoRestaurante.setConn(conn);
+			daoRestaurante.buscarRestaurantePorNombre(nombre);
 			daoMenu.surtir(nombre);
 			daoPlato.surtir(nombre);
 			conn.commit();
@@ -298,8 +304,8 @@ public class RotondAndesTM {
 	public void registrarPedidoMesa(Pedido pedido, String info) throws Exception {
 		DAOTablaPedidoMenu daoPedidoMenu = new DAOTablaPedidoMenu();
 		DAOTablaPedidoPlato daoPedidoPlato = new DAOTablaPedidoPlato();
-		DAOTablaMenu daoMenu = new DAOTablaMenu();
-		DAOTablaPlato daoPlato = new DAOTablaPlato();
+		//DAOTablaMenu daoMenu = new DAOTablaMenu();
+		//DAOTablaPlato daoPlato = new DAOTablaPlato();
 		DAOTablaPedido daoPedido = new DAOTablaPedido();
 		try 
 		{
@@ -309,8 +315,8 @@ public class RotondAndesTM {
 			daoPedidoMenu.setConn(conn);
 			daoPedidoPlato.setConn(conn);
 			daoPedido.setConn(conn);
-			daoMenu.setConn(conn);
-			daoPlato.setConn(conn);
+			//daoMenu.setConn(conn);
+			//daoPlato.setConn(conn);
 			
 			daoPedido.addPedido(pedido);
 			
@@ -344,8 +350,8 @@ public class RotondAndesTM {
 				daoPedidoMenu.cerrarRecursos();
 				daoPedidoPlato.cerrarRecursos();
 				daoPedido.cerrarRecursos();
-				daoMenu.cerrarRecursos();
-				daoPlato.cerrarRecursos();
+				//daoMenu.cerrarRecursos();
+				//daoPlato.cerrarRecursos();
 				if(this.conn!=null)
 					this.conn.close();
 			} catch (SQLException exception) {
@@ -872,15 +878,17 @@ public class RotondAndesTM {
 		{
 			//////transaccion
 			this.conn = darConexion();
-			conn.setTransactionIsolation(conn.TRANSACTION_READ_COMMITTED);
+			conn.setReadOnly(true);
 			daoPlatos.setConn(conn);
 			platos = daoPlatos.darPlatosCliente(cliente);
-
+			conn.commit();
 		} catch (SQLException e) {
+			conn.rollback();
 			System.err.println("SQLException:" + e.getMessage());
 			e.printStackTrace();
 			throw e;
 		} catch (Exception e) {
+			conn.rollback();
 			System.err.println("GeneralException:" + e.getMessage());
 			e.printStackTrace();
 			throw e;
@@ -1303,10 +1311,12 @@ public class RotondAndesTM {
 			conn.commit();
 			
 		} catch (SQLException e) {
+			conn.rollback();
 			System.err.println("SQLException:" + e.getMessage());
 			e.printStackTrace();
 			throw e;
 		} catch (Exception e) {
+			conn.rollback();
 			System.err.println("GeneralException:" + e.getMessage());
 			e.printStackTrace();
 			throw e;
@@ -1395,6 +1405,8 @@ public class RotondAndesTM {
 			conn.setTransactionIsolation(conn.TRANSACTION_READ_COMMITTED);
 			daoPedido.setConn(conn);
 			daoPedidoPlato.setConn(conn);
+			daoPedidoMenu.setConn(conn);
+			daoMenu.setConn(conn);
 			daoPlato.setConn(conn);
 			daoPedidoMenu.setConn(conn);
 			daoMenu.setConn(conn);
@@ -1410,10 +1422,12 @@ public class RotondAndesTM {
 				daoMenu.SeVendioMenu(m.getIdMenu());
 			conn.commit();
 		} catch (SQLException e) {
+			conn.rollback();
 			System.err.println("SQLException:" + e.getMessage());
 			e.printStackTrace();
 			throw e;
 		} catch (Exception e) {
+			conn.rollback();
 			System.err.println("GeneralException:" + e.getMessage());
 			e.printStackTrace();
 			throw e;

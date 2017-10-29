@@ -215,9 +215,9 @@ public class DAOTablaEquivalentes {
 		
 		buscarRestaurantePorNombre(params[2]);
 		
-		String sql = "INSERT INTO EQUIVALENTES_INGR VALUES ("+ params[0] + "," + 
-				params[1] + ", '" + params[2] + "')";
-
+		String sql = "INSERT INTO EQUIVALENTES VALUES ('"+ params[0] + "' ,'" + 
+				params[1] + "', '" + params[2] + "')";
+		System.out.println("ADD EQUIV: "+ sql);
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
 		prepStmt.executeQuery();
