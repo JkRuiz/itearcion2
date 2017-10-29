@@ -216,15 +216,19 @@ public class DAOTablaPedido {
 	 */
 	public void addPedido(Pedido pedido) throws SQLException, Exception {
 
-		String sql = "INSERT INTO PEDIDO VALUES (";
+		String sql = "INSERT INTO PEDIDO ("
+				+ "NUM_PEDIDO, PRECIO, FECHA, EMAIL_USER,"
+				+ "PAGADO, ENTREGADO, HORA, CAMBIO) VALUES (";
 		sql += pedido.getNumPedido() + ",";
-		sql += pedido.getPrecio() + ",";
+		sql += ((int)pedido.getPrecio()) + ",";
 		sql += "TO_DATE('" + pedido.getFecha() + "', 'DD/MM/YYYY')"  + ",'";
 		sql += pedido.getEmailUser() + "',";
 		sql += pedido.getPagado() + ",";
 		sql += pedido.getEntregado() + ",'";
 		sql += pedido.getHora() + "','";
 		sql += pedido.getCambios() + "')";
+		
+		System.out.println("ADD PEDIDO: "+ sql);
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
@@ -254,7 +258,7 @@ public class DAOTablaPedido {
 		}
 
 	public void removerPedido(Pedido pedido) throws SQLException, Exception {
-		String sql = "DELETE * FROM PEDIDO WHERE NUM_PEDIDO =" + pedido.getNumPedido();
+		String sql = "DELETE FROM PEDIDO WHERE NUM_PEDIDO =" + pedido.getNumPedido();
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);

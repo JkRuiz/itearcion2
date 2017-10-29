@@ -150,6 +150,8 @@ public class DAOTablaPedidoMenu {
 		sql += pedidoMenu.getNumPedido() + ",";
 		sql += pedidoMenu.getIdMenu() + ")";
 		
+		System.out.println("ADD PEDIDO_MENU: "+ sql);
+		
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
 		prepStmt.executeQuery();
@@ -214,8 +216,9 @@ public class DAOTablaPedidoMenu {
 	}
 
 	public void removerPedidos(Pedido pedido) throws SQLException, Exception {
-		String sql = "DELETE * FROM PEDIDO_MENUS WHERE NUM_PEDIDO =" + pedido.getNumPedido();
+		String sql = "DELETE FROM PEDIDO_MENUS WHERE NUM_PEDIDO =" + pedido.getNumPedido();
 
+		System.out.println("REMOVER PEDIDOS: " + sql);
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
 		prepStmt.executeQuery();

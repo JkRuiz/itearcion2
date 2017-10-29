@@ -515,12 +515,12 @@ public class DAOTablaPlato {
 	}
 
 	public void surtir(String nombre) throws SQLException, Exception {
-		String sql1= "SELECT DISPONIBLES, MAX_DISP FROM PLATO WHERE NOMBRESTAURANTE = '" + nombre + "' FOR UPDATE";
+		String sql1= "SELECT DISPONIBLES, MAX_DISP FROM PLATO WHERE RESTAURANTE = '" + nombre + "' FOR UPDATE";
 		PreparedStatement prepStmt1 = conn.prepareStatement(sql1);
 		recursos.add(prepStmt1);
 		prepStmt1.executeQuery();
 		
-		String sql2 = "UPDATE PLATO SET DISPONIBLES = MAX_DISP WHERE NOMBRERESTAURANTE = '" + nombre + "'";
+		String sql2 = "UPDATE PLATO SET DISPONIBLES = MAX_DISP WHERE RESTAURANTE = '" + nombre + "'";
 
 		PreparedStatement prepStmt2 = conn.prepareStatement(sql2);
 		recursos.add(prepStmt2);
@@ -550,8 +550,8 @@ public class DAOTablaPlato {
 				+ "WHERE EMAIL_USER = '" + cliente.getEmail() +"') OR ID_PLATO IN "
 				+ "(SELECT ID_PLATO FROM MENU_PLATO WHERE ID_MENU IN "
 				+ "(SELECT ID_MENU FROM PEDIDO_MENUS NATURAL JOIN PEDIDO "
-				+ "WHERE EMAIL_USER = '" + cliente.getEmail() +"' ));";
-		
+				+ "WHERE EMAIL_USER = '" + cliente.getEmail() +"' ))";
+		System.out.println("BUSQUEDA C7: \n" + sql);
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
 		ResultSet rs = prepStmt.executeQuery();

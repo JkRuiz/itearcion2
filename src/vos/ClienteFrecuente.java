@@ -45,6 +45,9 @@ public class ClienteFrecuente {
 		this.pedidos = pedidos;
 	}
 
+	public ClienteFrecuente() {
+	}
+
 	public List getHistorialPlatos() {
 		return pedidos;
 	}

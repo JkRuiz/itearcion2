@@ -84,6 +84,7 @@ public class PedidoServices {
 	}
 	
 	/**
+	 * Requerimiento C8
 	 * Metodo que expone servicio REST usando GET que da todos los restaurantes de la base de datos.
 	 * <b>URL: </b> http://"ip o nombre de host":8080/VideoAndes/rest/videos
 	 * @return Json con todos los videos de la base de datos o json con 
@@ -98,7 +99,7 @@ public class PedidoServices {
 		try {
 			pedido = tm.darPedidosRestaurante(restaurante);
 		} catch (Exception e) {
-			return Response.status(500).entity(doErrorMessage(e)).build();
+			return Response.status(400).entity(doErrorMessage(e)).build();
 		}
 		return Response.status(200).entity(pedido).build();
 	}
@@ -193,6 +194,7 @@ public class PedidoServices {
 	
 
 	/**
+	 * Requerimiento F14
      * Metodo que expone servicio REST usando POST que agrega el video que recibe en Json
      * <b>URL: </b> http://"ip o nombre de host":8080/VideoAndes/rest/videos/video
      * @param video - video a agregar
@@ -207,13 +209,13 @@ public class PedidoServices {
 		try {
 			tm.addPedidoMenuEquivalencia(pedido, idMenu, equivalencia);
 		} catch (Exception e) {
-			return Response.status(500).entity(doErrorMessage(e)).build();
+			return Response.status(400).entity(doErrorMessage(e)).build();
 		}
 		return Response.status(200).entity(pedido).build();
 	}
 	
     /**
-     * Requerimiento F10
+     * Requerimiento F10 y F16
      * Metodo que expone servicio REST usando PUT que actualiza el video que recibe en Json
      * <b>URL: </b> http://"ip o nombre de host":8080/VideoAndes/rest/videos
      * @param video - video a actualizar. 
@@ -227,7 +229,7 @@ public class PedidoServices {
 		try {
 			tm.pedidoEntregado(pedido);
 		} catch (Exception e) {
-			return Response.status(500).entity(doErrorMessage(e)).build();
+			return Response.status(400).entity(doErrorMessage(e)).build();
 		}
 		return Response.status(200).entity(pedido).build();
 	}
@@ -255,15 +257,15 @@ public class PedidoServices {
      * Requerimiento F15
      */
 	@POST
-	@Path("mesa")
+	@Path("mesa/{datos}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response registrarPedidoMesa(Informacion info) {
+	public Response registrarPedidoMesa(Pedido pedido, @PathParam("datos") String datos) {
 		RotondAndesTM tm = new RotondAndesTM(getPath());
 		try {
-			tm.registrarPedidoMesa(new Pedido(info.getPedido()), info.getInformacion());
+			tm.registrarPedidoMesa(pedido, datos);
 		} catch (Exception e) {	
-			return Response.status(500).entity(doErrorMessage(e)).build();
+			return Response.status(400).entity(doErrorMessage(e)).build();
 		}
 		return Response.status(200).entity(new Informacion()).build();
 	}
