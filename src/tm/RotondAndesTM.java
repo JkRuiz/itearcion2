@@ -69,7 +69,7 @@ public class RotondAndesTM {
 	 * Atributo que guarda el driver que se va a usar para conectarse a la base de datos.
 	 */
 	private String driver;
-	
+
 	/**
 	 * conexion a la base de datos
 	 */
@@ -201,7 +201,7 @@ public class RotondAndesTM {
 			}
 		}
 	}
-	
+
 	/**
 	 * REQUERIMIENTO F12
 	 * @param productos
@@ -222,7 +222,7 @@ public class RotondAndesTM {
 			if (plato1.getRestaurante().equalsIgnoreCase(plato2.getRestaurante()) == false) throw new Exception("Los productos son de restaurantes diferentes");
 			if(!plato1.getRestaurante().equalsIgnoreCase(producto[2])) throw new Exception("Los productos no son de ese restaurante");
 			if(!plato1.getCategoria().equalsIgnoreCase(plato2.getCategoria())) throw new Exception("Los productos son de diferente categoria");
-			
+
 			daoPlatos.addEquivalentes(productos);
 			conn.commit();
 		} catch (SQLException e) {
@@ -247,7 +247,7 @@ public class RotondAndesTM {
 			}
 		}
 	}
-	
+
 	/**
 	 * REQUERIMIENTO F13
 	 * Surte todos los pruductos del restaurante indicado.
@@ -266,7 +266,9 @@ public class RotondAndesTM {
 			daoMenu.setConn(conn);
 			daoPlato.setConn(conn);
 			daoRestaurante.setConn(conn);
-			daoRestaurante.buscarRestaurantePorNombre(nombre);
+			if(daoRestaurante.buscarRestaurantePorNombre(nombre) == null)  {
+				throw new Exception("No exise restaurante con el nombre: " + nombre);
+			}
 			daoMenu.surtir(nombre);
 			daoPlato.surtir(nombre);
 			conn.commit();
@@ -293,7 +295,7 @@ public class RotondAndesTM {
 			}
 		}
 	}
-	
+
 	/**
 	 * REQUERIMIENTO F15
 	 * Registra el pedido de productos de una mesa.
@@ -317,9 +319,9 @@ public class RotondAndesTM {
 			daoPedido.setConn(conn);
 			//daoMenu.setConn(conn);
 			//daoPlato.setConn(conn);
-			
+
 			daoPedido.addPedido(pedido);
-			
+
 			String[] params = info.split("-");
 			int count = Integer.parseInt(params[0]);
 			for(int i = 0; i < count; i++) {
@@ -333,7 +335,7 @@ public class RotondAndesTM {
 					daoPedidoMenu.addPedidoMenu(new PedidoMenu(pedido.getNumPedido(), idMenu));
 				}
 			}
-			
+
 			conn.commit();
 		} catch (SQLException e) {
 			conn.rollback();
@@ -361,8 +363,8 @@ public class RotondAndesTM {
 			}
 		}
 	}
-	
-	
+
+
 	/**
 	 * REQUERIMIENTO F17
 	 * Cancela un pedido que no se haya servido.
@@ -381,11 +383,11 @@ public class RotondAndesTM {
 			daoPedidoMenu.setConn(conn);
 			daoPedidoPlato.setConn(conn);
 			daoPedido.setConn(conn);
-			
+
 			daoPedidoMenu.removerPedidos(pedido);
 			daoPedidoPlato.removerPedidos(pedido);
 			daoPedido.removerPedido(pedido);
-			
+
 			conn.commit();
 		} catch (SQLException e) {
 			conn.rollback();
@@ -411,7 +413,7 @@ public class RotondAndesTM {
 			}
 		}
 	}
-	
+
 	/**
 	 * REQUERIMIENTO FC2
 	 * Metodo que modela la transaccion que retorna todos las zonas de la base de datos.
@@ -489,7 +491,7 @@ public class RotondAndesTM {
 		}
 		return clientes;
 	}
-	
+
 	public List<Pedido> darPedidosCliente(String emailCliente) throws Exception {
 		List<Pedido> pedidosCliente;
 		DAOTablaPedido daoPedido = new DAOTablaPedido();
@@ -523,7 +525,7 @@ public class RotondAndesTM {
 		}
 		return pedidosCliente;
 	}
-	
+
 	public List<Zona> darZonasFiltro(String filtro) throws Exception {
 		List<Zona> zonas;
 		DAOTablaZona daoZona = new DAOTablaZona();
@@ -556,39 +558,39 @@ public class RotondAndesTM {
 		return zonas;
 	}
 
-//	public Rentabilidad darRentabilidad(String fecha1, String fecha2) throws Exception {
-//		Rentabilidad rent;
-//		DAOTablaPlato daoPlatos = new DAOTablaPlato();
-//		try 
-//		{
-//			//////transaccion
-//			this.conn = darConexion();
-//			daoPlatos.setConn(conn);
-//			r = daoPlatos.darPlatosFiltro(filtro);
-//
-//		} catch (SQLException e) {
-//			System.err.println("SQLException:" + e.getMessage());
-//			e.printStackTrace();
-//			throw e;
-//		} catch (Exception e) {
-//			System.err.println("GeneralException:" + e.getMessage());
-//			e.printStackTrace();
-//			throw e;
-//		} finally {
-//			try {
-//				daoPlatos.cerrarRecursos();
-//				if(this.conn!=null)
-//					this.conn.close();
-//			} catch (SQLException exception) {
-//				System.err.println("SQLException closing resources:" + exception.getMessage());
-//				exception.printStackTrace();
-//				throw exception;
-//			}
-//		}
-//		return rent;
-//	}
-	
-	
+	//	public Rentabilidad darRentabilidad(String fecha1, String fecha2) throws Exception {
+	//		Rentabilidad rent;
+	//		DAOTablaPlato daoPlatos = new DAOTablaPlato();
+	//		try 
+	//		{
+	//			//////transaccion
+	//			this.conn = darConexion();
+	//			daoPlatos.setConn(conn);
+	//			r = daoPlatos.darPlatosFiltro(filtro);
+	//
+	//		} catch (SQLException e) {
+	//			System.err.println("SQLException:" + e.getMessage());
+	//			e.printStackTrace();
+	//			throw e;
+	//		} catch (Exception e) {
+	//			System.err.println("GeneralException:" + e.getMessage());
+	//			e.printStackTrace();
+	//			throw e;
+	//		} finally {
+	//			try {
+	//				daoPlatos.cerrarRecursos();
+	//				if(this.conn!=null)
+	//					this.conn.close();
+	//			} catch (SQLException exception) {
+	//				System.err.println("SQLException closing resources:" + exception.getMessage());
+	//				exception.printStackTrace();
+	//				throw exception;
+	//			}
+	//		}
+	//		return rent;
+	//	}
+
+
 	/**
 	 * Metodo no necesario, pero bueno para probar todo
 	 * @return
@@ -626,7 +628,7 @@ public class RotondAndesTM {
 		}
 		return restaurantes;
 	}
-	
+
 	/**
 	 * Metodo no necesario, pero bueno para probar todo
 	 * @return
@@ -664,7 +666,7 @@ public class RotondAndesTM {
 		}
 		return usuarios;
 	}
-	
+
 	/**
 	 * Metodo no necesario, pero bueno para probar todo
 	 * @return
@@ -702,7 +704,7 @@ public class RotondAndesTM {
 		}
 		return menus;
 	}
-	
+
 	/**
 	 * Metodo no necesario, pero bueno para probar todo
 	 * @return
@@ -740,7 +742,7 @@ public class RotondAndesTM {
 		}
 		return ingredientes;
 	}
-	
+
 	/**
 	 * Metodo no necesario, pero bueno para probar todo
 	 * @return
@@ -778,7 +780,7 @@ public class RotondAndesTM {
 		}
 		return pedidos;
 	}
-	
+
 	/**
 	 * Requerimiento C8
 	 */
@@ -818,7 +820,7 @@ public class RotondAndesTM {
 		}
 		return pedido;
 	}
-	
+
 	/**
 	 * REQUERIMIENTO FC4
 	 * Metodo que modela la transaccion que retorna el plato mas ofrecido en la base de datos
@@ -864,7 +866,7 @@ public class RotondAndesTM {
 		}
 		return platoMasOfercido;
 	}
-	
+
 	/**
 	 * REQUERIMIENTO FC7
 	 * Retorna los platos que ha consumido un cliente frecuente de la rotonda
@@ -905,7 +907,7 @@ public class RotondAndesTM {
 		}
 		return platos;
 	}
-	
+
 	/**
 	 * REQUERIMIENTO F1
 	 * Metodo que modela la transaccion que agrega un solo usuario a la base de datos.
@@ -944,7 +946,7 @@ public class RotondAndesTM {
 			}
 		}
 	}
-	
+
 
 	/**
 	 * REQUERIMIENTO F2
@@ -984,7 +986,7 @@ public class RotondAndesTM {
 			}
 		}
 	}
-	
+
 	/**
 	 * REQUERIMIENTO F3
 	 * Metodo que modela la transaccion que agrega un solo restaurante a la base de datos.
@@ -1023,7 +1025,7 @@ public class RotondAndesTM {
 			}
 		}
 	}
-	
+
 	/**
 	 * REQUERIMIENTO F4
 	 * Metodo que modela la transaccion que agrega un solo plato a la base de datos.
@@ -1062,7 +1064,7 @@ public class RotondAndesTM {
 			}
 		}
 	}
-	
+
 	/**
 	 * REQUERIMIENTO F5
 	 * Metodo que modela la transaccion que agrega un solo ingrediente a la base de datos.
@@ -1101,7 +1103,7 @@ public class RotondAndesTM {
 			}
 		}
 	}
-	
+
 	/**
 	 * REQUERIMIENTO F6
 	 * Metodo que modela la transaccion que agrega un solo menu a la base de datos.
@@ -1140,7 +1142,7 @@ public class RotondAndesTM {
 			}
 		}
 	}
-	
+
 	/**
 	 * REQUERIMIENTO F7
 	 * Metodo que modela la transaccion que agrega una sola zona a la base de datos.
@@ -1179,7 +1181,7 @@ public class RotondAndesTM {
 			}
 		}
 	}
-	
+
 	/**
 	 * REQUERIMIENTO F8
 	 * Metodo que modela la transaccion que agrega un solo cliente a la base de datos.
@@ -1218,7 +1220,7 @@ public class RotondAndesTM {
 			}
 		}
 	}
-	
+
 	/**
 	 * Metodo que modela la transaccion que agrega un solo pedidoPlato a la base de datos.
 	 * <b> post: </b> se ha agregado el pedidoPlato que entra como parametro
@@ -1250,7 +1252,7 @@ public class RotondAndesTM {
 				daoPlato.SeVendioProducto((int) menu.getProductos().get(i));
 			daoMenu.SeVendioMenu(idMenu);
 			conn.commit();
-			
+
 		} catch (SQLException e) {
 			System.err.println("SQLException:" + e.getMessage());
 			e.printStackTrace();
@@ -1272,7 +1274,7 @@ public class RotondAndesTM {
 			}
 		}
 	}
-	
+
 	/**
 	 * RF14
 	 * @param pedido
@@ -1288,7 +1290,7 @@ public class RotondAndesTM {
 		try 
 		{
 			String[]eq = equivalencia.split("-");
-			
+
 			//////transaccion
 			this.conn = darConexion();
 			conn.setTransactionIsolation(conn.TRANSACTION_READ_COMMITTED);
@@ -1309,7 +1311,7 @@ public class RotondAndesTM {
 			PedidoMenu pedidoMenu = new PedidoMenu(pedido.getNumPedido(), idMenu);
 			daoPedidoMenu.addPedidoMenu(pedidoMenu);
 			conn.commit();
-			
+
 		} catch (SQLException e) {
 			conn.rollback();
 			System.err.println("SQLException:" + e.getMessage());
@@ -1333,7 +1335,7 @@ public class RotondAndesTM {
 			}
 		}
 	}
-	
+
 	/**
 	 * REQUERIMIENTO F9
 	 * Metodo que modela la transaccion que agrega un solo pedidoPlato a la base de datos.
@@ -1360,7 +1362,7 @@ public class RotondAndesTM {
 			PedidoPlato pedidoPlato = new PedidoPlato(pedido.getNumPedido(), idPlato);
 			daoPedidoPlato.addPedidoPlato(pedidoPlato);
 			conn.commit();
-			
+
 		} catch (SQLException e) {
 			System.err.println("SQLException:" + e.getMessage());
 			e.printStackTrace();
@@ -1382,7 +1384,7 @@ public class RotondAndesTM {
 			}
 		}
 	}
-	
+
 	/**
 	 * REQUERIMIENTO F10 y RF16
 	 * Metodo que modela la transaccion que agrega un solo pedidoPlato a la base de datos.
@@ -1416,7 +1418,7 @@ public class RotondAndesTM {
 			pedidosPlatos = daoPedidoPlato.bucarPedidoPlatoPorIdPedido(pedido.getNumPedido());
 			for (PedidoPlato p : pedidosPlatos)
 				daoPlato.SeVendioProducto(p.getIdPlato());
-			
+
 			pedidosMenus = daoPedidoMenu.bucarPedidoMenuPorIdPedido(pedido.getNumPedido());
 			for (PedidoMenu m : pedidosMenus)
 				daoMenu.SeVendioMenu(m.getIdMenu());
@@ -1444,7 +1446,7 @@ public class RotondAndesTM {
 			}
 		}
 	}
-	
+
 	/**
 	 * 
 	 * Metodo que modela la transaccion que agrega un solo plato a la base de datos.
@@ -1486,7 +1488,7 @@ public class RotondAndesTM {
 			}
 		}
 	}
-	
+
 	/**
 	 * REQUERIMIENTO F6.2
 	 * Metodo que modela la transaccion que agrega un solo pedidoPlato a la base de datos.
@@ -1508,7 +1510,7 @@ public class RotondAndesTM {
 			MenuPlato menuPlato = new MenuPlato(menu.getIdMenu(), idPlato);
 			daoMenuPlato.addMenuPlato(menuPlato);
 			conn.commit();
-			
+
 		} catch (SQLException e) {
 			System.err.println("SQLException:" + e.getMessage());
 			e.printStackTrace();
@@ -1530,7 +1532,7 @@ public class RotondAndesTM {
 			}
 		}
 	}
-	
+
 	/**
 	 * REQUERIMIENTO F6.3
 	 * Metodo que modela la transaccion que agrega un solo pedidoPlato a la base de datos.
@@ -1551,7 +1553,7 @@ public class RotondAndesTM {
 			MenuPlato menuPlato = new MenuPlato(menu.getIdMenu(), idPlato);
 			daoMenuPlato.addMenuPlato(menuPlato);
 			conn.commit();
-			
+
 		} catch (SQLException e) {
 			System.err.println("SQLException:" + e.getMessage());
 			e.printStackTrace();
