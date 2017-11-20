@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import vos.Funcionamiento;
 import vos.Pedido;
 import vos.PedidoConsolidado;
 import vos.ProductoConsolidado;
@@ -185,6 +186,29 @@ public class DAOTablaPedido {
 			pedidos.add(new Pedido(numPedido, precio, fecha, emailUser, pagado, entregado, hora, cambio));
 		}
 		return pedidos;
+	}
+	
+	public Funcionamiento darFuncionamientoRotond() throws SQLException, Exception {
+		Funcionamiento func = null;
+
+		String sql = "SELECT * FROM PEDIDO WHERE EMAIL_USER ='"  + "'";
+
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		ResultSet rs = prepStmt.executeQuery();
+
+		while (rs.next()) {
+			int numPedido = rs.getInt("NUM_PEDIDO");
+			float precio = rs.getFloat("PRECIO");
+			String fecha = rs.getString("FECHA");
+			String emailUser = rs.getString("EMAIL_USER");
+			int pagado = rs.getInt("PAGADO");
+			int entregado = rs.getInt("ENTREGADO");
+			String hora = rs.getString("HORA");
+			String cambio = rs.getString("CAMBIO");
+			//pedidos.add(new Pedido(numPedido, precio, fecha, emailUser, pagado, entregado, hora, cambio));
+		}
+		return func;
 	}
 
 	/**

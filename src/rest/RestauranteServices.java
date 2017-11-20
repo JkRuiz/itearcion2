@@ -17,6 +17,7 @@ import javax.ws.rs.core.Response;
 import tm.RotondAndesTM;
 import vos.Informacion;
 import vos.Restaurante;
+import vos.Usuario;
 
 @Path("restaurantes")
 public class RestauranteServices {
@@ -60,6 +61,46 @@ public class RestauranteServices {
 		return Response.status(200).entity(restaurantes).build();
 	}
 
+	/**
+	 * RFC9
+	 * @param informacionEq informacion = restuarante-fechaInicial-FechaFinal-criterioAgrupamiento 
+	 * el resto de Informacion = null
+	 * @return
+	 */
+	@GET
+	@Path( "consumoAlto" )
+	@Produces({ MediaType.APPLICATION_JSON })
+	public Response getConsumoAltoRestaurante(Informacion informacionEq) {
+		RotondAndesTM tm = new RotondAndesTM(getPath());
+		List<Usuario> usuarios;
+		try {
+			usuarios = tm.darUsuariosMayorConsumo(informacionEq.getInformacion());
+		} catch (Exception e) {
+			return Response.status(500).entity(doErrorMessage(e)).build();
+		}
+		return Response.status(200).entity(usuarios).build();
+	}
+	
+	/**
+	 * RFC10
+	 * @param informacionEq informacion = restuarante-fechaInicial-FechaFinal-criterioAgrupamiento 
+	 * el resto de Informacion = null
+	 * @return
+	 */
+	@GET
+	@Path( "consumoBajo" )
+	@Produces({ MediaType.APPLICATION_JSON })
+	public Response getConsumoBajoRestaurante(Informacion informacionEq) {
+		RotondAndesTM tm = new RotondAndesTM(getPath());
+		List<Usuario> usuarios;
+		try {
+			usuarios = tm.darUsuariosMenorConsumo(informacionEq.getInformacion());
+		} catch (Exception e) {
+			return Response.status(500).entity(doErrorMessage(e)).build();
+		}
+		return Response.status(200).entity(usuarios).build();
+	}
+	
 	 /**
      * Metodo que expone servicio REST usando GET que busca el video con el id que entra como parametro
      * <b>URL: </b> http://"ip o nombre de host":8080/VideoAndes/rest/videos/<<id>>" para la busqueda"

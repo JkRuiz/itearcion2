@@ -77,7 +77,46 @@ public class DAOTablaUsuario {
 		return usuarios;
 	}
 
+	
+	public ArrayList<Usuario> darUsuariosConsumoAlto(String restaurante, String fechaInicial, String 
+			fechaFinal, String criterioAgrupamiento) throws SQLException, Exception {
+		ArrayList<Usuario> usuarios = new ArrayList<Usuario>();
 
+		//CAMBIAR CONSULTA POR LA ADECUADA
+		String sql = "SELECT * FROM USUARIOS";
+
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		ResultSet rs = prepStmt.executeQuery();
+
+		while (rs.next()) {
+			String email = rs.getString("EMAIL");
+			String nombre = rs.getString("NOMBRE");
+			long identificacion = rs.getLong("IDENTIFICACION");
+			usuarios.add(new Usuario(email, nombre, identificacion));
+		}
+		return usuarios;
+	}
+
+	public ArrayList<Usuario> darUsuariosConsumoBajo(String restaurante, String fechaInicial, String 
+			fechaFinal, String criterioAgrupamiento) throws SQLException, Exception {
+		ArrayList<Usuario> usuarios = new ArrayList<Usuario>();
+
+		//CAMBIAR CONSULTA POR LA ADECUADA
+		String sql = "SELECT * FROM USUARIOS";
+
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		ResultSet rs = prepStmt.executeQuery();
+
+		while (rs.next()) {
+			String email = rs.getString("EMAIL");
+			String nombre = rs.getString("NOMBRE");
+			long identificacion = rs.getLong("IDENTIFICACION");
+			usuarios.add(new Usuario(email, nombre, identificacion));
+		}
+		return usuarios;
+	}
 	/**
 	 * Metodo que busca el/los videos con el nombre que entra como parametro.
 	 * @param name - Nombre de el/los videos a buscar

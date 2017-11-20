@@ -133,6 +133,53 @@ public class DAOTablaClienteFrecuente {
 	}
 
 	/**
+	 * 
+	 * @param email
+	 * @return
+	 * @throws SQLException
+	 * @throws Exception
+	 */
+	public ArrayList<ClienteFrecuente> darBuenosClientes() throws SQLException, Exception 
+	{
+		ArrayList<ClienteFrecuente> clientes = new ArrayList<ClienteFrecuente>();
+		ArrayList<Pedido> pedidos;
+		String sql = "SELECT * FROM CLIENTEFR";
+
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		ResultSet rs = prepStmt.executeQuery();
+
+		while (rs.next()) {
+			String email = rs.getString("EMAIL");
+			String password = rs.getString("PASSWORD");
+			String username = rs.getString("USERNAME");
+			float preferenciaPrecio = rs.getFloat("PREFERENCIAPRECIO");
+			String preferenciaCategoria = rs.getString("PREFERENCIACATEGORIA");
+			String nombre = rs.getString("NOMBRE");
+			long identificacion = rs.getLong("IDENTIFICACION");
+			String sqlAux = "SELECT * FROM PEDIDO WHERE EMAIL_USER='"+email+"'";
+			PreparedStatement prepStmtAux = conn.prepareStatement(sqlAux);
+			recursos.add(prepStmtAux);
+			ResultSet rsAux = prepStmtAux.executeQuery();
+			pedidos = new ArrayList<Pedido>();
+			while (rsAux.next())
+			{
+				int numPedido = rsAux.getInt("NUM_PEDIDO");
+				float precio = rsAux.getFloat("PRECIO");
+				String fecha = rsAux.getString("FECHA");
+				String emailUser = rsAux.getString("EMAIL_USER");
+				int pagado = rsAux.getInt("PAGADO");
+				int entregado = rsAux.getInt("ENTREGADO");
+				String hora = rsAux.getString("HORA");
+				String cambio = rsAux.getString("CAMBIO");
+				pedidos.add(new Pedido(numPedido, precio, fecha, emailUser, pagado, entregado, hora, cambio));
+			}
+			clientes.add(new ClienteFrecuente(email, password, username, preferenciaPrecio, preferenciaCategoria, nombre, identificacion, pedidos));			
+		}
+		return clientes;
+	}
+	
+	/**
 	 * Metodo que agrega el cliente que entra como parametro a la base de datos.
 	 * @param cliente - el cliente a agregar. cliente !=  null
 	 * <b> post: </b> se ha agregado el cliente a la base de datos en la transaction actual. pendiente que el cliente master

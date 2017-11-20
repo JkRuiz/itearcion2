@@ -59,6 +59,21 @@ public class ClienteServices {
 		return Response.status(200).entity(clientes).build();
 	}
 
+	
+	@GET
+	@Path( "buenosClientes" )
+	@Produces({ MediaType.APPLICATION_JSON })
+	public Response getBuenosClientes() {
+		RotondAndesTM tm = new RotondAndesTM(getPath());
+		List<ClienteFrecuente> clientes;
+		try {
+			clientes = tm.darBuenosClientes();
+		} catch (Exception e) {
+			return Response.status(500).entity(doErrorMessage(e)).build();
+		}
+		return Response.status(200).entity(clientes).build();
+	}
+	
 	 /**
      * Metodo que expone servicio REST usando GET que busca el video con el id que entra como parametro
      * <b>URL: </b> http://"ip o nombre de host":8080/VideoAndes/rest/videos/<<id>>" para la busqueda"

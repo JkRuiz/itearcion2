@@ -17,6 +17,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import tm.RotondAndesTM;
+import vos.Funcionamiento;
 import vos.Informacion;
 import vos.Pedido;
 import vos.PedidoConsolidado;
@@ -102,6 +103,20 @@ public class PedidoServices {
 			return Response.status(400).entity(doErrorMessage(e)).build();
 		}
 		return Response.status(200).entity(pedido).build();
+	}
+	
+	@GET
+	@Path( "funcionamiento" )
+	@Produces({ MediaType.APPLICATION_JSON })
+	public Response getFuncionamiento() {
+		RotondAndesTM tm = new RotondAndesTM(getPath());
+		Funcionamiento funcionamiento;
+		try {
+			funcionamiento = tm.darFuncionamiento();
+		} catch (Exception e) {
+			return Response.status(400).entity(doErrorMessage(e)).build();
+		}
+		return Response.status(200).entity(funcionamiento).build();
 	}
 	
 	 /**

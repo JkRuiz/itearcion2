@@ -23,6 +23,7 @@ import dao.DAOTablaRestaurante;
 import dao.DAOTablaUsuario;
 import dao.DAOTablaZona;
 import vos.ClienteFrecuente;
+import vos.Funcionamiento;
 import vos.Ingredientes;
 import vos.IngredientesPlato;
 import vos.Menu;
@@ -164,6 +165,170 @@ public class RotondAndesTM {
 		return platos;
 	}
 
+	/**
+	 * RFC9
+	 * @param informacionEq
+	 * @return
+	 * @throws Exception
+	 */
+	public List<Usuario> darUsuariosMayorConsumo(String informacionEq) throws Exception {
+		List<Usuario> usuarios;
+		DAOTablaUsuario daoUsuarios = new DAOTablaUsuario();
+		try 
+		{
+			//////transaccion
+			this.conn = darConexion();
+			conn.setTransactionIsolation(conn.TRANSACTION_READ_COMMITTED);
+			daoUsuarios.setConn(conn);
+			String info[] = informacionEq.split("-");
+			if (info.length < 4) throw new Exception("La informacion dada esta incompleta");
+			usuarios = daoUsuarios.darUsuariosConsumoAlto(info[0], info[1],info[2], info[3]);
+		} catch (SQLException e) {
+			conn.rollback();
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			conn.rollback();
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				daoUsuarios.cerrarRecursos();
+				if(this.conn!=null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
+		return usuarios;
+	}
+	
+	/**
+	 * RFC10
+	 * @param informacionEq
+	 * @return
+	 * @throws Exception
+	 */
+	public List<Usuario> darUsuariosMenorConsumo(String informacionEq) throws Exception {
+		List<Usuario> usuarios;
+		DAOTablaUsuario daoUsuarios = new DAOTablaUsuario();
+		try 
+		{
+			//////transaccion
+			this.conn = darConexion();
+			conn.setTransactionIsolation(conn.TRANSACTION_READ_COMMITTED);
+			daoUsuarios.setConn(conn);
+			String info[] = informacionEq.split("-");
+			if (info.length < 4) throw new Exception("La informacion dada esta incompleta");
+			usuarios = daoUsuarios.darUsuariosConsumoBajo(info[0], info[1],info[2], info[3]);
+		} catch (SQLException e) {
+			conn.rollback();
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			conn.rollback();
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				daoUsuarios.cerrarRecursos();
+				if(this.conn!=null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
+		return usuarios;
+	}
+	
+	/**
+	 * RFC11
+	 * @param informacionEq
+	 * @return
+	 * @throws Exception
+	 */
+	public Funcionamiento darFuncionamiento() throws Exception {
+		Funcionamiento funcionamiento;
+		DAOTablaPedido daoPedidos = new DAOTablaPedido();
+		try 
+		{
+			//////transaccion
+			this.conn = darConexion();
+			conn.setTransactionIsolation(conn.TRANSACTION_READ_COMMITTED);
+			daoPedidos.setConn(conn);
+			funcionamiento = daoPedidos.darFuncionamientoRotond();
+		} catch (SQLException e) {
+			conn.rollback();
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			conn.rollback();
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				daoPedidos.cerrarRecursos();
+				if(this.conn!=null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
+		return funcionamiento;
+	}
+	
+	/**
+	 * RFC11
+	 * @param informacionEq
+	 * @return
+	 * @throws Exception
+	 */
+	public List<ClienteFrecuente> darBuenosClientes() throws Exception {
+		List<ClienteFrecuente> clientes;
+		DAOTablaClienteFrecuente daoCliente = new DAOTablaClienteFrecuente();
+		try 
+		{
+			//////transaccion
+			this.conn = darConexion();
+			conn.setTransactionIsolation(conn.TRANSACTION_READ_COMMITTED);
+			daoCliente.setConn(conn);
+			clientes = daoCliente.darBuenosClientes();
+		} catch (SQLException e) {
+			conn.rollback();
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			conn.rollback();
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				daoCliente.cerrarRecursos();
+				if(this.conn!=null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
+		return clientes;
+	}
+	
 	/**
 	 * REQUERIMIENTO F11
 	 * Agrega una equivalencia entre ingredientes para un restaurante.
