@@ -203,12 +203,12 @@ public class DAOTablaPedido {
 					"FROM pedido_plato NATURAL JOIN PEDIDO NATURAL JOIN PLATO WHERE TO_CHAR(TO_DATE(PEDIDO.FECHA,'DD-MM-YY'),'DAY') = '" + dias[i] + "'" + 
 					"GROUP BY ID_PLATO, TO_CHAR(TO_DATE(PEDIDO.FECHA,'DD-MM-YY'),'DAY'), PLATO.NOMBRE, PLATO.CATEGORIA" + "ORDER BY numVendidos ASC" + 
 					"fetch first 1 rows only";
-			
+			System.out.println("PASO DE LA PRIMERA");
 			String sql2 = "SELECT ID_PLATO, PLATO.NOMBRE, PLATO.CATEGORIA,COUNT(*) as numVendidos, TO_CHAR(TO_DATE(PEDIDO.FECHA,'DD-MM-YY'),'DAY') as day" + 
 					"FROM pedido_plato NATURAL JOIN PEDIDO NATURAL JOIN PLATO WHERE TO_CHAR(TO_DATE(PEDIDO.FECHA,'DD-MM-YY'),'DAY') = '" + dias[i] + "'" + 
 					"GROUP BY ID_PLATO, TO_CHAR(TO_DATE(PEDIDO.FECHA,'DD-MM-YY'),'DAY'), PLATO.NOMBRE, PLATO.CATEGORIA" + "ORDER BY numVendidos DESC" + 
 					"fetch first 1 rows only";
-			
+			System.out.println("PASO DE LA SEGUNDA");
 			String sql3 = "SELECT RESTAURANTES.NOMBRE, COUNT(PEDIDO_PLATO.NUM_PEDIDO) AS NUM, TO_CHAR(TO_DATE(PEDIDO.FECHA,'DD-MM-YY'),'DAY') AS DAY" + 
 					"FROM RESTAURANTES INNER JOIN " + 
 					"PLATO ON RESTAURANTES.NOMBRE = PLATO.RESTAURANTE JOIN " + 
@@ -219,7 +219,7 @@ public class DAOTablaPedido {
 					"GROUP BY RESTAURANTES.NOMBRE, TO_CHAR(TO_DATE(PEDIDO.FECHA,'DD-MM-YY'),'DAY')" + 
 					"ORDER BY NUM DESC" + 
 					"fetch first 1 rows only";
-			
+			System.out.println("PASO DE LA TERCERA");
 			String sql4 = "SELECT RESTAURANTES.NOMBRE, COUNT(PEDIDO_PLATO.NUM_PEDIDO) AS NUM, TO_CHAR(TO_DATE(PEDIDO.FECHA,'DD-MM-YY'),'DAY') AS DAY" + 
 					"FROM RESTAURANTES INNER JOIN " + 
 					"PLATO ON RESTAURANTES.NOMBRE = PLATO.RESTAURANTE JOIN " + 
@@ -230,7 +230,8 @@ public class DAOTablaPedido {
 					"GROUP BY RESTAURANTES.NOMBRE, TO_CHAR(TO_DATE(PEDIDO.FECHA,'DD-MM-YY'),'DAY')" + 
 					"ORDER BY NUM ASC" + 
 					"fetch first 1 rows only";
-					
+			System.out.println("PASO DE LA CUARTA");		
+			
 			PreparedStatement prepStmt1 = conn.prepareStatement(sql1);
 			PreparedStatement prepStmt2 = conn.prepareStatement(sql2);
 			PreparedStatement prepStmt3 = conn.prepareStatement(sql3);
