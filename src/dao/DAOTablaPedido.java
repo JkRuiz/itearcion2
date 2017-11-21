@@ -6,11 +6,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 import vos.Funcionamiento;
 import vos.Pedido;
 import vos.PedidoConsolidado;
 import vos.ProductoConsolidado;
+import vos.ProductoDetalle;
+import vos.RestauranteDetalle;
 
 public class DAOTablaPedido {
 
@@ -187,27 +190,101 @@ public class DAOTablaPedido {
 		}
 		return pedidos;
 	}
-	
-	public Funcionamiento darFuncionamientoRotond() throws SQLException, Exception {
-		Funcionamiento func = null;
 
-		String sql = "SELECT * FROM PEDIDO WHERE EMAIL_USER ='"  + "'";
+	public List<Funcionamiento> darFuncionamientoRotond() throws SQLException, Exception {
+		ArrayList<Funcionamiento> func = new ArrayList<>();
+		
+		String dias [] = {"LUNES    ","MARTES   ","MIÉRCOLES","JUEVES   ","VIERNES  ", "SÁBADO   ", "DOMINGO  "};
 
-		PreparedStatement prepStmt = conn.prepareStatement(sql);
-		recursos.add(prepStmt);
-		ResultSet rs = prepStmt.executeQuery();
+		for (int i = 0; i < dias.length; i++) {
 
-		while (rs.next()) {
-			int numPedido = rs.getInt("NUM_PEDIDO");
-			float precio = rs.getFloat("PRECIO");
-			String fecha = rs.getString("FECHA");
-			String emailUser = rs.getString("EMAIL_USER");
-			int pagado = rs.getInt("PAGADO");
-			int entregado = rs.getInt("ENTREGADO");
-			String hora = rs.getString("HORA");
-			String cambio = rs.getString("CAMBIO");
-			//pedidos.add(new Pedido(numPedido, precio, fecha, emailUser, pagado, entregado, hora, cambio));
+			Funcionamiento funcionam = new Funcionamiento(null, null, null, null);
+			String sql1 = "SELECT ID_PLATO, PLATO.NOMBRE, PLATO.CATEGORIA,COUNT(*) as numVendidos, TO_CHAR(TO_DATE(PEDIDO.FECHA,'DD-MM-YY'),'DAY') as day" + 
+					"FROM pedido_plato NATURAL JOIN PEDIDO NATURAL JOIN PLATO WHERE TO_CHAR(TO_DATE(PEDIDO.FECHA,'DD-MM-YY'),'DAY') = '" + dias[i] + "'" + 
+					"GROUP BY ID_PLATO, TO_CHAR(TO_DATE(PEDIDO.FECHA,'DD-MM-YY'),'DAY'), PLATO.NOMBRE, PLATO.CATEGORIA" + "ORDER BY numVendidos ASC" + 
+					"fetch first 1 rows only";
+			
+			String sql2 = "SELECT ID_PLATO, PLATO.NOMBRE, PLATO.CATEGORIA,COUNT(*) as numVendidos, TO_CHAR(TO_DATE(PEDIDO.FECHA,'DD-MM-YY'),'DAY') as day" + 
+					"FROM pedido_plato NATURAL JOIN PEDIDO NATURAL JOIN PLATO WHERE TO_CHAR(TO_DATE(PEDIDO.FECHA,'DD-MM-YY'),'DAY') = '" + dias[i] + "'" + 
+					"GROUP BY ID_PLATO, TO_CHAR(TO_DATE(PEDIDO.FECHA,'DD-MM-YY'),'DAY'), PLATO.NOMBRE, PLATO.CATEGORIA" + "ORDER BY numVendidos DESC" + 
+					"fetch first 1 rows only";
+			
+			String sql3 = "SELECT RESTAURANTES.NOMBRE, COUNT(PEDIDO_PLATO.NUM_PEDIDO) AS NUM, TO_CHAR(TO_DATE(PEDIDO.FECHA,'DD-MM-YY'),'DAY') AS DAY" + 
+					"FROM RESTAURANTES INNER JOIN " + 
+					"PLATO ON RESTAURANTES.NOMBRE = PLATO.RESTAURANTE JOIN " + 
+					"PEDIDO_PLATO ON PLATO.ID_PLATO = PEDIDO_PLATO.ID_PLATO JOIN PEDIDO ON PEDIDO_PLATO.NUM_PEDIDO =" + 
+					"PEDIDO.NUM_PEDIDO" + 
+					"WHERE TO_CHAR(TO_DATE(PEDIDO.FECHA,'DD-MM-YY'),'DAY') " + 
+					"= '"+ dias[i] + "'" + 
+					"GROUP BY RESTAURANTES.NOMBRE, TO_CHAR(TO_DATE(PEDIDO.FECHA,'DD-MM-YY'),'DAY')" + 
+					"ORDER BY NUM DESC" + 
+					"fetch first 1 rows only";
+			
+			String sql4 = "SELECT RESTAURANTES.NOMBRE, COUNT(PEDIDO_PLATO.NUM_PEDIDO) AS NUM, TO_CHAR(TO_DATE(PEDIDO.FECHA,'DD-MM-YY'),'DAY') AS DAY" + 
+					"FROM RESTAURANTES INNER JOIN " + 
+					"PLATO ON RESTAURANTES.NOMBRE = PLATO.RESTAURANTE JOIN " + 
+					"PEDIDO_PLATO ON PLATO.ID_PLATO = PEDIDO_PLATO.ID_PLATO JOIN PEDIDO ON PEDIDO_PLATO.NUM_PEDIDO =" + 
+					"PEDIDO.NUM_PEDIDO" + 
+					"WHERE TO_CHAR(TO_DATE(PEDIDO.FECHA,'DD-MM-YY'),'DAY') " + 
+					"= '"+ dias[i] + "'" + 
+					"GROUP BY RESTAURANTES.NOMBRE, TO_CHAR(TO_DATE(PEDIDO.FECHA,'DD-MM-YY'),'DAY')" + 
+					"ORDER BY NUM ASC" + 
+					"fetch first 1 rows only";
+					
+			PreparedStatement prepStmt1 = conn.prepareStatement(sql1);
+			PreparedStatement prepStmt2 = conn.prepareStatement(sql2);
+			PreparedStatement prepStmt3 = conn.prepareStatement(sql3);
+			PreparedStatement prepStmt4 = conn.prepareStatement(sql4);
+			recursos.add(prepStmt1);
+			recursos.add(prepStmt2);
+			recursos.add(prepStmt3);
+			recursos.add(prepStmt4);
+			ResultSet rs1 = prepStmt1.executeQuery();
+			ResultSet rs2 = prepStmt2.executeQuery();
+			ResultSet rs3 = prepStmt3.executeQuery();
+			ResultSet rs4 = prepStmt4.executeQuery();
+			
+			if (rs1.next())
+			{
+				int idProducto = rs1.getInt("ID_PLATO");
+				String nomProducto = rs1.getString("NOMBRE");
+				String categoriaProducto = rs1.getString("CATEGORIA");
+				int numVendidosProducto = rs1.getInt("NUMVENDIDOS");
+				String diaProducto = rs1.getString("DAY");
+				ProductoDetalle prodDetalle = new ProductoDetalle(nomProducto, idProducto, categoriaProducto, numVendidosProducto, diaProducto);
+				funcionam.setProductoMenosConsumido(prodDetalle);
+			}
+			if (rs2.next())
+			{
+				int idProducto = rs2.getInt("ID_PLATO");
+				String nomProducto = rs2.getString("NOMBRE");
+				String categoriaProducto = rs2.getString("CATEGORIA");
+				int numVendidosProducto = rs2.getInt("NUMVENDIDOS");
+				String diaProducto = rs2.getString("DAY");
+				ProductoDetalle prodDetalle = new ProductoDetalle(nomProducto, idProducto, categoriaProducto, numVendidosProducto, diaProducto);
+				funcionam.setProductoMasConsumido(prodDetalle);
+			}
+			if (rs3.next())
+			{
+				String nomRestaurante = rs3.getString("NOMBRE");
+				int numVendidosProducto = rs3.getInt("NUM");
+				String diaProducto = rs3.getString("DAY");
+				RestauranteDetalle restDetalle = new RestauranteDetalle(nomRestaurante, numVendidosProducto, diaProducto);
+				funcionam.setRestauranteMasFrecuentado(restDetalle);
+			}
+			if (rs4.next())
+			{
+				String nomRestaurante = rs4.getString("NOMBRE");
+				int numVendidosProducto = rs4.getInt("NUM");
+				String diaProducto = rs4.getString("DAY");
+				RestauranteDetalle restDetalle = new RestauranteDetalle(nomRestaurante, numVendidosProducto, diaProducto);
+				funcionam.setRestauranteMasFrecuentado(restDetalle);
+			}
+			if (funcionam.getProductoMasConsumido() != null) {
+				func.add(funcionam);
+			}
 		}
+		
 		return func;
 	}
 
@@ -253,13 +330,13 @@ public class DAOTablaPedido {
 				+ "PAGADO, ENTREGADO, HORA, CAMBIO) VALUES (";
 		sql += pedido.getNumPedido() + ",";
 		sql += ((int)pedido.getPrecio()) + ",";
-		sql += "TO_DATE('" + pedido.getFecha() + "', 'DD/MM/YYYY')"  + ",'";
+		sql += "TO_DATE('" + pedido.getFecha() + "', 'DD/MM/YY')"  + ",'";
 		sql += pedido.getEmailUser() + "',";
 		sql += pedido.getPagado() + ",";
 		sql += pedido.getEntregado() + ",'";
 		sql += pedido.getHora() + "','";
 		sql += pedido.getCambios() + "')";
-		
+
 		System.out.println("ADD PEDIDO: "+ sql);
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);

@@ -105,12 +105,16 @@ public class PedidoServices {
 		return Response.status(200).entity(pedido).build();
 	}
 	
+	/**
+	 * RFC11
+	 * @return
+	 */
 	@GET
 	@Path( "funcionamiento" )
 	@Produces({ MediaType.APPLICATION_JSON })
 	public Response getFuncionamiento() {
 		RotondAndesTM tm = new RotondAndesTM(getPath());
-		Funcionamiento funcionamiento;
+		List<Funcionamiento> funcionamiento;
 		try {
 			funcionamiento = tm.darFuncionamiento();
 		} catch (Exception e) {

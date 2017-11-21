@@ -59,7 +59,10 @@ public class ClienteServices {
 		return Response.status(200).entity(clientes).build();
 	}
 
-	
+	/**
+	 * RFC12
+	 * @return
+	 */
 	@GET
 	@Path( "buenosClientes" )
 	@Produces({ MediaType.APPLICATION_JSON })

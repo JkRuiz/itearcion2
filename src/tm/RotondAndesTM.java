@@ -255,8 +255,8 @@ public class RotondAndesTM {
 	 * @return
 	 * @throws Exception
 	 */
-	public Funcionamiento darFuncionamiento() throws Exception {
-		Funcionamiento funcionamiento;
+	public List<Funcionamiento> darFuncionamiento() throws Exception {
+		List<Funcionamiento> funcionamiento;
 		DAOTablaPedido daoPedidos = new DAOTablaPedido();
 		try 
 		{
