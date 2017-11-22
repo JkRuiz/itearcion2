@@ -67,9 +67,10 @@ public class RestauranteServices {
 	 * el resto de Informacion = null
 	 * @return
 	 */
-	@GET
+	@PUT
 	@Path( "consumoAlto" )
 	@Produces({ MediaType.APPLICATION_JSON })
+	@Consumes({ MediaType.APPLICATION_JSON })
 	public Response getConsumoAltoRestaurante(Informacion informacionEq) {
 		RotondAndesTM tm = new RotondAndesTM(getPath());
 		List<Usuario> usuarios;
@@ -87,9 +88,10 @@ public class RestauranteServices {
 	 * el resto de Informacion = null
 	 * @return
 	 */
-	@GET
+	@PUT
 	@Path( "consumoBajo" )
 	@Produces({ MediaType.APPLICATION_JSON })
+	@Consumes({ MediaType.APPLICATION_JSON })
 	public Response getConsumoBajoRestaurante(Informacion informacionEq) {
 		RotondAndesTM tm = new RotondAndesTM(getPath());
 		List<Usuario> usuarios;
