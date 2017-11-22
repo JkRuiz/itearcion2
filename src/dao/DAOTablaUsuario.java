@@ -79,12 +79,21 @@ public class DAOTablaUsuario {
 
 	
 	public ArrayList<Usuario> darUsuariosConsumoAlto(String restaurante, String fechaInicial, String 
-			fechaFinal, String criterioAgrupamiento) throws SQLException, Exception {
+			fechaFinal, String orderBy) throws SQLException, Exception {
 		ArrayList<Usuario> usuarios = new ArrayList<Usuario>();
 
-		//CAMBIAR CONSULTA POR LA ADECUADA
-		String sql = "SELECT * FROM USUARIOS";
-
+		String sql = "((SELECT EMAIL, NOMBRE, IDENTIFICACION FROM USUARIOS JOIN ("
+					+ "(SELECT EMAIL_USER AS EMAIL_USER1"
+					+ " FROM PEDIDO JOIN (PEDIDO_PLATO JOIN PLATO ON PEDIDO_PLATO.ID_PLATO = PLATO.ID_PLATO)"
+					+ " ON PEDIDO.NUM_PEDIDO = PEDIDO_PLATO.NUM_PEDIDO WHERE PLATO.RESTAURANTE = '"+ restaurante +"'"
+					+ " AND PEDIDO.FECHA BETWEEN TO_DATE('"+ fechaInicial +"', 'DD/MM/YYYY') AND TO_DATE('"+ fechaFinal +"', 'DD/MM/YYYY')))"
+					+ " ON EMAIL = EMAIL_USER1) UNION (SELECT EMAIL, NOMBRE, IDENTIFICACION FROM USUARIOS JOIN ("
+					+ " (SELECT EMAIL_USER AS EMAIL_USER1 "
+					+ "FROM PEDIDO JOIN (PEDIDO_MENUS JOIN MENU ON PEDIDO_MENUS.ID_MENU = MENU.ID_MENU) "
+					+ "ON PEDIDO.NUM_PEDIDO = PEDIDO_MENUS.NUM_PEDIDO WHERE MENU.NOMRESTAURANTE = '"+ restaurante +"' "
+					+ "AND PEDIDO.FECHA BETWEEN TO_DATE('"+ fechaInicial +"', 'DD/MM/YYYY') AND TO_DATE('"+ fechaFinal +"', 'DD/MM/YYYY'))) "
+					+ "ON EMAIL = EMAIL_USER1))";
+		if(orderBy != null) sql += " ORDER BY " + orderBy;
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
 		ResultSet rs = prepStmt.executeQuery();
@@ -99,12 +108,22 @@ public class DAOTablaUsuario {
 	}
 
 	public ArrayList<Usuario> darUsuariosConsumoBajo(String restaurante, String fechaInicial, String 
-			fechaFinal, String criterioAgrupamiento) throws SQLException, Exception {
+			fechaFinal, String orderBy) throws SQLException, Exception {
 		ArrayList<Usuario> usuarios = new ArrayList<Usuario>();
 
-		//CAMBIAR CONSULTA POR LA ADECUADA
-		String sql = "SELECT * FROM USUARIOS";
-
+		String sql = "((SELECT EMAIL, NOMBRE, IDENTIFICACION FROM USUARIOS LEFT OUTER JOIN ( "
+				+ "(SELECT EMAIL_USER AS EMAIL_USER1 "
+				+ "FROM PEDIDO JOIN (PEDIDO_PLATO JOIN PLATO ON PEDIDO_PLATO.ID_PLATO = PLATO.ID_PLATO) "
+				+ "ON PEDIDO.NUM_PEDIDO = PEDIDO_PLATO.NUM_PEDIDO WHERE PLATO.RESTAURANTE = '" + restaurante + "' "
+				+ "AND PEDIDO.FECHA BETWEEN TO_DATE('" + fechaInicial + "', 'DD/MM/YYYY') AND TO_DATE('" + fechaFinal + "', 'DD/MM/YYYY'))) "
+				+ "ON EMAIL = EMAIL_USER1 WHERE EMAIL_USER1 IS NULL) UNION (SELECT EMAIL, NOMBRE, IDENTIFICACION FROM USUARIOS JOIN ( "
+				+ "(SELECT EMAIL_USER AS EMAIL_USER1 "
+				+ "FROM PEDIDO JOIN (PEDIDO_MENUS JOIN MENU ON PEDIDO_MENUS.ID_MENU = MENU.ID_MENU) "
+				+ "ON PEDIDO.NUM_PEDIDO = PEDIDO_MENUS.NUM_PEDIDO WHERE MENU.NOMRESTAURANTE = 'RESTAURANTE 10' "
+				+ "AND PEDIDO.FECHA BETWEEN TO_DATE('" + fechaInicial + "', 'DD/MM/YYYY') AND TO_DATE('" + fechaFinal + "', 'DD/MM/YYYY'))) "
+				+ "ON EMAIL = EMAIL_USER1 WHERE  EMAIL_USER1 IS NULL))";
+		if(orderBy != null) sql += " ORDER BY " + orderBy;
+		
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
 		ResultSet rs = prepStmt.executeQuery();

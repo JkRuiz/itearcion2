@@ -181,7 +181,7 @@ public class RotondAndesTM {
 			conn.setTransactionIsolation(conn.TRANSACTION_READ_COMMITTED);
 			daoUsuarios.setConn(conn);
 			String info[] = informacionEq.split("-");
-			if (info.length < 4) throw new Exception("La informacion dada esta incompleta");
+			if (info.length < 5) throw new Exception("La informacion dada esta incompleta");
 			usuarios = daoUsuarios.darUsuariosConsumoAlto(info[0], info[1],info[2], info[3]);
 		} catch (SQLException e) {
 			conn.rollback();
