@@ -22,6 +22,7 @@ import dao.DAOTablaPlato;
 import dao.DAOTablaRestaurante;
 import dao.DAOTablaUsuario;
 import dao.DAOTablaZona;
+import vos.ClienteAux;
 import vos.ClienteFrecuente;
 import vos.Funcionamiento;
 import vos.Ingredientes;
@@ -295,8 +296,8 @@ public class RotondAndesTM {
 	 * @return
 	 * @throws Exception
 	 */
-	public List<ClienteFrecuente> darBuenosClientes() throws Exception {
-		List<ClienteFrecuente> clientes;
+	public List<ClienteAux> darBuenosClientes() throws Exception {
+		List<ClienteAux> clientes;
 		DAOTablaClienteFrecuente daoCliente = new DAOTablaClienteFrecuente();
 		try 
 		{

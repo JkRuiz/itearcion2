@@ -192,58 +192,69 @@ public class DAOTablaPedido {
 	}
 
 	public List<Funcionamiento> darFuncionamientoRotond() throws SQLException, Exception {
+		System.out.println("ENTRO");
 		ArrayList<Funcionamiento> func = new ArrayList<>();
 		
 		String dias [] = {"LUNES    ","MARTES   ","MIÉRCOLES","JUEVES   ","VIERNES  ", "SÁBADO   ", "DOMINGO  "};
 
 		for (int i = 0; i < dias.length; i++) {
 
-			Funcionamiento funcionam = new Funcionamiento(null, null, null, null);
-			String sql1 = "SELECT ID_PLATO, PLATO.NOMBRE, PLATO.CATEGORIA,COUNT(*) as numVendidos, TO_CHAR(TO_DATE(PEDIDO.FECHA,'DD-MM-YY'),'DAY') as day" + 
-					"FROM pedido_plato NATURAL JOIN PEDIDO NATURAL JOIN PLATO WHERE TO_CHAR(TO_DATE(PEDIDO.FECHA,'DD-MM-YY'),'DAY') = '" + dias[i] + "'" + 
-					"GROUP BY ID_PLATO, TO_CHAR(TO_DATE(PEDIDO.FECHA,'DD-MM-YY'),'DAY'), PLATO.NOMBRE, PLATO.CATEGORIA" + "ORDER BY numVendidos ASC" + 
+			Funcionamiento funcionam = new Funcionamiento(dias[i],null, null, null, null);
+			String sql1 = "SELECT ID_PLATO, PLATO.NOMBRE, PLATO.CATEGORIA,COUNT(*) as numVendidos, TO_CHAR(TO_DATE(PEDIDO.FECHA,'DD-MM-YY'),'DAY') as day " + 
+					"FROM pedido_plato NATURAL JOIN PEDIDO NATURAL JOIN PLATO WHERE TO_CHAR(TO_DATE(PEDIDO.FECHA,'DD-MM-YY'),'DAY') = '" + dias[i] + "' " + 
+					"GROUP BY ID_PLATO, TO_CHAR(TO_DATE(PEDIDO.FECHA,'DD-MM-YY'),'DAY'), PLATO.NOMBRE, PLATO.CATEGORIA" + " ORDER BY numVendidos ASC " + 
 					"fetch first 1 rows only";
-			System.out.println("PASO DE LA PRIMERA");
-			String sql2 = "SELECT ID_PLATO, PLATO.NOMBRE, PLATO.CATEGORIA,COUNT(*) as numVendidos, TO_CHAR(TO_DATE(PEDIDO.FECHA,'DD-MM-YY'),'DAY') as day" + 
-					"FROM pedido_plato NATURAL JOIN PEDIDO NATURAL JOIN PLATO WHERE TO_CHAR(TO_DATE(PEDIDO.FECHA,'DD-MM-YY'),'DAY') = '" + dias[i] + "'" + 
-					"GROUP BY ID_PLATO, TO_CHAR(TO_DATE(PEDIDO.FECHA,'DD-MM-YY'),'DAY'), PLATO.NOMBRE, PLATO.CATEGORIA" + "ORDER BY numVendidos DESC" + 
+			System.out.println(sql1);
+			String sql2 = "SELECT ID_PLATO, PLATO.NOMBRE, PLATO.CATEGORIA,COUNT(*) as numVendidos, TO_CHAR(TO_DATE(PEDIDO.FECHA,'DD-MM-YY'),'DAY') as day " + 
+					"FROM pedido_plato NATURAL JOIN PEDIDO NATURAL JOIN PLATO WHERE TO_CHAR(TO_DATE(PEDIDO.FECHA,'DD-MM-YY'),'DAY') = '" + dias[i] + "' " + 
+					"GROUP BY ID_PLATO, TO_CHAR(TO_DATE(PEDIDO.FECHA,'DD-MM-YY'),'DAY'), PLATO.NOMBRE, PLATO.CATEGORIA" + " ORDER BY numVendidos DESC " + 
 					"fetch first 1 rows only";
-			System.out.println("PASO DE LA SEGUNDA");
-			String sql3 = "SELECT RESTAURANTES.NOMBRE, COUNT(PEDIDO_PLATO.NUM_PEDIDO) AS NUM, TO_CHAR(TO_DATE(PEDIDO.FECHA,'DD-MM-YY'),'DAY') AS DAY" + 
+			System.out.println(sql2);
+			String sql3 = "SELECT RESTAURANTES.NOMBRE, COUNT(PEDIDO_PLATO.NUM_PEDIDO) AS NUM, TO_CHAR(TO_DATE(PEDIDO.FECHA,'DD-MM-YY'),'DAY') AS DAY " + 
 					"FROM RESTAURANTES INNER JOIN " + 
 					"PLATO ON RESTAURANTES.NOMBRE = PLATO.RESTAURANTE JOIN " + 
 					"PEDIDO_PLATO ON PLATO.ID_PLATO = PEDIDO_PLATO.ID_PLATO JOIN PEDIDO ON PEDIDO_PLATO.NUM_PEDIDO =" + 
-					"PEDIDO.NUM_PEDIDO" + 
+					"PEDIDO.NUM_PEDIDO " + 
 					"WHERE TO_CHAR(TO_DATE(PEDIDO.FECHA,'DD-MM-YY'),'DAY') " + 
-					"= '"+ dias[i] + "'" + 
-					"GROUP BY RESTAURANTES.NOMBRE, TO_CHAR(TO_DATE(PEDIDO.FECHA,'DD-MM-YY'),'DAY')" + 
-					"ORDER BY NUM DESC" + 
+					"= '"+ dias[i] + "' " + 
+					"GROUP BY RESTAURANTES.NOMBRE, TO_CHAR(TO_DATE(PEDIDO.FECHA,'DD-MM-YY'),'DAY') " + 
+					"ORDER BY NUM DESC " + 
 					"fetch first 1 rows only";
-			System.out.println("PASO DE LA TERCERA");
-			String sql4 = "SELECT RESTAURANTES.NOMBRE, COUNT(PEDIDO_PLATO.NUM_PEDIDO) AS NUM, TO_CHAR(TO_DATE(PEDIDO.FECHA,'DD-MM-YY'),'DAY') AS DAY" + 
+			System.out.println(sql3);
+			String sql4 = "SELECT RESTAURANTES.NOMBRE, COUNT(PEDIDO_PLATO.NUM_PEDIDO) AS NUM, TO_CHAR(TO_DATE(PEDIDO.FECHA,'DD-MM-YY'),'DAY') AS DAY " + 
 					"FROM RESTAURANTES INNER JOIN " + 
 					"PLATO ON RESTAURANTES.NOMBRE = PLATO.RESTAURANTE JOIN " + 
 					"PEDIDO_PLATO ON PLATO.ID_PLATO = PEDIDO_PLATO.ID_PLATO JOIN PEDIDO ON PEDIDO_PLATO.NUM_PEDIDO =" + 
-					"PEDIDO.NUM_PEDIDO" + 
+					"PEDIDO.NUM_PEDIDO " + 
 					"WHERE TO_CHAR(TO_DATE(PEDIDO.FECHA,'DD-MM-YY'),'DAY') " + 
-					"= '"+ dias[i] + "'" + 
-					"GROUP BY RESTAURANTES.NOMBRE, TO_CHAR(TO_DATE(PEDIDO.FECHA,'DD-MM-YY'),'DAY')" + 
-					"ORDER BY NUM ASC" + 
+					"= '"+ dias[i] + "' " + 
+					"GROUP BY RESTAURANTES.NOMBRE, TO_CHAR(TO_DATE(PEDIDO.FECHA,'DD-MM-YY'),'DAY') " + 
+					"ORDER BY NUM ASC " + 
 					"fetch first 1 rows only";
-			System.out.println("PASO DE LA CUARTA");		
+			System.out.println(sql4);		
 			
 			PreparedStatement prepStmt1 = conn.prepareStatement(sql1);
+			System.out.println("PrepStmt1");
 			PreparedStatement prepStmt2 = conn.prepareStatement(sql2);
+			System.out.println("PrepStmt2");
 			PreparedStatement prepStmt3 = conn.prepareStatement(sql3);
+			System.out.println("PrepStmt3");
 			PreparedStatement prepStmt4 = conn.prepareStatement(sql4);
+			System.out.println("PrepStmt4");
+			
 			recursos.add(prepStmt1);
 			recursos.add(prepStmt2);
 			recursos.add(prepStmt3);
 			recursos.add(prepStmt4);
+			
 			ResultSet rs1 = prepStmt1.executeQuery();
+			System.out.println("Resulset1");
 			ResultSet rs2 = prepStmt2.executeQuery();
+			System.out.println("Resulset2");
 			ResultSet rs3 = prepStmt3.executeQuery();
+			System.out.println("Resulset3");
 			ResultSet rs4 = prepStmt4.executeQuery();
+			System.out.println("Resulset4");
 			
 			if (rs1.next())
 			{
@@ -279,7 +290,7 @@ public class DAOTablaPedido {
 				int numVendidosProducto = rs4.getInt("NUM");
 				String diaProducto = rs4.getString("DAY");
 				RestauranteDetalle restDetalle = new RestauranteDetalle(nomRestaurante, numVendidosProducto, diaProducto);
-				funcionam.setRestauranteMasFrecuentado(restDetalle);
+				funcionam.setRestauranteMenosFrecuentado(restDetalle);
 			}
 			if (funcionam.getProductoMasConsumido() != null) {
 				func.add(funcionam);

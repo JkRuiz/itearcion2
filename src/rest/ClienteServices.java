@@ -14,6 +14,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import tm.RotondAndesTM;
+import vos.ClienteAux;
 import vos.ClienteFrecuente;
 
 @Path("clientes")
@@ -68,7 +69,7 @@ public class ClienteServices {
 	@Produces({ MediaType.APPLICATION_JSON })
 	public Response getBuenosClientes() {
 		RotondAndesTM tm = new RotondAndesTM(getPath());
-		List<ClienteFrecuente> clientes;
+		List<ClienteAux> clientes;
 		try {
 			clientes = tm.darBuenosClientes();
 		} catch (Exception e) {

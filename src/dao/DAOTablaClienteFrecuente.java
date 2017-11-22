@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import vos.ClienteAux;
 import vos.ClienteFrecuente;
 import vos.Pedido;
 
@@ -139,43 +140,70 @@ public class DAOTablaClienteFrecuente {
 	 * @throws SQLException
 	 * @throws Exception
 	 */
-	public ArrayList<ClienteFrecuente> darBuenosClientes() throws SQLException, Exception 
+	public ArrayList<ClienteAux> darBuenosClientes() throws SQLException, Exception 
 	{
-		ArrayList<ClienteFrecuente> clientes = new ArrayList<ClienteFrecuente>();
-		ArrayList<Pedido> pedidos;
-		String sql = "SELECT * FROM CLIENTEFR";
+		ArrayList<ClienteAux> clientes = new ArrayList<ClienteAux>();
 
-		PreparedStatement prepStmt = conn.prepareStatement(sql);
-		recursos.add(prepStmt);
-		ResultSet rs = prepStmt.executeQuery();
+		String sql1 = "SELECT EMAIL, NOMBRE, IDENTIFICACION FROM(SELECT SUM(NUMWEEKS) AS TOTALWEEKS " + 
+				"FROM (SELECT COUNT(DISTINCT(WEEK)) AS NUMWEEKS,YEAR FROM(SELECT NUM_PEDIDO, EXTRACT(YEAR FROM FECHA) AS YEAR," + 
+				"to_number(to_char(FECHA,'WW')) AS WEEK FROM (PEDIDO)) GROUP BY YEAR)) NATURAL JOIN (SELECT EMAIL, NOMBRE, IDENTIFICACION," + 
+				"SUM(NUMWEEKS) AS TOTALWEEKS FROM (SELECT COUNT(*) AS NUMWEEKS, EMAIL, NOMBRE, IDENTIFICACION, YEAR FROM " + 
+				"(SELECT EXTRACT(YEAR FROM FECHA) AS YEAR, EMAIL, NOMBRE, IDENTIFICACION, to_number(to_char(FECHA,'WW')) AS WEEK " + 
+				"FROM (PEDIDO INNER JOIN CLIENTEFR ON PEDIDO.EMAIL_USER = CLIENTEFR.EMAIL)) GROUP BY EMAIL, NOMBRE, IDENTIFICACION, YEAR) GROUP BY EMAIL, NOMBRE, IDENTIFICACION, YEAR)";
 
-		while (rs.next()) {
-			String email = rs.getString("EMAIL");
-			String password = rs.getString("PASSWORD");
-			String username = rs.getString("USERNAME");
-			float preferenciaPrecio = rs.getFloat("PREFERENCIAPRECIO");
-			String preferenciaCategoria = rs.getString("PREFERENCIACATEGORIA");
-			String nombre = rs.getString("NOMBRE");
-			long identificacion = rs.getLong("IDENTIFICACION");
-			String sqlAux = "SELECT * FROM PEDIDO WHERE EMAIL_USER='"+email+"'";
-			PreparedStatement prepStmtAux = conn.prepareStatement(sqlAux);
-			recursos.add(prepStmtAux);
-			ResultSet rsAux = prepStmtAux.executeQuery();
-			pedidos = new ArrayList<Pedido>();
-			while (rsAux.next())
-			{
-				int numPedido = rsAux.getInt("NUM_PEDIDO");
-				float precio = rsAux.getFloat("PRECIO");
-				String fecha = rsAux.getString("FECHA");
-				String emailUser = rsAux.getString("EMAIL_USER");
-				int pagado = rsAux.getInt("PAGADO");
-				int entregado = rsAux.getInt("ENTREGADO");
-				String hora = rsAux.getString("HORA");
-				String cambio = rsAux.getString("CAMBIO");
-				pedidos.add(new Pedido(numPedido, precio, fecha, emailUser, pagado, entregado, hora, cambio));
-			}
-			clientes.add(new ClienteFrecuente(email, password, username, preferenciaPrecio, preferenciaCategoria, nombre, identificacion, pedidos));			
+		System.out.println(sql1);
+		String sql2= "SELECT CLIENTEFR.EMAIL, CLIENTEFR.NOMBRE, CLIENTEFR.IDENTIFICACION FROM CLIENTEFR WHERE EMAIL NOT IN (SELECT EMAIL_USER FROM PEDIDO NATURAL JOIN PEDIDO_PLATO INNER JOIN PLATO ON PEDIDO_PLATO.ID_PLATO = PLATO.ID_PLATO where PRECIO < 36885 AND CATEGORIA != 'FUERTE')";
+		System.out.println(sql2);
+		String sql3 = "SELECT NOMBRE, EMAIL, IDENTIFICACION FROM (PEDIDO NATURAL JOIN PEDIDO_PLATO NATURAL JOIN CLIENTEFR) WHERE EMAIL NOT IN (SELECT EMAIL_USER " + 
+				"FROM (PEDIDO NATURAL JOIN PEDIDO_MENUS))";
+		System.out.println(sql3);
+		
+		PreparedStatement prepStmt1 = conn.prepareStatement(sql1);
+		recursos.add(prepStmt1);
+		ResultSet rs1 = prepStmt1.executeQuery();
+
+		PreparedStatement prepStmt2 = conn.prepareStatement(sql2);
+		recursos.add(prepStmt2);
+		ResultSet rs2 = prepStmt2.executeQuery();
+
+		PreparedStatement prepStmt3 = conn.prepareStatement(sql3);
+		recursos.add(prepStmt3);
+		ResultSet rs3 = prepStmt3.executeQuery();
+
+		int count = 0;
+		while (rs1.next() && count < 1000) {
+			System.out.println("Entro al while");
+			String email = rs1.getString("EMAIL");
+			System.out.println("Columna EMAIL correcta");
+			String nombre = rs1.getString("NOMBRE");
+			System.out.println("Columna NOMBRE correcta");
+			long identificacion = rs1.getLong("IDENTIFICACION");
+			System.out.println("Columna IDENTIFICACION correcta");
+
+			clientes.add(new ClienteAux(email, nombre, identificacion));			
+			count++;
 		}
+
+		while (rs2.next() && count < 1000) {
+
+			String email = rs2.getString("EMAIL");
+			String nombre = rs2.getString("NOMBRE");
+			long identificacion = rs2.getLong("IDENTIFICACION");
+
+			clientes.add(new ClienteAux(email, nombre, identificacion));			
+			count++;
+		}
+		
+		while (rs3.next() && count < 1000) {
+
+			String email = rs3.getString("EMAIL");
+			String nombre = rs3.getString("NOMBRE");
+			long identificacion = rs3.getLong("IDENTIFICACION");
+
+			clientes.add(new ClienteAux(email, nombre, identificacion));			
+			count++;
+		}
+
 		return clientes;
 	}
 	
