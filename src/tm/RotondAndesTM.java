@@ -25,6 +25,7 @@ import dao.DAOTablaZona;
 import vos.ClienteAux;
 import vos.ClienteFrecuente;
 import vos.Funcionamiento;
+import vos.Informacion;
 import vos.Ingredientes;
 import vos.IngredientesPlato;
 import vos.Menu;
@@ -38,6 +39,8 @@ import vos.Rentabilidad;
 import vos.Restaurante;
 import vos.Usuario;
 import vos.Zona;
+import vos.infoPedido;
+import vos.infoPedido.ItemPedido;
 
 
 public class RotondAndesTM {
@@ -1781,5 +1784,45 @@ public class RotondAndesTM {
 			}
 		}
 	}
+	
+	/**
+	 * REQUERIMIENTO RF18
+	 */
+	public infoPedido resgistrarProductosMesa(infoPedido infoPedido) throws Exception {
+		DAOTablaPedido daoPedido = new DAOTablaPedido();
+		infoPedido retorno = new infoPedido(new ArrayList<ItemPedido>(), infoPedido.getEmail());
+		try 
+		{
+			//////transaccion
+			this.conn = darConexion();
+			conn.setTransactionIsolation(conn.TRANSACTION_SERIALIZABLE);
+			daoPedido.setConn(conn);
+			List<ItemPedido> pedidos = daoPedido.registrarPedidoGlobal(infoPedido);
+			retorno.setPedidos(pedidos);
+			conn.commit();
 
+		} catch (SQLException e) {
+			conn.rollback();
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			conn.rollback();
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				daoPedido.cerrarRecursos();
+				if(this.conn!=null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
+		
+		return retorno;
+	}
 }

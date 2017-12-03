@@ -1,5 +1,7 @@
 package vos;
 
+import java.util.List;
+
 import org.codehaus.jackson.annotate.JsonProperty;
 
 public class Informacion {
@@ -60,5 +62,4 @@ public class Informacion {
 	public void setInformacion(String informacion) {
 		this.informacion = informacion;
 	}
-	
 }

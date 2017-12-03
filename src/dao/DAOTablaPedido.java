@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import vos.Funcionamiento;
@@ -14,6 +15,8 @@ import vos.PedidoConsolidado;
 import vos.ProductoConsolidado;
 import vos.ProductoDetalle;
 import vos.RestauranteDetalle;
+import vos.infoPedido;
+import vos.infoPedido.ItemPedido;
 
 public class DAOTablaPedido {
 
@@ -194,7 +197,7 @@ public class DAOTablaPedido {
 	public List<Funcionamiento> darFuncionamientoRotond() throws SQLException, Exception {
 		System.out.println("ENTRO");
 		ArrayList<Funcionamiento> func = new ArrayList<>();
-		
+
 		String dias [] = {"LUNES    ","MARTES   ","MIÉRCOLES","JUEVES   ","VIERNES  ", "SÁBADO   ", "DOMINGO  "};
 
 		for (int i = 0; i < dias.length; i++) {
@@ -232,7 +235,7 @@ public class DAOTablaPedido {
 					"ORDER BY NUM ASC " + 
 					"fetch first 1 rows only";
 			System.out.println(sql4);		
-			
+
 			PreparedStatement prepStmt1 = conn.prepareStatement(sql1);
 			System.out.println("PrepStmt1");
 			PreparedStatement prepStmt2 = conn.prepareStatement(sql2);
@@ -241,12 +244,12 @@ public class DAOTablaPedido {
 			System.out.println("PrepStmt3");
 			PreparedStatement prepStmt4 = conn.prepareStatement(sql4);
 			System.out.println("PrepStmt4");
-			
+
 			recursos.add(prepStmt1);
 			recursos.add(prepStmt2);
 			recursos.add(prepStmt3);
 			recursos.add(prepStmt4);
-			
+
 			ResultSet rs1 = prepStmt1.executeQuery();
 			System.out.println("Resulset1");
 			ResultSet rs2 = prepStmt2.executeQuery();
@@ -255,7 +258,7 @@ public class DAOTablaPedido {
 			System.out.println("Resulset3");
 			ResultSet rs4 = prepStmt4.executeQuery();
 			System.out.println("Resulset4");
-			
+
 			if (rs1.next())
 			{
 				int idProducto = rs1.getInt("ID_PLATO");
@@ -296,7 +299,7 @@ public class DAOTablaPedido {
 				func.add(funcionam);
 			}
 		}
-		
+
 		return func;
 	}
 
@@ -407,6 +410,55 @@ public class DAOTablaPedido {
 		prepStmt.executeQuery();
 	}
 
+	public List<ItemPedido> registrarPedidoGlobal(infoPedido infoPedido) throws SQLException, Exception {
+		List<ItemPedido> pedidos = infoPedido.getPedidos();
+		List<ItemPedido> retorno = new ArrayList<>();
+		
+		int numPedido = 1;
+		int costo = 0;
+		String fecha = "";
+		Pedido pedido = new Pedido(numPedido, costo, fecha, infoPedido.getEmail(), 0, 0, "00:00:00AM", "");
+		
+		addPedido(pedido);
+
+		String sql = "";
+		for(Iterator<ItemPedido> it = pedidos.iterator(); it.hasNext();) {
+			ItemPedido item = it.next();
+
+			sql = "SELECT * FROM PLATO JOIN RESTAURANTES ON PLATO.RESTAURANTE = RESTAURANTES.NOMBRE"
+					+ " WHERE NOMBRE = '" + item.getNombrePlato()
+					+ "' AND RESTUARANTE = '" + item.getNombreRestaurante() + "' AND DISPONIBLE = 1;";
+
+			PreparedStatement prepStmt = conn.prepareStatement(sql);
+			recursos.add(prepStmt);
+			ResultSet rs = prepStmt.executeQuery();
+
+			boolean agregado = false;
+			while (rs.next() && !agregado) {
+				int id_plato = rs.getInt("ID_PLATO");
+				float precioVenta = rs.getFloat("PRECIOVENTA");
+				
+				sql = "INSERT INTO PEDIDO_PLATO (NUM_PEDIDO, ID_PALTO) VALUES (" + numPedido + "," + id_plato + ");";
+
+				PreparedStatement pStmt = conn.prepareStatement(sql);
+				recursos.add(pStmt);
+				pStmt.executeQuery();
+				
+				agregado = true;
+				costo += precioVenta;
+			}
+			
+			if(agregado) retorno.add(item);
+		}
+		
+		sql = "UPDATE PEDIDO SET PRECIO = " + costo + " WHERE NUM_PEDIDO = " + numPedido + ";";
+
+		PreparedStatement ppStmt = conn.prepareStatement(sql);
+		recursos.add(ppStmt);
+		ppStmt.executeQuery();
+		
+		return retorno;
+	}
 	/**
 	 * Metodo que elimina el video que entra como parametro en la base de datos.
 	 * @param video - el video a borrar. video !=  null
@@ -424,5 +476,4 @@ public class DAOTablaPedido {
 	//		recursos.add(prepStmt);
 	//		prepStmt.executeQuery();
 	//	}
-
 }
