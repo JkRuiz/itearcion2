@@ -39,8 +39,8 @@ import vos.Rentabilidad;
 import vos.Restaurante;
 import vos.Usuario;
 import vos.Zona;
-import vos.infoPedido;
-import vos.infoPedido.ItemPedido;
+import vos.InfoPedido;
+import vos.InfoPedido.ItemPedido;
 
 
 public class RotondAndesTM {
@@ -1788,9 +1788,9 @@ public class RotondAndesTM {
 	/**
 	 * REQUERIMIENTO RF18
 	 */
-	public infoPedido resgistrarProductosMesa(infoPedido infoPedido) throws Exception {
+	public InfoPedido resgistrarProductosMesa(InfoPedido infoPedido) throws Exception {
 		DAOTablaPedido daoPedido = new DAOTablaPedido();
-		infoPedido retorno = new infoPedido(new ArrayList<ItemPedido>(), infoPedido.getEmail());
+		InfoPedido retorno = new InfoPedido(new ArrayList<ItemPedido>(), infoPedido.getEmail(), infoPedido.getZonaRotonda());
 		try 
 		{
 			//////transaccion

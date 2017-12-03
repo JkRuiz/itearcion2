@@ -4,17 +4,21 @@ import java.util.List;
 
 import org.codehaus.jackson.annotate.JsonProperty;
 
-public class infoPedido {
+public class InfoPedido {
 	@JsonProperty(value="email")
 	private String email;
+	
+	@JsonProperty(value="zonaRotonda")
+	private String zonaRotonda;
 	
 	@JsonProperty(value="pedidos")
 	private List<ItemPedido> pedidos;
 
-	public infoPedido(@JsonProperty(value="pedidos") List<ItemPedido> pedidos,
-			@JsonProperty(value="email") String email) {
+	public InfoPedido(@JsonProperty(value="pedidos") List<ItemPedido> pedidos,
+			@JsonProperty(value="email") String email, @JsonProperty(value="zonaRotonda") String ZonaRotonda) {
 		this.pedidos = pedidos;
 		this.email = email;
+		this.zonaRotonda = zonaRotonda;
 	}
 	
 	public String getEmail() {
@@ -31,6 +35,14 @@ public class infoPedido {
 
 	public void setPedidos(List<ItemPedido> pedidos) {
 		this.pedidos = pedidos;
+	}
+
+	public String getZonaRotonda() {
+		return zonaRotonda;
+	}
+
+	public void setZonaRotonda(String zonaRotonda) {
+		this.zonaRotonda = zonaRotonda;
 	}
 
 	public class ItemPedido {

@@ -29,6 +29,9 @@ public class Pedido {
 
 	@JsonProperty(value="cambios")
 	private String cambios;
+	
+	@JsonProperty(value="zona_rotonda")
+	private String zona_rotonda;
 
 	public Pedido(@JsonProperty(value="numPedido")int numPedido, @JsonProperty(value="precio")float precio, @JsonProperty(value="fecha")String fecha, 
 			@JsonProperty(value="emailUser")String emailUser, @JsonProperty(value="pagado")int pagado, @JsonProperty(value="entregado")int entregado
@@ -43,6 +46,23 @@ public class Pedido {
 		this.hora = hora;
 		if (cambios != null && cambios != "") this.cambios = cambios;
 		else cambios = "Sin cambios";
+		this.zona_rotonda = "";
+	}
+	
+	public Pedido(@JsonProperty(value="numPedido")int numPedido, @JsonProperty(value="precio")float precio, @JsonProperty(value="fecha")String fecha, 
+			@JsonProperty(value="emailUser")String emailUser, @JsonProperty(value="pagado")int pagado, @JsonProperty(value="entregado")int entregado
+			, @JsonProperty(value="hora")String hora, @JsonProperty(value="cambios") String cambios, @JsonProperty(value="zona_rotonda") String zona_rotonda) {
+		super();
+		this.numPedido = numPedido;
+		this.precio = precio;
+		this.fecha = fecha;
+		this.emailUser = emailUser;
+		this.pagado = pagado;
+		this.entregado = entregado;
+		this.hora = hora;
+		if (cambios != null && cambios != "") this.cambios = cambios;
+		else cambios = "Sin cambios";
+		this.zona_rotonda = zona_rotonda;
 	}
 
 	public Pedido(int pedido) {
@@ -112,8 +132,12 @@ public class Pedido {
 	public void setHora(String hora) {
 		this.hora = hora;
 	}
-	
-	
-	
-	
+
+	public String getZona_rotonda() {
+		return zona_rotonda;
+	}
+
+	public void setZona_rotonda(String zona_rotonda) {
+		this.zona_rotonda = zona_rotonda;
+	}
 }

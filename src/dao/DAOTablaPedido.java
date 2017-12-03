@@ -15,8 +15,8 @@ import vos.PedidoConsolidado;
 import vos.ProductoConsolidado;
 import vos.ProductoDetalle;
 import vos.RestauranteDetalle;
-import vos.infoPedido;
-import vos.infoPedido.ItemPedido;
+import vos.InfoPedido;
+import vos.InfoPedido.ItemPedido;
 
 public class DAOTablaPedido {
 
@@ -342,7 +342,7 @@ public class DAOTablaPedido {
 
 		String sql = "INSERT INTO PEDIDO ("
 				+ "NUM_PEDIDO, PRECIO, FECHA, EMAIL_USER,"
-				+ "PAGADO, ENTREGADO, HORA, CAMBIO) VALUES (";
+				+ "PAGADO, ENTREGADO, HORA, CAMBIO, ZONA_ROTONDA) VALUES (";
 		sql += pedido.getNumPedido() + ",";
 		sql += ((int)pedido.getPrecio()) + ",";
 		sql += "TO_DATE('" + pedido.getFecha() + "', 'DD/MM/YY')"  + ",'";
@@ -350,7 +350,8 @@ public class DAOTablaPedido {
 		sql += pedido.getPagado() + ",";
 		sql += pedido.getEntregado() + ",'";
 		sql += pedido.getHora() + "','";
-		sql += pedido.getCambios() + "')";
+		sql += pedido.getCambios() + "','";
+		sql += pedido.getZona_rotonda() + "')";
 
 		System.out.println("ADD PEDIDO: "+ sql);
 
@@ -410,14 +411,14 @@ public class DAOTablaPedido {
 		prepStmt.executeQuery();
 	}
 
-	public List<ItemPedido> registrarPedidoGlobal(infoPedido infoPedido) throws SQLException, Exception {
+	public List<ItemPedido> registrarPedidoGlobal(InfoPedido infoPedido) throws SQLException, Exception {
 		List<ItemPedido> pedidos = infoPedido.getPedidos();
 		List<ItemPedido> retorno = new ArrayList<>();
 		
 		int numPedido = 1;
 		int costo = 0;
 		String fecha = "";
-		Pedido pedido = new Pedido(numPedido, costo, fecha, infoPedido.getEmail(), 0, 0, "00:00:00AM", "");
+		Pedido pedido = new Pedido(numPedido, costo, fecha, infoPedido.getEmail(), 0, 0, "00:00:00AM", "", infoPedido.getZonaRotonda());
 		
 		addPedido(pedido);
 
