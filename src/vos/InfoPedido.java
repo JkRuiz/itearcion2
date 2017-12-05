@@ -15,7 +15,7 @@ public class InfoPedido {
 	private List<ItemPedido> pedidos;
 
 	public InfoPedido(@JsonProperty(value="pedidos") List<ItemPedido> pedidos,
-			@JsonProperty(value="email") String email, @JsonProperty(value="zonaRotonda") String ZonaRotonda) {
+			@JsonProperty(value="email") String email, @JsonProperty(value="zonaRotonda") String zonaRotonda) {
 		this.pedidos = pedidos;
 		this.email = email;
 		this.zonaRotonda = zonaRotonda;

@@ -22,6 +22,7 @@ import dao.DAOTablaPlato;
 import dao.DAOTablaRestaurante;
 import dao.DAOTablaUsuario;
 import dao.DAOTablaZona;
+import dtm.RotondAndesDistributed;
 import vos.ClienteAux;
 import vos.ClienteFrecuente;
 import vos.Funcionamiento;
@@ -79,6 +80,8 @@ public class RotondAndesTM {
 	 * conexion a la base de datos
 	 */
 	private Connection conn;
+	
+	private RotondAndesDistributed dtm;
 
 
 	/**
@@ -91,6 +94,9 @@ public class RotondAndesTM {
 	public RotondAndesTM(String contextPathP) {
 		connectionDataPath = contextPathP + CONNECTION_DATA_FILE_NAME_REMOTE;
 		initConnectionData();
+		System.out.println("Instancing DTM... ");
+		dtm=RotondAndesDistributed.getInstance(this);
+		System.out.println("Done...");
 	}
 
 	/**
@@ -1788,7 +1794,7 @@ public class RotondAndesTM {
 	/**
 	 * REQUERIMIENTO RF18
 	 */
-	public InfoPedido resgistrarProductosMesa(InfoPedido infoPedido) throws Exception {
+	public InfoPedido resgistrarProductosMesaGlobal(InfoPedido infoPedido) throws Exception {
 		DAOTablaPedido daoPedido = new DAOTablaPedido();
 		InfoPedido retorno = new InfoPedido(new ArrayList<ItemPedido>(), infoPedido.getEmail(), infoPedido.getZonaRotonda());
 		try 
@@ -1824,5 +1830,42 @@ public class RotondAndesTM {
 		}
 		
 		return retorno;
+	}
+	
+	/**
+	 * REQUERIMIENTO RF19
+	 */
+	public void disableRestaurante(String nombre) throws Exception {
+		DAOTablaRestaurante daoRestaurante = new DAOTablaRestaurante();
+		try 
+		{
+			//////transaccion
+			this.conn = darConexion();
+			conn.setTransactionIsolation(conn.TRANSACTION_READ_COMMITTED);
+			daoRestaurante.setConn(conn);
+			daoRestaurante.disable(nombre);
+			conn.commit();
+
+		} catch (SQLException e) {
+			conn.rollback();
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			conn.rollback();
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				daoRestaurante.cerrarRecursos();
+				if(this.conn!=null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
 	}
 }

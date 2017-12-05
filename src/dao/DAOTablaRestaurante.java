@@ -198,4 +198,13 @@ public class DAOTablaRestaurante {
 		recursos.add(prepStmt);
 		prepStmt.executeQuery();
 	}
+	
+	public void disable(String nomRestaurante) throws SQLException, Exception {
+
+		String sql = "UPDATE RESTAURANTES SET DISPONIBLE = 0 WHERE NOMBRE = '" + nomRestaurante +"';";
+
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		prepStmt.executeQuery();
+	}
 }
