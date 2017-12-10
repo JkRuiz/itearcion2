@@ -750,7 +750,7 @@ public class RotondAndesTM {
 	 * @return
 	 * @throws Exception
 	 */
-		public Rentabilidad darRentabilidad(String fecha1, String fecha2) throws Exception {
+		public Rentabilidad darRentabilidad(String fecha1, String fecha2, String nomRestaurante) throws Exception {
 			Rentabilidad rent;
 			DAOTablaPlato daoPlatos = new DAOTablaPlato();
 			DAOTablaRestaurante daoRestaurantes = new DAOTablaRestaurante();
@@ -759,7 +759,7 @@ public class RotondAndesTM {
 				//////transaccion
 				this.conn = darConexion();
 				daoPlatos.setConn(conn);
-				rent = daoRestaurantes.getRentabilidad(fecha1, fecha2);
+				rent = daoRestaurantes.getRentabilidad(fecha1, fecha2, nomRestaurante);
 	
 			} catch (SQLException e) {
 				System.err.println("SQLException:" + e.getMessage());

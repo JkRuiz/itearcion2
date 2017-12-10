@@ -33,6 +33,8 @@ import com.rabbitmq.jms.admin.RMQDestination;
 
 import jms.*;
 import tm.RotondAndesTM;
+import vos.InfoPedido;
+import vos.InfoPedido.ItemPedido;
 
 public class RotondAndesDistributed 
 {
@@ -152,7 +154,7 @@ public class RotondAndesDistributed
 	
 	public Object consultarProductosLocal(String s) throws Exception
 	{
-		return null;
+		return tm.darProductosFiltro(s);
 	}
 	//Para RFC14 usando RFC5
 	public List<Object> consultarRentabilidadZonaGlobal(String msg) throws JsonGenerationException, JsonMappingException, JMSException, IOException, NonReplyException, InterruptedException, NoSuchAlgorithmException
@@ -163,7 +165,8 @@ public class RotondAndesDistributed
 	
 	public Object consultarRentabilidadZonaLocal(String message) throws Exception
 	{
-		return null;
+		String mens[] = message.split(";");
+		return tm.darRentabilidad(mens[0], mens[1], mens[2]);
 	}
 	
 	//RF18
@@ -202,18 +205,23 @@ public class RotondAndesDistributed
 	public String pedidoMenuMesaLocal(String mensaje) throws Exception
 	{
 		//Falta definir las entradas
-		String[]datos=mensaje.split(":");
-		String mesa=datos[0];
-		String correo=datos[1];
-		ArrayList<String> list = new ArrayList<String>();
-		datos=datos[1].split(";;;");
-		for(String s:datos)
-		{
-			list.add(s);
+		String[]datos=mensaje.split(";");
+		String correo=datos[0];
+		String mesa=datos[1];
+		
+		InfoPedido info = new InfoPedido(null, correo, mesa);
+		ArrayList<ItemPedido> items = new ArrayList<>();
+		for(int i = 3; i < datos.length; i++) {
+			ItemPedido item = info.new ItemPedido();
+			item.setNombrePlato(datos[i].split(",")[0]);
+			item.setNombreRestaurante(datos[i].split(",")[1]);
+			items.add(item);
 		}
+		info.setPedidos(items);
+		
 		try
 		{
-			tm.resgistrarProductosMesaGlobal(null);
+			tm.resgistrarProductosMesaGlobal(info);
 			return "OK";
 		}
 		catch(Exception e)

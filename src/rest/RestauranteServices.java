@@ -75,7 +75,7 @@ public class RestauranteServices {
 		Rentabilidad renta;
 		try {
 			String fechs [] = fechas.split("-");
-			renta = tm.darRentabilidad(fechs[0], fechs[1]);
+			renta = tm.darRentabilidad(fechs[0], fechs[1], fechs[2]);
 		} catch (Exception e) {
 			return Response.status(500).entity(doErrorMessage(e)).build();
 		}

@@ -171,16 +171,16 @@ public class DAOTablaRestaurante {
 		prepStmt.executeQuery();
 	}
 
-	public Rentabilidad getRentabilidad(String fecha1, String fecha2) throws SQLException {
+	public Rentabilidad getRentabilidad(String fecha1, String fecha2, String nomRestaurante) throws SQLException {
 
 		String sql1= "select ZONA, SUM(vendidos) as vendidos, SUM(precio) as facturado, SUM(costoproduccion) as costo from zona inner join restaurantes on zona.nombre = restaurantes.zona inner join (pedido natural join pedido_plato natural join plato) on restaurantes.nombre = plato.restaurante "
-				+ "where  pedido.FECHA >= TO_DATE('" + fecha1.trim() + "', 'DD/MM/YY') AND pedido.FECHA <= TO_DATE('"+ fecha2 +"', 'DD/MM/YY') group by zona order by vendidos DESC;"; 
+				+ "where  pedido.FECHA >= TO_DATE('" + fecha1.trim() + "', 'DD/MM/YY') AND pedido.FECHA <= TO_DATE('"+ fecha2 +"', 'DD/MM/YY')  AND plato.restaurante = '"+ nomRestaurante + "' group by zona order by vendidos DESC;"; 
 
 		String sql2= "select plato.nombre, SUM(vendidos) as vendidos, SUM(precio) as facturado, SUM(costoproduccion) as costo from pedido natural join pedido_plato natural join plato "
-				+ "where pedido.FECHA >= TO_DATE('" + fecha1.trim() + "', 'DD/MM/YY') AND pedido.FECHA <= TO_DATE('"+ fecha2 + "', 'DD/MM/YY') group by plato.nombre order by vendidos DESC;";
+				+ "where pedido.FECHA >= TO_DATE('" + fecha1.trim() + "', 'DD/MM/YY') AND pedido.FECHA <= TO_DATE('"+ fecha2 + "', 'DD/MM/YY') AND plato.restaurante = '"+ nomRestaurante + "' group by plato.nombre order by vendidos DESC;";
 
 		String sql3= "select plato.categoria, SUM(vendidos) as vendidos, SUM(precio) as facturado, SUM(costoproduccion) as costo from pedido natural join pedido_plato natural join plato "
-				+ "where  pedido.FECHA >= TO_DATE('" + fecha1.trim() + "', 'DD/MM/YY') AND pedido.FECHA <= TO_DATE('"+ fecha2 + "', 'DD/MM/YY') group by plato.categoria order by vendidos DESC;";
+				+ "where  pedido.FECHA >= TO_DATE('" + fecha1.trim() + "', 'DD/MM/YY') AND pedido.FECHA <= TO_DATE('"+ fecha2 + "', 'DD/MM/YY') AND plato.restaurante = '"+ nomRestaurante + "' group by plato.categoria order by vendidos DESC;";
 
 		PreparedStatement prepStmt1 = conn.prepareStatement(sql1);
 		System.out.println("PrepStmt1");
