@@ -743,37 +743,45 @@ public class RotondAndesTM {
 		return zonas;
 	}
 
-	//	public Rentabilidad darRentabilidad(String fecha1, String fecha2) throws Exception {
-	//		Rentabilidad rent;
-	//		DAOTablaPlato daoPlatos = new DAOTablaPlato();
-	//		try 
-	//		{
-	//			//////transaccion
-	//			this.conn = darConexion();
-	//			daoPlatos.setConn(conn);
-	//			r = daoPlatos.darPlatosFiltro(filtro);
-	//
-	//		} catch (SQLException e) {
-	//			System.err.println("SQLException:" + e.getMessage());
-	//			e.printStackTrace();
-	//			throw e;
-	//		} catch (Exception e) {
-	//			System.err.println("GeneralException:" + e.getMessage());
-	//			e.printStackTrace();
-	//			throw e;
-	//		} finally {
-	//			try {
-	//				daoPlatos.cerrarRecursos();
-	//				if(this.conn!=null)
-	//					this.conn.close();
-	//			} catch (SQLException exception) {
-	//				System.err.println("SQLException closing resources:" + exception.getMessage());
-	//				exception.printStackTrace();
-	//				throw exception;
-	//			}
-	//		}
-	//		return rent;
-	//	}
+	/**
+	 * RFC5
+	 * @param fecha1
+	 * @param fecha2
+	 * @return
+	 * @throws Exception
+	 */
+		public Rentabilidad darRentabilidad(String fecha1, String fecha2) throws Exception {
+			Rentabilidad rent;
+			DAOTablaPlato daoPlatos = new DAOTablaPlato();
+			DAOTablaRestaurante daoRestaurantes = new DAOTablaRestaurante();
+			try 
+			{
+				//////transaccion
+				this.conn = darConexion();
+				daoPlatos.setConn(conn);
+				rent = daoRestaurantes.getRentabilidad(fecha1, fecha2);
+	
+			} catch (SQLException e) {
+				System.err.println("SQLException:" + e.getMessage());
+				e.printStackTrace();
+				throw e;
+			} catch (Exception e) {
+				System.err.println("GeneralException:" + e.getMessage());
+				e.printStackTrace();
+				throw e;
+			} finally {
+				try {
+					daoPlatos.cerrarRecursos();
+					if(this.conn!=null)
+						this.conn.close();
+				} catch (SQLException exception) {
+					System.err.println("SQLException closing resources:" + exception.getMessage());
+					exception.printStackTrace();
+					throw exception;
+				}
+			}
+			return rent;
+		}
 
 
 	/**

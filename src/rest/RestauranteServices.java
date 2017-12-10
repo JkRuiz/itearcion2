@@ -16,6 +16,7 @@ import javax.ws.rs.core.Response;
 
 import tm.RotondAndesTM;
 import vos.Informacion;
+import vos.Rentabilidad;
 import vos.Restaurante;
 import vos.Usuario;
 
@@ -61,6 +62,26 @@ public class RestauranteServices {
 		return Response.status(200).entity(restaurantes).build();
 	}
 
+	/**
+	 * RFC5
+	 * @param fechas
+	 * @return
+	 */
+	@GET
+	@Path( "rentabilidad/{fecha1y2}" )
+	@Produces({ MediaType.APPLICATION_JSON })
+	public Response getRentabilidad(@QueryParam("fecha1y2") String fechas) {
+		RotondAndesTM tm = new RotondAndesTM(getPath());
+		Rentabilidad renta;
+		try {
+			String fechs [] = fechas.split("-");
+			renta = tm.darRentabilidad(fechs[0], fechs[1]);
+		} catch (Exception e) {
+			return Response.status(500).entity(doErrorMessage(e)).build();
+		}
+		return Response.status(200).entity(renta).build();
+	}
+	
 	/**
 	 * RFC9
 	 * @param informacionEq informacion = restuarante-fechaInicial-FechaFinal-criterioAgrupamiento 
