@@ -124,9 +124,9 @@ public class DAOTablaPlato {
 			if (filtros[i] != "") {
 				if (where!="") {
 					if(i<4)
-						where += " AND where " + pos[i] + "= '" + filtros[i] + "'";
+						where += " AND " + pos[i] + "= '" + filtros[i] + "'";
 					else
-						where += " AND where " + pos[i]  + filtros[i];
+						where += " AND " + pos[i]  + filtros[i];
 				}
 				else {
 					if(i<4)
