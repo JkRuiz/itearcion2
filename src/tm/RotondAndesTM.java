@@ -1811,6 +1811,7 @@ public class RotondAndesTM {
 	 */
 	public InfoPedido resgistrarProductosMesaGlobal(InfoPedido infoPedido) throws Exception {
 		DAOTablaPedido daoPedido = new DAOTablaPedido();
+		DAOTablaUsuario daoUsuario = new DAOTablaUsuario();
 		InfoPedido retorno = new InfoPedido(new ArrayList<ItemPedido>(), infoPedido.getEmail(), infoPedido.getZonaRotonda());
 		try 
 		{
@@ -1818,6 +1819,8 @@ public class RotondAndesTM {
 			this.conn = darConexion();
 			conn.setTransactionIsolation(conn.TRANSACTION_SERIALIZABLE);
 			daoPedido.setConn(conn);
+			daoUsuario.setConn(conn);
+			daoUsuario.addUsuarioDinamico(infoPedido.getEmail());
 			List<ItemPedido> pedidos = daoPedido.registrarPedidoGlobal(infoPedido);
 			retorno.setPedidos(pedidos);
 			conn.commit();
@@ -1835,6 +1838,7 @@ public class RotondAndesTM {
 		} finally {
 			try {
 				daoPedido.cerrarRecursos();
+				daoUsuario.cerrarRecursos();
 				if(this.conn!=null)
 					this.conn.close();
 			} catch (SQLException exception) {

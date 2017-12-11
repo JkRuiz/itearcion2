@@ -209,6 +209,17 @@ public class DAOTablaUsuario {
 		prepStmt.executeQuery();
 
 	}
+
+	public void addUsuarioDinamico(String email) throws SQLException, Exception {
+		String sql = "SELECT IDENTIFICACION FROM USUARIOS ORDER BY IDENTIFICACION DESC;";
+		PreparedStatement stmt = conn.prepareStatement(sql);
+		recursos.add(stmt);
+		ResultSet rs = stmt.executeQuery();
+		
+		long identificacion = rs.getLong("IDENTIFICACION") + 1;
+		
+		addUsuario(new Usuario(email, "ITER 5", identificacion));
+	}
 	
 	/**
 	 * Metodo que actualiza el video que entra como parametro en la base de datos.

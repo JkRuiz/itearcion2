@@ -415,11 +415,17 @@ public class DAOTablaPedido {
 		List<ItemPedido> pedidos = infoPedido.getPedidos();
 		List<ItemPedido> retorno = new ArrayList<>();
 		
-		int numPedido = 1;
 		int costo = 0;
-		String fecha = "";
-		Pedido pedido = new Pedido(numPedido, costo, fecha, infoPedido.getEmail(), 0, 0, "00:00:00AM", "", infoPedido.getZonaRotonda());
+		String fecha = "11/12/2017";
 		
+		String sql1 = "SELECT NUM_PEDIDO FROM PEDIDOS ORDER BY NUM_PEDIDO DESC;";
+		PreparedStatement stmt = conn.prepareStatement(sql1);
+		recursos.add(stmt);
+		ResultSet rs1 = stmt.executeQuery();
+		
+		int numPedido = rs1.getInt("NUM_PEDIDO") + 1;
+		
+		Pedido pedido = new Pedido(numPedido, costo, fecha, infoPedido.getEmail(), 0, 0, "00:00:00AM", "", infoPedido.getZonaRotonda());
 		addPedido(pedido);
 
 		String sql = "";
