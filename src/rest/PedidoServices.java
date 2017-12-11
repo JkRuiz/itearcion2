@@ -65,6 +65,19 @@ public class PedidoServices {
 		return Response.status(200).entity(pedidos).build();
 	}
 
+	@GET
+	@Path("twoPhase/{name}")
+	@Produces({ MediaType.APPLICATION_JSON })
+	public Response twoPhaseCommit(@QueryParam("name") String name) {
+		RotondAndesTM tm = new RotondAndesTM(getPath());
+		try {
+			tm.twoPhaseCommit(name);
+		} catch (Exception e) {
+			return Response.status(500).entity(doErrorMessage(e)).build();
+		}
+		return Response.status(200).entity(null).build();
+	}
+	
 	/**
 	 * Metodo que expone servicio REST usando GET que da todos los restaurantes de la base de datos.
 	 * <b>URL: </b> http://"ip o nombre de host":8080/VideoAndes/rest/videos

@@ -112,7 +112,45 @@ public class DAOTablaPlato {
 		ArrayList<Plato> platos = new ArrayList<Plato>();
 		ArrayList<Plato> equivalentes = new ArrayList<Plato>();
 
-		String sql = "SELECT * FROM PLATO ORDER BY " + filtro;
+		String filtros [] = filtro.split(";");
+		String pos [] = new String [6];
+		pos[2] = "restaurante";
+		pos[3] = "categoria";
+		pos[4] = "precioventa > ";
+		pos[5] = "precioventa < ";
+		String where = "";
+		String order = "";
+		for (int i = 2; i < filtros.length-1 && filtros[i] != null; i++) {
+			if (filtros[i] != "") {
+				if (where!="") {
+					if(i<4)
+						where += " AND where " + pos[i] + "= '" + filtros[i] + "'";
+					else
+						where += " AND where " + pos[i]  + filtros[i];
+				}
+				else {
+					if(i<4)
+						where  = " where "+ pos[i] + "= '" + filtros[i] + "'";
+					else
+						where  = " where "+ pos[i] + filtros[i];
+				}
+			}
+			else {
+				if (order!="") {
+					if (i < 4)
+						order += "," + pos[i];
+					else 
+						order += ", precioventa";
+				}
+				else {
+					if (i < 4)
+						order  = " order by "+ pos[i];
+					else
+						order  = " order by precioventa";
+				}
+			}
+		}
+		String sql = "SELECT * FROM PLATO " + where + order;
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
@@ -191,7 +229,7 @@ public class DAOTablaPlato {
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
 		ResultSet rs = prepStmt.executeQuery();	
-		
+
 		while (rs.next())
 		{
 			int idProd1 = rs.getInt("PRODUCTO1");
@@ -201,7 +239,7 @@ public class DAOTablaPlato {
 		}
 		return idsEquiv;
 	}
-	
+
 	public void addEquivalentes(String platos) throws NumberFormatException, Exception {
 		String[] productos = platos.split("-");
 
@@ -214,7 +252,7 @@ public class DAOTablaPlato {
 		prepStmt.executeQuery();	
 	}
 
-	
+
 	public void SeVendioProducto(int id1) throws Exception
 	{
 		String sql = "UPDATE PLATO SET VENDIDOS = VENDIDOS+1, DISPONIBLES = DISPONIBLES-1 WHERE ID_PLATO=" + id1;
@@ -222,7 +260,7 @@ public class DAOTablaPlato {
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
 		prepStmt.executeQuery();
-		
+
 	}
 	//	public ArrayList<Plato> darPlatosPorRango(String filtro) throws SQLException, Exception {
 	//		ArrayList<Plato> platos = new ArrayList<Plato>();
@@ -513,7 +551,7 @@ public class DAOTablaPlato {
 		PreparedStatement prepStmt1 = conn.prepareStatement(sql1);
 		recursos.add(prepStmt1);
 		prepStmt1.executeQuery();
-		
+
 		String sql2 = "UPDATE PLATO SET DISPONIBLES = MAX_DISP WHERE RESTAURANTE = '" + nombre + "'";
 
 		PreparedStatement prepStmt2 = conn.prepareStatement(sql2);
@@ -528,7 +566,7 @@ public class DAOTablaPlato {
 		recursos.add(prepStmt);
 		prepStmt.executeQuery();
 	}
-	
+
 	public void aumentarDisponibilidad(int idPlato, int i) throws SQLException {
 		String sql = "UPDATE PLATO SET DISPONIBLES = DISPONIBLES + " + i + " WHERE ID_PLATO = '" + idPlato + "'";
 
